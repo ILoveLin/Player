@@ -114,7 +114,6 @@
             android:name="com.company.shenzhou.ui.activity.RestartActivity"
             android:launchMode="singleTop"
             android:process=":restart" />
-
         <!-- 设置页 -->
         <activity
             android:name="com.company.shenzhou.ui.activity.SettingActivity"
