@@ -1,5 +1,7 @@
 apply plugin : 'com.android.application'
 apply plugin : 'android-aspectjx'
+apply plugin: 'org.greenrobot.greendao' //添加greendao相关的plugin
+
 apply from : '../common.gradle'
 
 // Android 代码规范文档：https://github.com/getActivity/AndroidCodeStandard
@@ -38,6 +40,22 @@ android {
         }
     }
 
+
+    //添加已下配置 不然vlc的model 和 'com.arthenica:ffmpeg-kit-full:5.1'依赖冲突
+    packagingOptions {
+        pickFirst 'lib/x86/libc++_shared.so'
+        pickFirst 'lib/x86_64/libc++_shared.so'
+        pickFirst 'lib/armeabi-v7a/libc++_shared.so'
+        pickFirst 'lib/arm64-v8a/libc++_shared.so'
+
+        // 配置 App 打包参数（腾讯云播放器）
+        pickFirst '**/libc++_shared.so'
+        doNotStrip "*/armeabi/libYTCommon.so"
+        doNotStrip "*/armeabi-v7a/libYTCommon.so"
+        doNotStrip "*/x86/libYTCommon.so"
+        doNotStrip "*/arm64-v8a/libYTCommon.so"
+    }
+
     // 构建配置：https://developer.android.google.cn/studio/build/build-variants
     buildTypes {
 
@@ -57,11 +75,21 @@ android {
             signingConfig signingConfigs.config
             // 添加清单占位符
             addManifestPlaceholders([
-                    'app_name'    :    '安卓技术中台 Debug 版'
+                    'app_name'    :    'CMEPlayer Debug 版'
             ])
             // 调试模式下只保留一种架构的 so 库，提升打包速度
             ndk {
-                abiFilters 'armeabi-v7a'
+                //                ARM架构：
+//                32 位：lib/armeabi-v7a、lib/armeabi
+//                64 位：lib/arm64-v8a
+//                armeabi-v7a是可以兼容armeabi的
+//                x86架构：
+//                32 ：lib/x86
+//                64 ：lib/x86_64
+//                abiFilters 'armeabi-v7a' //32位
+                abiFilters 'x86','armeabi-v7a'
+//                abiFilters 'armeabi-v7a' //32位
+//                abiFilters 'armeabi-v7a'
             }
         }
 
@@ -126,6 +154,18 @@ android {
             outputFileName += '.apk'
         }
     }
+
+    greendao {
+        schemaVersion 1 //数据库版本号
+        daoPackage 'com.company.shenzhou.playerdb'
+        // 设置DaoMaster、DaoSession、Dao 包名
+        targetGenDir 'src/main/java'//设置DaoMaster、DaoSession、Dao目录,请注意，这里路径用/不要用.
+        generateTests false //设置为true以自动生成单元测试。
+        targetGenDirTests 'src/main/java' //应存储生成的单元测试的基本目录。默认为 src / androidTest / java。
+    }
+
+
+
 }
 
 // 添加构建依赖项：https://developer.android.google.cn/studio/build/dependencies
@@ -201,6 +241,37 @@ dependencies {
     // 内存泄漏监测框架：https://github.com/square/leakcanary
     debugImplementation 'com.squareup.leakcanary:leakcanary-android:2.7'
     previewImplementation 'com.squareup.leakcanary:leakcanary-android:2.7'
+
+
+    // 已下是自己的库
+    // 已下是自己的库
+    //国际化
+    implementation 'com.github.getActivity:MultiLanguages:8.0'
+    //ffmpeg-kit 合流录像  https://github.com/arthenica/ffmpeg-kit/tree/main/androidG
+    implementation 'com.arthenica:ffmpeg-kit-full:5.1'
+    // 必选，内部默认使用系统mediaplayer进行解码
+    implementation 'xyz.doikki.android.dkplayer:dkplayer-java:3.3.7'
+    //可选，使用ijkplayer 进行解码
+    implementation 'xyz.doikki.android.dkplayer:player-ijk:3.3.7'
+    //Dokit 调试日志
+    debugImplementation 'io.github.didi.dokit:dokitx:3.5.0.1'
+    releaseImplementation 'io.github.didi.dokit:dokitx-no-op:3.5.0.1'
+
+    //greendao 数据库
+    implementation 'org.greenrobot:greendao:3.2.2'
+    //https://www.jianshu.com/p/721381cf974f     okhttputils使用链接
+    //网络请求
+    implementation 'com.zhy:okhttputils:2.6.2'
+    implementation 'com.squareup.okhttp3:okhttp:3.3.0' //okttp依赖
+    //服务保活
+    implementation 'com.xdandroid:hellodaemon:+'
+    //eventbus
+    implementation 'org.greenrobot:eventbus:3.0.0'
+    //腾讯快直播SDK
+    //https://cloud.tencent.com/document/product/881/81205   11.8.0.14176  这个版本不会出现直播画面语音，左右声道不一致的问题
+    implementation 'com.tencent.liteav:LiteAVSDK_Professional:11.8.0.14176'
+
+
 
     // 多语种：https://github.com/getActivity/MultiLanguages
     // 悬浮窗：https://github.com/getActivity/XToast

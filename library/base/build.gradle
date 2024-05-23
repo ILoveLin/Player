@@ -17,4 +17,9 @@ android {
             )
         }
     }
+
+
+    dependencies {
+        implementation 'com.github.getActivity:MultiLanguages:8.0'
+    }
 }

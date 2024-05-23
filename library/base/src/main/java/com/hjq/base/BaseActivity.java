@@ -19,6 +19,7 @@ import com.hjq.base.action.BundleAction;
 import com.hjq.base.action.ClickAction;
 import com.hjq.base.action.HandlerAction;
 import com.hjq.base.action.KeyboardAction;
+import com.hjq.language.MultiLanguages;
 
 import java.util.List;
 import java.util.Random;
@@ -38,7 +39,11 @@ public abstract class BaseActivity extends AppCompatActivity
 
     /** Activity 回调集合 */
     private SparseArray<OnActivityCallback> mActivityCallbacks;
-
+    @Override
+    protected void attachBaseContext(Context newBase) {
+        // 绑定语种
+        super.attachBaseContext(MultiLanguages.attach(newBase));
+    }
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);

@@ -11,6 +11,7 @@ import com.airbnb.lottie.LottieAnimationView;
 import com.company.shenzhou.app.AppActivity;
 import com.company.shenzhou.http.api.UserInfoApi;
 import com.company.shenzhou.http.model.HttpData;
+import com.company.shenzhou.mineui.MainActivity;
 import com.company.shenzhou.other.AppConfig;
 import com.gyf.immersionbar.BarHide;
 import com.gyf.immersionbar.ImmersionBar;
@@ -45,7 +46,8 @@ public final class SplashActivity extends AppActivity {
             @Override
             public void onAnimationEnd(Animator animation) {
                 mLottieView.removeAnimatorListener(this);
-                HomeActivity.start(getContext());
+                MainActivity.start(getContext());
+//                HomeActivity.start(getContext());
                 finish();
             }
         });

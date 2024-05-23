@@ -1,5 +1,6 @@
 package com.company.shenzhou.app;
 
+import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
@@ -18,6 +19,7 @@ import com.hjq.base.BaseActivity;
 import com.hjq.base.BaseDialog;
 import com.company.shenzhou.R;
 import com.hjq.http.listener.OnHttpListener;
+import com.hjq.language.MultiLanguages;
 
 import okhttp3.Call;
 

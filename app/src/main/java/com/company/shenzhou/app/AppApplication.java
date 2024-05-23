@@ -12,9 +12,11 @@ import androidx.core.content.ContextCompat;
 import androidx.lifecycle.Lifecycle;
 import androidx.lifecycle.LifecycleOwner;
 
+import com.company.shenzhou.global.Constants;
 import com.company.shenzhou.http.model.RequestHandler;
 import com.company.shenzhou.http.model.RequestServer;
 import com.company.shenzhou.manager.ActivityManager;
+import com.company.shenzhou.mineui.service.ReceiveSocketService;
 import com.company.shenzhou.other.AppConfig;
 import com.company.shenzhou.other.CrashHandler;
 import com.company.shenzhou.other.DebugLoggerTree;
@@ -23,28 +25,53 @@ import com.company.shenzhou.other.SmartBallPulseFooter;
 import com.company.shenzhou.other.TitleBarStyle;
 import com.company.shenzhou.other.ToastLogInterceptor;
 import com.company.shenzhou.other.ToastStyle;
+import com.company.shenzhou.utlis.MD5ChangeUtil;
+import com.company.shenzhou.utlis.SharePreferenceUtil;
+import com.didichuxing.doraemonkit.DoKit;
+import com.didichuxing.doraemonkit.util.DeviceUtils;
+import com.didichuxing.doraemonkit.util.LogUtils;
 import com.hjq.bar.TitleBar;
 import com.company.shenzhou.R;
 import com.company.shenzhou.aop.Log;
 import com.company.shenzhou.http.glide.GlideApp;
 import com.hjq.gson.factory.GsonFactory;
 import com.hjq.http.EasyConfig;
+import com.hjq.language.MultiLanguages;
 import com.hjq.toast.ToastUtils;
 import com.hjq.umeng.UmengClient;
 import com.scwang.smart.refresh.layout.SmartRefreshLayout;
 import com.tencent.bugly.crashreport.CrashReport;
 import com.tencent.mmkv.MMKV;
+import com.tencent.rtmp.TXLiveBase;
+import com.tencent.rtmp.TXLiveBaseListener;
+import com.xdandroid.hellodaemon.DaemonEnv;
+import com.zhy.http.okhttp.OkHttpUtils;
+import com.zhy.http.okhttp.cookie.CookieJarImpl;
+import com.zhy.http.okhttp.cookie.store.MemoryCookieStore;
+import com.zhy.http.okhttp.https.HttpsUtils;
+
+import java.lang.ref.WeakReference;
+import java.util.concurrent.TimeUnit;
+
+import javax.net.ssl.HostnameVerifier;
+import javax.net.ssl.SSLSession;
 
 import okhttp3.OkHttpClient;
 import timber.log.Timber;
+import xyz.doikki.videoplayer.ijk.IjkPlayerFactory;
+import xyz.doikki.videoplayer.player.VideoViewConfig;
+import xyz.doikki.videoplayer.player.VideoViewManager;
 
 /**
- *    author : Android 轮子哥
- *    github : https://github.com/getActivity/AndroidProject
- *    time   : 2018/10/18
- *    desc   : 应用入口
+ * author : Android 轮子哥
+ * github : https://github.com/getActivity/AndroidProject
+ * time   : 2018/10/18
+ * desc   : 应用入口
  */
 public final class AppApplication extends Application {
+
+    private static MMKV mmkv;
+    private static Application mApplication;
 
     @Log("启动耗时")
     @Override
@@ -55,7 +82,8 @@ public final class AppApplication extends Application {
 
     @Override
     protected void attachBaseContext(Context base) {
-        super.attachBaseContext(base);
+        // 绑定语种
+        super.attachBaseContext(MultiLanguages.attach(base));
     }
 
     @Override
@@ -75,7 +103,66 @@ public final class AppApplication extends Application {
     /**
      * 初始化一些第三方框架
      */
-    public static void initSdk(Application application) {
+    public void initSdk(Application application) {
+        mApplication = application;
+        //初始化Didi调试日志框架
+        new DoKit.Builder(application)
+                .build();
+
+        //初始化DK播放器框架
+        VideoViewManager.setConfig(VideoViewConfig.newBuilder()
+                //使用使用IjkPlayer解码
+                .setPlayerFactory(IjkPlayerFactory.create())
+                .build());
+        //初始化MMKV存储框架
+        MMKV.initialize(application);
+        mmkv = MMKV.defaultMMKV();
+        //设置第一次启动App的时候,是否第一次初始化过,接收线程
+        mmkv.encode(Constants.KEY_SOCKET_RECEIVE_FIRST_IN, false);
+        int i2 = mmkv.decodeInt(Constants.KEY_BROADCAST_SERVER_PORT);
+        int i4 = mmkv.decodeInt(Constants.KEY_LOCAL_RECEIVE_PORT);  //实时记录本地监听的端口
+        if ("".equals(i2 + "") || i2 == 0) {
+            mmkv.encode(Constants.KEY_BROADCAST_SERVER_PORT, Constants.BROADCAST_SERVER_PORT);
+        }
+        if ("".equals(i4 + "") || i4 == 0) {
+            mmkv.encode(Constants.KEY_LOCAL_RECEIVE_PORT, Constants.LOCAL_RECEIVE_PORT); //默认给广播接收的端口
+        }
+
+        //初始化数据库
+        initGreenDao();
+        //初始化国际化
+        MultiLanguages.init(application);
+
+        Boolean mCanUse = (Boolean) SharePreferenceUtil.get(application, SharePreferenceUtil.Bugly_CanUse, false);
+        LogUtils.e("App-initLiveService--Bugly_CanUse====" + mCanUse);
+        boolean b = mmkv.decodeBool(Constants.KEY_SOCKET_RECEIVE_FIRST_IN);
+        LogUtils.e("App-initLiveService--避免初始化的时候开启多次线程-标识====" + b);
+
+        if (mCanUse) {
+            initLiveService(application);
+        }
+        //初始化腾讯快直播SDK
+        initTencentLive(application);
+
+        //Okhttp请求头
+        //请求工具的拦截器  ,可以设置证书,设置可访问所有的https网站,参考https://www.jianshu.com/p/64cc92c52650
+        HttpsUtils.SSLParams sslParams = HttpsUtils.getSslSocketFactory(null, null, null);
+        OkHttpClient.Builder okHttpClientBuilder = new OkHttpClient.Builder()
+                .sslSocketFactory(sslParams.sSLSocketFactory, sslParams.trustManager)
+                .cookieJar(new CookieJarImpl(new MemoryCookieStore()))                  //内存存储cookie
+                .connectTimeout(5000L, TimeUnit.MILLISECONDS)
+                .addInterceptor(new MyInterceptor(application))                      //拦截器,可以添加header 一些信息
+                .readTimeout(5000L, TimeUnit.MILLISECONDS)
+                .hostnameVerifier(new HostnameVerifier() {//允许访问https网站,并忽略证书
+                    @Override
+                    public boolean verify(String hostname, SSLSession session) {
+                        return true;
+                    }
+                });
+
+        OkHttpUtils.initClient(okHttpClientBuilder.build());
+
+
         // 设置标题栏初始化器
         TitleBar.setDefaultStyle(new TitleBarStyle());
 
@@ -105,20 +192,18 @@ public final class AppApplication extends Application {
         // 设置 Toast 拦截器
         ToastUtils.setInterceptor(new ToastLogInterceptor());
 
-        // 本地异常捕捉
+//        // 本地异常捕捉
         CrashHandler.register(application);
-
-        // 友盟统计、登录、分享 SDK
-        UmengClient.init(application, AppConfig.isLogEnable());
-
-        // Bugly 异常捕捉
-        CrashReport.initCrashReport(application, AppConfig.getBuglyId(), AppConfig.isDebug());
+//
+//        // 友盟统计、登录、分享 SDK
+//        UmengClient.init(application, AppConfig.isLogEnable());
+//
+//        // Bugly 异常捕捉
+//        CrashReport.initCrashReport(application, AppConfig.getBuglyId(), AppConfig.isDebug());
 
         // Activity 栈管理初始化
         ActivityManager.getInstance().init(application);
 
-        // MMKV 初始化
-        MMKV.initialize(application);
 
         // 网络请求框架初始化
         OkHttpClient okHttpClient = new OkHttpClient.Builder()
@@ -177,4 +262,77 @@ public final class AppApplication extends Application {
             });
         }
     }
+
+    /**
+     * 初始化腾讯快直播SDK
+     */
+    private void initTencentLive(Application application) {
+        String licenceURL = "https://license.vod2.myqcloud.com/license/v2/1255750344_1/v_cube.license"; // 获取到的 licence url
+        String licenceKey = "05fcb2597e0e53dfa98cd026c388455e"; // 获取到的 licence key
+        TXLiveBase.getInstance().setLicence(application, licenceURL, licenceKey);
+        TXLiveBase.setListener(new TXLiveBaseListener() {
+            @Override
+            public void onLicenceLoaded(int result, String reason) {
+                LogUtils.e("App==腾讯直播初始化" + "onLicenceLoaded: result:" + result + ", reason:" + reason);
+            }
+        });
+
+    }
+
+
+    private void initGreenDao() {
+//        //创建数据库shop.db(可版本升级保留原数据)
+//        MyGreenDaoDbHelper helper = new MyGreenDaoDbHelper(this, "player.db", null);
+//        //获取数据库对象
+//        DaoMaster daoMaster = new DaoMaster(helper.getWritableDatabase());
+//        //获取dao对象管理者
+//        mSession = daoMaster.newSession(IdentityScopeType.None);
+
+
+    }
+
+
+    public void intBugly() {
+        LogUtils.e("intSDK--初始化SDK");
+        /**
+         * 为了保证运营数据的准确性，建议不要在异步线程初始化Bugly。
+         * 第三个参数为SDK调试模式开关，调试模式的行为特性如下：
+         *
+         * 输出详细的Bugly SDK的Log；
+         * 每一条Crash都会被立即上报；
+         * 自定义日志将会在Logcat中输出。
+         */
+        CrashReport.initCrashReport(getApplicationContext(), "ab805dbd30", false);
+        //设置bugly相关参数
+        String deviceId = DeviceUtils.getUniqueDeviceId();
+        String mSend_IDBy32 = MD5ChangeUtil.Md5_32(deviceId);
+        //设置设备唯一ID
+        CrashReport.setDeviceId(getApplicationContext(), mSend_IDBy32 + "");
+        //通过UserStrategy设置,手机型号和厂商
+        CrashReport.UserStrategy strategy = new CrashReport.UserStrategy(getApplicationContext());
+        String manufacturer = DeviceUtils.getManufacturer();
+        String model = DeviceUtils.getModel();
+        strategy.setDeviceModel(manufacturer + "_" + model);
+        initLiveService(mApplication);
+        LogUtils.e("intSDK--初始化SDK方法执行完毕!");
+    }
+
+    /**
+     * 保活服务
+     */
+    private static void initLiveService(Application application) {
+        String string = mmkv.decodeString(Constants.KEY_PhoneDeviceCode, "ec3fdc8a06d4fe08c93437560c4ce460");
+        LogUtils.e("App-initLiveService--初始化监听服务-开始?");
+        LogUtils.e("App-initLiveService(初始化监听服务),获取手机唯一标识码:" + string);
+        //初始化
+        WeakReference<Context> appWeakReference = new WeakReference<>(application);
+        DaemonEnv.initialize(appWeakReference.get(), ReceiveSocketService.class, DaemonEnv.DEFAULT_WAKE_UP_INTERVAL);
+        //是否 任务完成, 不再需要服务运行?
+        ReceiveSocketService.sShouldStopService = false;
+        //开启服务
+        DaemonEnv.startServiceMayBind(ReceiveSocketService.class);
+        LogUtils.e("App-initLiveService--初始化监听服务-结束");
+    }
+
+
 }
