@@ -144,7 +144,6 @@
             android:launchMode="singleTop"
             android:screenOrientation="portrait"
             android:windowSoftInputMode="stateHidden" />
-
         <!-- 关于我们 -->
         <activity
             android:name="com.company.shenzhou.ui.activity.AboutActivity"
