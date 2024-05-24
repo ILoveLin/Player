@@ -1,9 +1,9 @@
-package com.company.shenzhou.mineui.fragment.user;
+package com.company.shenzhou.mineui.fragment;
 
 import com.company.shenzhou.R;
 import com.company.shenzhou.app.AppFragment;
+import com.company.shenzhou.app.TitleBarFragment;
 import com.company.shenzhou.mineui.MainActivity;
-import com.company.shenzhou.ui.activity.CopyActivity;
 
 /**
  *    author : Android 轮子哥
@@ -11,7 +11,7 @@ import com.company.shenzhou.ui.activity.CopyActivity;
  *    time   : 2018/10/18
  *    desc   : 用户界面
  */
-public final class UserFragment extends AppFragment<MainActivity> {
+public final class UserFragment extends TitleBarFragment<MainActivity> {
 
     public static UserFragment newInstance() {
         return new UserFragment();
@@ -30,5 +30,10 @@ public final class UserFragment extends AppFragment<MainActivity> {
     @Override
     protected void initData() {
 
+    }
+    @Override
+    public boolean isStatusBarEnabled() {
+        // 使用沉浸式状态栏
+        return !super.isStatusBarEnabled();
     }
 }

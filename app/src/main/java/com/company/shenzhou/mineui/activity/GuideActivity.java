@@ -22,6 +22,7 @@ import com.company.shenzhou.bean.dbbean.UserDBRememberBean;
 import com.company.shenzhou.global.Constants;
 import com.company.shenzhou.mineui.MainActivity;
 import com.company.shenzhou.playerdb.manager.UserDBRememberBeanUtils;
+import com.company.shenzhou.ui.activity.HomeActivity;
 import com.company.shenzhou.ui.adapter.GuideAdapter;
 import com.company.shenzhou.utlis.LogUtils;
 import com.company.shenzhou.utlis.MD5ChangeUtil;
@@ -201,9 +202,7 @@ public final class GuideActivity extends AppActivity {
     @Override
     public void onClick(View view) {
         if (view == mCompleteView) {
-
             if (!isLogined) {  //未登入,跳转登入界面
-                Intent intent = new Intent();
                 startActivity(LoginActivity.class);
                 mmkv.encode(Constants.KEY_Login_Tag, false);//是否登入成功
                 SharePreferenceUtil.put(GuideActivity.this, Constants.SP_IS_FIRST_IN, false);

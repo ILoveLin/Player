@@ -11,6 +11,6 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         app:leftIcon="@null"
-        app:title="标题" />
+        app:title="@string/main_nav_user"/>
 
 </LinearLayout>

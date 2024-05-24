@@ -2,6 +2,7 @@ package com.company.shenzhou.mineui.fragment;
 
 import com.company.shenzhou.R;
 import com.company.shenzhou.app.AppFragment;
+import com.company.shenzhou.app.TitleBarFragment;
 import com.company.shenzhou.mineui.MainActivity;
 import com.company.shenzhou.ui.activity.CopyActivity;
 
@@ -11,7 +12,7 @@ import com.company.shenzhou.ui.activity.CopyActivity;
  *    time   : 2018/10/18
  *    desc   : 可我的界面
  */
-public final class MineFragment extends AppFragment<MainActivity> {
+public final class MineFragment extends TitleBarFragment<MainActivity> {
 
     public static MineFragment newInstance() {
         return new MineFragment();
@@ -30,5 +31,11 @@ public final class MineFragment extends AppFragment<MainActivity> {
     @Override
     protected void initData() {
 
+    }
+
+    @Override
+    public boolean isStatusBarEnabled() {
+        // 使用沉浸式状态栏
+        return !super.isStatusBarEnabled();
     }
 }
