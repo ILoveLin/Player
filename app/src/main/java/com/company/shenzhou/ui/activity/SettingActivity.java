@@ -144,9 +144,9 @@ public final class SettingActivity extends AppActivity
         } else if (viewId == R.id.sb_setting_exit) {
 
             if (true) {
-                startActivity(LoginActivity.class);
-                // 进行内存优化，销毁除登录页之外的所有界面
-                ActivityManager.getInstance().finishAllActivities(LoginActivity.class);
+//                startActivity(LoginActivity.class);
+//                // 进行内存优化，销毁除登录页之外的所有界面
+//                ActivityManager.getInstance().finishAllActivities(LoginActivity.class);
                 return;
             }
 
@@ -157,9 +157,9 @@ public final class SettingActivity extends AppActivity
 
                         @Override
                         public void onSucceed(HttpData<Void> data) {
-                            startActivity(LoginActivity.class);
+//                            startActivity(LoginActivity.class);
                             // 进行内存优化，销毁除登录页之外的所有界面
-                            ActivityManager.getInstance().finishAllActivities(LoginActivity.class);
+//                            ActivityManager.getInstance().finishAllActivities(LoginActivity.class);
                         }
                     });
 

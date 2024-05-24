@@ -6,6 +6,7 @@ import android.content.Intent;
 
 import com.company.shenzhou.app.AppActivity;
 import com.company.shenzhou.R;
+import com.company.shenzhou.mineui.activity.SplashActivity;
 
 /**
  *    author : Android 轮子哥

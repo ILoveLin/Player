@@ -2,16 +2,13 @@ package com.company.shenzhou.http.model;
 
 import android.app.Application;
 import android.content.Context;
-import android.content.Intent;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
 
 import androidx.lifecycle.LifecycleOwner;
 
-import com.company.shenzhou.manager.ActivityManager;
 import com.google.gson.JsonSyntaxException;
 import com.company.shenzhou.R;
-import com.company.shenzhou.ui.activity.LoginActivity;
 import com.hjq.gson.factory.GsonFactory;
 import com.hjq.http.EasyLog;
 import com.hjq.http.config.IRequestApi;
@@ -149,12 +146,12 @@ public final class RequestHandler implements IRequestHandler {
         if (e instanceof HttpException) {
             if (e instanceof TokenException) {
                 // 登录信息失效，跳转到登录页
-                Application application = ActivityManager.getInstance().getApplication();
-                Intent intent = new Intent(application, LoginActivity.class);
-                intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-                application.startActivity(intent);
-                // 销毁除了登录页之外的 Activity
-                ActivityManager.getInstance().finishAllActivities(LoginActivity.class);
+//                Application application = ActivityManager.getInstance().getApplication();
+//                Intent intent = new Intent(application, LoginActivity.class);
+//                intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+//                application.startActivity(intent);
+//                // 销毁除了登录页之外的 Activity
+//                ActivityManager.getInstance().finishAllActivities(LoginActivity.class);
             }
             return e;
         }

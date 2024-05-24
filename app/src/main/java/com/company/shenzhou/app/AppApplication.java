@@ -25,11 +25,14 @@ import com.company.shenzhou.other.SmartBallPulseFooter;
 import com.company.shenzhou.other.TitleBarStyle;
 import com.company.shenzhou.other.ToastLogInterceptor;
 import com.company.shenzhou.other.ToastStyle;
+import com.company.shenzhou.playerdb.DaoMaster;
+import com.company.shenzhou.playerdb.DaoSession;
+import com.company.shenzhou.playerdb.manager.MyGreenDaoDbHelper;
+import com.company.shenzhou.utlis.LogUtils;
 import com.company.shenzhou.utlis.MD5ChangeUtil;
 import com.company.shenzhou.utlis.SharePreferenceUtil;
 import com.didichuxing.doraemonkit.DoKit;
 import com.didichuxing.doraemonkit.util.DeviceUtils;
-import com.didichuxing.doraemonkit.util.LogUtils;
 import com.hjq.bar.TitleBar;
 import com.company.shenzhou.R;
 import com.company.shenzhou.aop.Log;
@@ -49,6 +52,8 @@ import com.zhy.http.okhttp.OkHttpUtils;
 import com.zhy.http.okhttp.cookie.CookieJarImpl;
 import com.zhy.http.okhttp.cookie.store.MemoryCookieStore;
 import com.zhy.http.okhttp.https.HttpsUtils;
+
+import org.greenrobot.greendao.identityscope.IdentityScopeType;
 
 import java.lang.ref.WeakReference;
 import java.util.concurrent.TimeUnit;
@@ -71,13 +76,23 @@ import xyz.doikki.videoplayer.player.VideoViewManager;
 public final class AppApplication extends Application {
 
     private static MMKV mmkv;
-    private static Application mApplication;
+    private static AppApplication mApplication;
+    public AppApplication() {
+        mApplication = this;
+    }
+
+    public static synchronized AppApplication getInstance() {
+        if (mApplication == null) {
+            mApplication = new AppApplication();
+        }
+        return mApplication;
+    }
 
     @Log("启动耗时")
     @Override
     public void onCreate() {
         super.onCreate();
-        initSdk(this);
+        initSdk();
     }
 
     @Override
@@ -103,10 +118,9 @@ public final class AppApplication extends Application {
     /**
      * 初始化一些第三方框架
      */
-    public void initSdk(Application application) {
-        mApplication = application;
+    public void initSdk() {
         //初始化Didi调试日志框架
-        new DoKit.Builder(application)
+        new DoKit.Builder(this)
                 .build();
 
         //初始化DK播放器框架
@@ -115,7 +129,7 @@ public final class AppApplication extends Application {
                 .setPlayerFactory(IjkPlayerFactory.create())
                 .build());
         //初始化MMKV存储框架
-        MMKV.initialize(application);
+        MMKV.initialize(this);
         mmkv = MMKV.defaultMMKV();
         //设置第一次启动App的时候,是否第一次初始化过,接收线程
         mmkv.encode(Constants.KEY_SOCKET_RECEIVE_FIRST_IN, false);
@@ -131,18 +145,18 @@ public final class AppApplication extends Application {
         //初始化数据库
         initGreenDao();
         //初始化国际化
-        MultiLanguages.init(application);
+        MultiLanguages.init(this);
 
-        Boolean mCanUse = (Boolean) SharePreferenceUtil.get(application, SharePreferenceUtil.Bugly_CanUse, false);
+        Boolean mCanUse = (Boolean) SharePreferenceUtil.get(this, SharePreferenceUtil.Bugly_CanUse, false);
         LogUtils.e("App-initLiveService--Bugly_CanUse====" + mCanUse);
         boolean b = mmkv.decodeBool(Constants.KEY_SOCKET_RECEIVE_FIRST_IN);
         LogUtils.e("App-initLiveService--避免初始化的时候开启多次线程-标识====" + b);
 
         if (mCanUse) {
-            initLiveService(application);
+            initLiveService(this);
         }
         //初始化腾讯快直播SDK
-        initTencentLive(application);
+        initTencentLive();
 
         //Okhttp请求头
         //请求工具的拦截器  ,可以设置证书,设置可访问所有的https网站,参考https://www.jianshu.com/p/64cc92c52650
@@ -151,7 +165,7 @@ public final class AppApplication extends Application {
                 .sslSocketFactory(sslParams.sSLSocketFactory, sslParams.trustManager)
                 .cookieJar(new CookieJarImpl(new MemoryCookieStore()))                  //内存存储cookie
                 .connectTimeout(5000L, TimeUnit.MILLISECONDS)
-                .addInterceptor(new MyInterceptor(application))                      //拦截器,可以添加header 一些信息
+                .addInterceptor(new MyInterceptor(this))                      //拦截器,可以添加header 一些信息
                 .readTimeout(5000L, TimeUnit.MILLISECONDS)
                 .hostnameVerifier(new HostnameVerifier() {//允许访问https网站,并忽略证书
                     @Override
@@ -168,9 +182,9 @@ public final class AppApplication extends Application {
 
         // 设置全局的 Header 构建器
         SmartRefreshLayout.setDefaultRefreshHeaderCreator((cx, layout) ->
-                new MaterialHeader(application).setColorSchemeColors(ContextCompat.getColor(application, R.color.common_accent_color)));
+                new MaterialHeader(this).setColorSchemeColors(ContextCompat.getColor(this, R.color.common_accent_color)));
         // 设置全局的 Footer 构建器
-        SmartRefreshLayout.setDefaultRefreshFooterCreator((cx, layout) -> new SmartBallPulseFooter(application));
+        SmartRefreshLayout.setDefaultRefreshFooterCreator((cx, layout) -> new SmartBallPulseFooter(this));
         // 设置全局初始化器
         SmartRefreshLayout.setDefaultRefreshInitializer((cx, layout) -> {
             // 刷新头部是否跟随内容偏移
@@ -186,14 +200,14 @@ public final class AppApplication extends Application {
         });
 
         // 初始化吐司
-        ToastUtils.init(application, new ToastStyle());
+        ToastUtils.init(this, new ToastStyle());
         // 设置调试模式
         ToastUtils.setDebugMode(AppConfig.isDebug());
         // 设置 Toast 拦截器
         ToastUtils.setInterceptor(new ToastLogInterceptor());
 
 //        // 本地异常捕捉
-        CrashHandler.register(application);
+        CrashHandler.register(this);
 //
 //        // 友盟统计、登录、分享 SDK
 //        UmengClient.init(application, AppConfig.isLogEnable());
@@ -202,7 +216,7 @@ public final class AppApplication extends Application {
 //        CrashReport.initCrashReport(application, AppConfig.getBuglyId(), AppConfig.isDebug());
 
         // Activity 栈管理初始化
-        ActivityManager.getInstance().init(application);
+        ActivityManager.getInstance().init(this);
 
 
         // 网络请求框架初始化
@@ -215,7 +229,7 @@ public final class AppApplication extends Application {
                 // 设置服务器配置
                 .setServer(new RequestServer())
                 // 设置请求处理策略
-                .setHandler(new RequestHandler(application))
+                .setHandler(new RequestHandler(this))
                 // 设置请求重试次数
                 .setRetryCount(1)
                 .setInterceptor((api, params, headers) -> {
@@ -242,7 +256,7 @@ public final class AppApplication extends Application {
         }
 
         // 注册网络状态变化监听
-        ConnectivityManager connectivityManager = ContextCompat.getSystemService(application, ConnectivityManager.class);
+        ConnectivityManager connectivityManager = ContextCompat.getSystemService(this, ConnectivityManager.class);
         if (connectivityManager != null && Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
             connectivityManager.registerDefaultNetworkCallback(new ConnectivityManager.NetworkCallback() {
                 @Override
@@ -266,10 +280,10 @@ public final class AppApplication extends Application {
     /**
      * 初始化腾讯快直播SDK
      */
-    private void initTencentLive(Application application) {
+    private void initTencentLive() {
         String licenceURL = "https://license.vod2.myqcloud.com/license/v2/1255750344_1/v_cube.license"; // 获取到的 licence url
         String licenceKey = "05fcb2597e0e53dfa98cd026c388455e"; // 获取到的 licence key
-        TXLiveBase.getInstance().setLicence(application, licenceURL, licenceKey);
+        TXLiveBase.getInstance().setLicence(this, licenceURL, licenceKey);
         TXLiveBase.setListener(new TXLiveBaseListener() {
             @Override
             public void onLicenceLoaded(int result, String reason) {
@@ -282,15 +296,19 @@ public final class AppApplication extends Application {
 
     private void initGreenDao() {
 //        //创建数据库shop.db(可版本升级保留原数据)
-//        MyGreenDaoDbHelper helper = new MyGreenDaoDbHelper(this, "player.db", null);
-//        //获取数据库对象
-//        DaoMaster daoMaster = new DaoMaster(helper.getWritableDatabase());
-//        //获取dao对象管理者
-//        mSession = daoMaster.newSession(IdentityScopeType.None);
-
+        MyGreenDaoDbHelper helper = new MyGreenDaoDbHelper(this, "playerdb", null);
+        //获取数据库对象
+        DaoMaster daoMaster = new DaoMaster(helper.getWritableDatabase());
+        //获取dao对象管理者
+        mSession = daoMaster.newSession(IdentityScopeType.None);
 
     }
+    public static DaoSession mSession;
 
+
+    public static DaoSession getDaoSession() {
+        return mSession;
+    }
 
     public void intBugly() {
         LogUtils.e("intSDK--初始化SDK");

@@ -1,0 +1,364 @@
+<resources>
+    <string name="app_name">CME Player</string>
+    <string name="current_language">繁體中文</string>
+
+
+    <string name="status_layout_no_data">空空如也</string>
+    <string name="status_layout_no_report">暫無報告可預覽</string>
+    <string name="status_layout_error_request">請求出錯，請重試</string>
+    <string name="status_layout_error_network">網絡錯誤，請重試</string>
+    <string name="status_layout_search">搜索中...</string>
+    <string name="status_layout_retry">重試</string>
+    <string name="status_layout_dismiss">取消</string>
+
+    <string name="not_support_cpu">您的手機處理器暫時不支持播放</string>
+    <string name="no_network">網絡不可用</string>
+    <string name="buffer">緩沖</string>
+    <string name="buffering">缓冲中...</string>
+    <string name="error_video_play">視頻讀取錯誤，請檢查網絡或退出後重試！</string>
+    <string name="video_try_reconnect">視頻讀取錯誤,請嘗試重新讀取!</string>
+
+    <string name="error_net">當前網絡不可用，請檢查您的網絡設置</string>
+    <string name="error_net_toast">網絡不給力</string>
+    <string name="determine">確定</string>
+    <string name="determine2">確認</string>
+    <string name="cancel">取消</string>
+    <string name="empty_error_net_server">數據加載失敗，請返回重試!</string>
+
+    <string name="main_tab_user">用戶</string>
+    <string name="main_tab_yidi">報銷查詢</string>
+    <string name="main_tab_device">設備</string>
+    <string name="main_tab_recomment">我的</string>
+    <string name="main_tab_mine">我的</string>
+    <!--    <string name="main_tab_biyao">比藥</string>-->
+    <!-- 注册 -->
+    <string name="register_title">注冊</string>
+    <string name="register_hint">手機號僅用于登錄和保護賬號安全</string>
+    <string name="register_login">登錄</string>
+    <string name="register_password_hint1">設置登錄密碼</string>
+    <string name="register_password_hint2">請再次輸入壹次密碼</string>
+    <string name="register_password_input_error">兩次密碼輸入不壹致，請重新輸入</string>
+
+    <string name="common_confirm">確定</string>
+    <string name="common_cancel">取消</string>
+    <string name="common_user_confirm">同意</string>
+    <string name="common_user_cancel">不同意並退出</string>
+    <string name="menu_item1">動態模式</string>
+    <string name="menu_item2">消息模式</string>
+    <string name="common_loading">連麥中</string>
+    <string name="common_stop_loading">關麥中</string>
+    <string name="permissions_check_warn">警告！</string>
+    <string name="permissions_check_ok">確定</string>
+    <!-- 通用的 -->
+    <string name="common_phone_input_hint">輸入賬號</string>
+    <string name="common_phone_input_error">賬號輸入不正確</string>
+
+    <string name="common_password_input_error">請輸入密碼</string>
+
+    <string name="common_code_input_hint">輸入驗證碼</string>
+    <string name="common_code_send">發送驗證碼</string>
+    <string name="common_code_send_hint">驗證碼已發送，請注意查收</string>
+
+    <string name="common_step_next">下壹步</string>
+    <string name="common_step_complete">完成</string>
+    <string name="common_step_commit">提交</string>
+
+
+    <string name="title_activity_style_classics">ClassicsHeader</string>
+
+
+    <!--已下是App所使用到的所有文字信息,新增字段-->
+    <string name="current_user">當前用戶</string>
+    <string name="else_user">其他用戶(按鈕開關設置權限用戶)</string>
+    <string name="add_user">添加用戶</string>
+    <string name="please_enter_password_name">請輸入用戶名和密碼</string>
+    <string name="please_enter_name">請輸入用戶名</string>
+    <string name="please_enter_password">請輸入密碼</string>
+    <string name="level_01">(普通用户)</string>
+    <string name="level_02">(權限用戶)</string>
+    <string name="level_03">(超級用戶)</string>
+    <string name="item_change_password">修改密碼</string>
+    <string name="item_delete_user">删除</string>
+    <string name="make_sure_deleted_user">是否確認刪除該用戶?</string>
+
+
+    <string name="make_sure_deleted_myself">是否確認刪除妳自己?</string>
+    <string name="toast_01">普通或者權限用戶只能在我的界面修改自己的密碼哦!</string>
+    <string name="toast_02">權限等級不夠!</string>
+    <string name="toast_03">您權限最低，不能刪除任何人，包括您自己!</string>
+    <string name="toast_04">您不能刪除別人哦!</string>
+    <string name="toast_05">用戶權限不夠!</string>
+    <string name="toast_06">超級用戶不能刪除自己哦!</string>
+    <string name="toast_07">用戶名不能爲空!</string>
+    <string name="toast_08">該用戶已存在</string>
+    <string name="toast_09">密碼修改成功</string>
+    <string name="toast_10">無添加用戶權限</string>
+
+    <!--设备界面-->
+    <string name="device_item_play_mode">備用方案</string>
+    <string name="device_item_change">修改</string>
+    <string name="device_item_deleted">删除</string>
+    <string name="device_mark">備注</string>
+    <string name="device_empty">暫無數據!</string>
+    <string name="device_kong">空</string>
+    <string name="device_search">搜壹搜</string>
+    <string name="device_scan">掃壹掃</string>
+    <string name="device_writing">填壹填</string>
+    <string name="device_dialog_mic_name_title">語音昵稱</string>
+    <string name="device_dialog_mic_name_hint">請輸入語音昵稱</string>
+    <string name="device_dialog_mic_current_name">當前昵稱:</string>
+    <string name="device_dialog_clear_log">是否清空日誌?</string>
+    <string name="device_dialog_no_data_clear_log">暫無日誌可以清除!</string>
+
+    <string name="chose_device_type">請選擇設備類型</string>
+    <string name="device_type_HD3">HD3</string>
+    <string name="device_type_HD3_4K">HD3-4K</string>
+    <string name="device_type_RC200">RC200</string>
+    <string name="device_V1_YiTiJi">智能一体机</string>
+    <string name="device_Operation_YiTiJi">手术一体机</string>
+    <string name="device_EarNoseTable">耳鼻喉治疗台</string>
+    <string name="device_FuKeTable">妇科治疗台</string>
+    <string name="device_MiNiaoTable">泌尿治疗台</string>
+    <string name="device_Work_Station">工作站</string>
+    <string name="device_Custom_Url">神州转播</string>
+    <string name="device_work_type_title">線路</string>
+    <string name="device_work_type_01">線路1</string>
+    <string name="device_work_type_02">線路2</string>
+    <string name="device_work_type_03">線路3</string>
+    <string name="add_device">添加設備</string>
+    <string name="change_device">設備修改</string>
+    <string name="device_name">設備名</string>
+    <string name="device_code">設備碼</string>
+    <string name="device_mark_message">備注信息</string>
+    <string name="device_ip_url">ip或url播放地址</string>
+    <string name="device_ip_public">公網ip</string>
+    <string name="device_ddns_account">DDNS賬號</string>
+    <string name="device_ddns_password">DDNS密碼</string>
+    <string name="device_ddns_url">DDNS地址</string>
+    <string name="device_account">設備賬號</string>
+    <string name="device_password">設備密碼</string>
+    <string name="device_socket_port">socket端口號</string>
+    <string name="device_http_port">http端口號</string>
+    <string name="device_live_port">直播端口號</string>
+    <string name="device_api_version">接口版本號</string>
+    <string name="device_deviceType">設備類型</string>
+    <string name="device_dialog_delete_title">確定要刪除該設備嗎?</string>
+    <string name="device_toast01">播放類型錯誤,請修改!</string>
+    <string name="device_toast02">被永久拒絕授權，請手動授予存儲權限</string>
+    <string name="device_toast03">獲取存儲權限失敗</string>
+    <string name="device_toast04">修改成功</string>
+    <string name="device_toast05">添加成功</string>
+    <string name="device_toast06">標題不能爲空</string>
+    <string name="device_toast07">ip不能爲空</string>
+    <string name="device_toast08">備注信息不能爲空</string>
+    <string name="device_toast09">播放類型不能爲空</string>
+    <string name="device_toast10">設備賬號不能爲空</string>
+    <string name="device_toast11">設備密碼不能爲空</string>
+    <string name="device_toast12">端口號不能爲空</string>
+
+    <!--我的界面-->
+
+    <string name="mine_nor_user">普通用戶</string>
+    <string name="mine_permissions_user">權限用戶</string>
+    <string name="mine_super_user">超級管理員</string>
+    <string name="mine_current_user">當前用戶</string>
+    <string name="mine_permissions">權限</string>
+    <string name="mine_about">關于</string>
+    <string name="mine_permissions_instructions">權限說明</string>
+    <string name="mine_available_space">可用空间</string>
+    <string name="mine_operation_manual">操作手冊</string>
+    <string name="mine_user_agreement">用戶協議</string>
+    <string name="mine_privacy_policy">隱私條款</string>
+    <string name="mine_mic_name">語音昵稱</string>
+    <string name="mine_change_password">修改密碼</string>
+    <string name="mine_exit">退出登錄</string>
+    <string name="mine_about_name">名稱：</string>
+    <string name="mine_version">版本：</string>
+    <string name="mine_property_in_copyright">版權所有(C)：</string>
+    <string name="mine_company">江西神州醫療設備有限公司</string>
+    <string name="mine_updated_date">更新日期：</string>
+    <string name="mine_updated_year">年</string>
+    <string name="mine_updated_month">月</string>
+    <string name="mine_confirm">確定</string>
+    <string name="mine_old_password">請輸入原密碼</string>
+    <string name="mine_new_password">請輸入新密碼</string>
+    <string name="mine_live_steam">請輸入直播流地址</string>
+    <string name="device_item_play_mode_start">開啟</string>
+    <string name="device_item_play_mode_close">關閉</string>
+    <string name="mine_mic_steam">請輸入語音推流地址</string>
+    <string name="mine_exit_title">提示</string>
+    <string name="mine_exit_now">退出登錄?</string>
+    <string name="mine_exit_confirm">退出</string>
+    <string name="mine_exit_cancel">取消</string>
+    <string name="mine_toast01">再按壹次退出程序</string>
+    <string name="mine_toast02">文件不存在</string>
+    <string name="mine_toast03">修改成功</string>
+    <string name="mine_toast04">原密碼輸入錯誤</string>
+
+    <!--权限说明-->
+    <string name="permission_to_illustrate">權限說明</string>
+    <string name="permission_level01">普通用戶的操作權限如下(最低):</string>
+    <string name="permission_common01">觀看直播：所有功能</string>
+    <string name="permission_common02">設備管理：查看、添加、刪除、修改</string>
+    <string name="permission_level01_03">修改密碼：最低權限、只能修改自身密碼</string>
+    <string name="permission_level01_04">管理用戶：最低權限、無法操作</string>
+
+    <string name="permission_level02">權限用戶的操作權限如下(中等):</string>
+    <string name="permission_level02_03">修改密碼：自身密碼、普通用戶密碼</string>
+    <string name="permission_level02_04_01">管理用戶：</string>
+    <string name="permission_level02_04">中等權限、可以刪除自身、刪除普通用戶、添加普通用戶</string>
+
+    <string name="permission_level03">超級管理員的操作權限如下(最高):</string>
+    <string name="permission_level03_03">修改密碼：自身密碼、普通用戶密碼、權限用戶密碼</string>
+    <string name="permission_level03_04_01">管理用戶：</string>
+    <string name="permission_level03_04_02">最高權限、除了不能刪除自己以外,可以做任何事情；比如：刪除用戶、添加普通用戶、把普通用戶設置成爲權限用戶</string>
+    <!--RC200界面-->
+    <string name="rc200_setting">設置配置</string>
+    <string name="rc200_setting_base_msg">基本信息</string>
+    <string name="rc200_setting_account">賬號</string>
+    <string name="rc200_setting_net">網絡配置</string>
+    <string name="rc200_setting_net_ip">ip地址</string>
+    <string name="rc200_setting_net_subnet_mask">子網掩碼</string>
+    <string name="rc200_setting_net_default_gateway">默認網關</string>
+    <string name="rc200_setting_net_subnet_dns">dns</string>
+    <string name="rc200_setting_change_password">修改密碼</string>
+    <string name="rc200_setting_input01_password">請輸入密碼</string>
+    <string name="rc200_setting_input02_password">請輸入確認密碼</string>
+    <string name="rc200_setting_save">保存</string>
+    <string name="rc200_setting_cancel">取消</string>
+    <string name="rc200_setting_confirm">確定</string>
+    <!--    登入界面-->
+    <string name="login_welcome">歡迎來到CME Player</string>
+    <string name="login_account">登錄您的賬號！</string>
+    <string name="login_account_name">賬號</string>
+    <string name="login_account_password">密碼</string>
+    <string name="login_password_remember">記住密碼</string>
+    <string name="login_in">登錄</string>
+
+    <!--VLC播放界面-->
+    <string name="vlc_HD">高清</string>
+    <string name="vlc_SD">標清</string>
+    <string name="vlc_open">開啓</string>
+    <string name="vlc_close">關閉</string>
+    <string name="vlc_error">錯誤</string>
+
+    <string name="vlc_photo">相冊</string>
+    <string name="vlc_video">錄像</string>
+    <string name="vlc_screenshot">截圖</string>
+    <string name="vlc_toast01">請輸入正確的ip地址,確保語音能正常使用!</string>
+    <string name="vlc_toast02">只有在播放的時候才能打開相冊</string>
+    <string name="vlc_toast03">神州轉播只有高清模式噢!</string>
+    <string name="vlc_toast04">只有在播放的時候才能錄像!</string>
+    <string name="vlc_toast05">截圖成功</string>
+    <string name="vlc_toast06">只有在播放的時候才能截圖</string>
+    <string name="vlc_toast07">暫未開啓直播</string>
+    <string name="vlc_toast08">當前直播沒有語音功能</string>
+    <string name="vlc_toast09">錄像成功</string>
+    <string name="vlc_toast10">已經是</string>
+    <string name="vlc_toast11">連接成功</string>
+    <string name="vlc_toast13">連接失敗</string>
+    <string name="vlc_toast13a">連接失敗,上傳音頻流到Nginx失敗</string>
+    <string name="vlc_toast14">斷開連接</string>
+    <string name="vlc_toast12">從新加載視頻流!</string>
+    <string name="vlc_toast15">語音控製服務器連接失敗</string>
+    <string name="vlc_toast16">語音控製服務器連接已恢復</string>
+    <string name="vlc_toast17">權限申請成功,請開始錄像</string>
+    <string name="vlc_toast18">權限申請成功,請開始截圖</string>
+
+
+    <!--ZXing-->
+    <string name="zxing_two_code">將二維碼放入框內，即可自動掃描</string>
+    <string name="zxing_open_light">打開閃光燈</string>
+    <string name="zxing_close_light">關閉閃光燈</string>
+    <string name="zxing_open_photo">打開相冊</string>
+    <string name="zxing_open_camera">打開相機出錯</string>
+
+
+    <!--搜索设界面-->
+    <string name="device_search_title">智能搜索</string>
+    <string name="device_search_dialog_title">正在進行智能掃描</string>
+    <string name="device_search_dialog_msg">智能掃描完成之前請勿取消</string>
+    <string name="device_search_confirm">確定</string>
+    <string name="device_search_cancel">取消</string>
+    <string name="device_search_empty">暫無數據!</string>
+    <string name="device_search_dialog_title_config">配置信息</string>
+    <string name="device_search_dialog_title_port">本地廣播發送端口</string>
+    <string name="device_search_dialog_local_listener_port">本地監聽端口</string>
+    <string name="device_search_dialog_prompt">提示</string>
+    <string name="device_search_enter_code">請輸入授權碼</string>
+    <string name="device_search_added">已添加</string>
+    <string name="device_search_not_added">未添加</string>
+    <string name="device_search_toast01">添加成功</string>
+    <string name="device_search_toast02">密碼錯誤</string>
+    <string name="device_search_toast03">不准接入</string>
+    <string name="device_search_toast04">已經被授權登入過了</string>
+    <string name="device_search_toast05">數據更新完畢!</string>
+    <string name="device_search_toast06">本地廣播發送端口不能爲空</string>
+    <string name="device_search_toast09">本地監聽端口不能為空</string>
+    <string name="device_search_toast07">本地監聽端口配置成功</string>
+    <string name="device_search_toast10">本地廣播發送端口配置成功</string>
+    <string name="device_search_toast08">通訊端口不能爲空!</string>
+    <string name="notification_call">語音通話</string>
+    <string name="notification_call_online">通話中..</string>
+    <string name="player_video_voice_turn_on">視頻聲音已開啟</string>
+    <string name="player_video_voice_turn_off">視頻聲音已關閉</string>
+
+
+    <!--RC200 設置和播放界面-->
+    <string name="device_rc200_setting_save_fail">保存失敗</string>
+    <string name="device_rc200_setting_complete">配置完成,請等待遠程設備重啟(約30S)</string>
+    <string name="device_rc200_setting_restart_error">重啟設備失敗</string>
+    <string name="device_rc200_setting_restart_success">遠程設備重啟中,請勿重復保存</string>
+    <string name="device_rc200_setting_ip_incorrect">新輸入的ip地址,不符和ip格式</string>
+
+
+
+    <!--線路3直播界面界面-->
+    <string name="line3_no_choice">"只有當前清晰度</string>
+    <string name="line3_start_record">開始錄像</string>
+    <string name="line3_check_mic_code_fail">查詢語音通訊表失敗</string>
+    <string name="line3_uploading_to_nginx_failed">上傳音頻流到Nginx失敗</string>
+    <string name="line3_nginx_service_not_started">Nginx服務未啟動</string>
+    <string name="line3_error_from_nginx">從Nginx取音頻流失敗</string>
+    <string name="line3_failed_to_obtain_the_current_live_stream_address">獲取當前直播畫面流地址失敗!</string>
+    <string name="line3_network_disconnection">網絡斷開連接!</string>
+    <string name="line3_the_network_has_been_restored">網絡已經恢復連接!</string>
+    <string name="line3_nicename_not_null">昵稱不能為空!</string>
+    <string name="line1_get_voice_id_fail">獲取當前上位機VoiceID==異常!</string>
+    <string name="line_on_the_phone">與設備正在通話中</string>
+    <string name="line_on_connecting">連接中...</string>
+
+    <!--MineFragment界面-->
+    <string name="mine_current_nickname">"當前昵稱:</string>
+
+    <!--DeviceFragment界面-->
+    <string name="device_api_version_is_null">設備api版本為空，請更新設備信息</string>
+    <string name="device_check_error">連接設備異常，請稍後再試</string>
+    <string name="device_no_permission_to_look">暫無觀看權限，請檢查賬號密碼是否正確!</string>
+    <string name="device_check_fail">當前線路和設備線路不一致,無法觀看</string>
+    <string name="device_line_one_not_supported">線路一,暫無備選方案</string>
+    <string name="device_close_success">關閉成功</string>
+    <string name="device_steam_address_not_null">直播地址和語音推流地址不能為空</string>
+    <string name="device_open_success">開啟成功</string>
+    <string name="device_update_success">更新成功!</string>
+    <string name="device_add_success">添加成功!</string>
+    <string name="device_update_fail">設備已存在，修改失敗!</string>
+    <string name="device_add_fail">設備已存在，新增失败!</string>
+    <string name="device_parsing_error">解析錯誤!</string>
+    <string name="device_the_scan_code_is_abnormal">掃碼異常!</string>
+
+
+    <string name="login_username_not_null">用戶名不能為空!</string>
+    <string name="login_chose_agreement">請勾選,同意閱讀用戶協議和隱私條款!</string>
+    <string name="login_password_error">密碼輸入錯誤!</string>
+    <string name="login_accort_no_exit">賬戶不存在!</string>
+    <string name="guide_user_agreement">在你使用CME Player之前，請你認真閱讀並了解《服務協議》和《隱私政策》，點擊同意即表示你已閱讀並且了解。並且該App需要實時進行socket通訊，會啟動一個保活服務，所以App可能存在運行應用自啟動或關聯啟動socket通訊服務行為；App集成了騰訊bugly第三方SDK，會上傳App崩潰信息給騰訊bugly後臺分析具體什麽手機出現的錯誤原因。以上兩種情況下App會獲取手機號碼、IMEI、OAID、IMSI、MAC等信息用於計算出設備唯一標識碼,和訪問SD卡數據權限；App集成了騰訊TBS瀏覽服務用於本地打開word使用手冊,此SDK會獲取(SD卡數據)已安裝APP信息的行為。" 這裏告知用戶，點擊同意，即表示你已同意並且知曉該行為。</string>
+    <string name="login_and">和</string>
+    <string name="login_service_agreement">《服務協議》</string>
+    <string name="login_privacy_policy">《隱私政策》</string>
+    <string name="permission_camera_description">App現在向你申請相機權限,用於App掃碼功能,您如果拒絕,那麽掃碼功能將不能使用!</string>
+    <string name="permission_setting_description">此時App需要跳轉到系統設置界面查看相關權限申請情況，您是否跳轉設置界面?</string>
+    <string name="gallery_camera_description">App現在向你申請相冊讀寫權限,用於在App掃碼功能中訪問相冊,從相冊中選取二維碼,識別圖片掃碼,您如果拒絕此權限,那麽掃碼功能中訪問相冊獲取圖片掃碼功能將不能使用!</string>
+    <string name="guide_start_experiencing">開始體驗</string>
+
+</resources>

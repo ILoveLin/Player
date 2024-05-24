@@ -630,6 +630,8 @@ public class BaseDialog extends AppCompatDialog implements LifecycleOwner,
             return (B) this;
         }
 
+
+
         /**
          * 设置重心位置
          */

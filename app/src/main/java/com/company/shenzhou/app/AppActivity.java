@@ -20,6 +20,7 @@ import com.hjq.base.BaseDialog;
 import com.company.shenzhou.R;
 import com.hjq.http.listener.OnHttpListener;
 import com.hjq.language.MultiLanguages;
+import com.tencent.mmkv.MMKV;
 
 import okhttp3.Call;
 
@@ -41,6 +42,7 @@ public abstract class AppActivity extends BaseActivity
     private BaseDialog mDialog;
     /** 对话框数量 */
     private int mDialogCount;
+    public MMKV mmkv;
 
     /**
      * 当前加载对话框是否在显示中
@@ -96,7 +98,7 @@ public abstract class AppActivity extends BaseActivity
     @Override
     protected void initLayout() {
         super.initLayout();
-
+        mmkv = MMKV.defaultMMKV();
         if (getTitleBar() != null) {
             getTitleBar().setOnTitleBarListener(this);
         }

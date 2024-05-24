@@ -1,0 +1,375 @@
+<resources>
+    <string name="app_name">CME Player</string>
+
+    <string name="current_language">English</string>
+
+    <!-- 状态布局 -->
+    <string name="status_layout_no_data">Empty</string>
+    <string name="status_layout_no_report">No report is available for preview</string>
+    <string name="status_layout_error_request">Request error, please try again</string>
+    <string name="status_layout_error_network">Network error, please try again</string>
+    <string name="status_layout_search">searching...</string>
+    <string name="status_layout_retry">retry</string>
+    <string name="status_layout_dismiss">cancel</string>
+
+    <string name="not_support_cpu">Playback is not supported</string>
+    <string name="no_network">Network Unavailable</string>
+    <string name="buffer">loading</string>
+    <string name="buffering">loading...</string>
+    <string name="error_video_play">Playback error,Please check the network or exit and try again!</string>
+    <string name="video_try_reconnect">Video read error, please try to read again!</string>
+
+    <string name="error_net">The current network is unavailable. Please check your network Settings</string>
+    <string name="error_net_toast">Network signal difference</string>
+    <string name="determine">confirm</string>
+    <string name="determine2">confirm</string>
+    <string name="cancel">cancel</string>
+    <string name="empty_error_net_server">Data load failed, please return and try again!</string>
+
+    <string name="main_tab_user">user</string>
+    <string name="main_tab_yidi">query</string>
+    <string name="main_tab_device">device</string>
+    <string name="main_tab_recomment">mine</string>
+    <string name="main_tab_mine">mine</string>
+    <!--    <string name="main_tab_biyao">medicine</string>-->
+    <!-- 注册 -->
+    <string name="register_title">registered</string>
+    <string name="register_hint">The mobile phone number is only used for login and account security</string>
+    <string name="register_login">login</string>
+    <string name="register_password_hint1">Setting a Login Password</string>
+    <string name="register_password_hint2">Please enter your password again</string>
+    <string name="register_password_input_error">The two passwords are inconsistent. Please re-enter them</string>
+
+    <string name="common_confirm">confirm</string>
+    <string name="common_cancel">cancel</string>
+    <string name="common_user_confirm">agree</string>
+    <string name="common_user_cancel">Disagree and quit</string>
+    <string name="menu_item1">The dynamic model</string>
+    <string name="menu_item2">Message schema</string>
+    <string name="common_loading">In the dialogue</string>
+    <string name="common_stop_loading">Shut down the dialogue</string>
+    <string name="permissions_check_warn">warning！</string>
+    <string name="permissions_check_ok">confirm</string>
+    <!-- 通用的 -->
+    <string name="common_phone_input_hint">Enter account</string>
+    <string name="common_phone_input_error">The account is incorrectly entered</string>
+
+    <string name="common_password_input_error">Please enter your password</string>
+
+    <string name="common_code_input_hint">Input verification code</string>
+    <string name="common_code_send">Send verification code</string>
+    <string name="common_code_send_hint">The verification code has been sent, please check it</string>
+
+    <string name="common_step_next">The next step</string>
+    <string name="common_step_complete">complete</string>
+    <string name="common_step_commit">submit</string>
+    <string name="title_activity_style_classics">ClassicsHeader</string>
+
+
+    <!--已下是App所使用到的所有文字信息,新增字段-->
+    <string name="current_user">The current user</string>
+    <string name="else_user">Other users(Button switch Sets permission users)</string>
+    <string name="add_user">Add user</string>
+    <string name="please_enter_password_name">Please enter your user name and password</string>
+    <string name="please_enter_name">Please enter a user name</string>
+    <string name="please_enter_password">Please enter your password</string>
+    <string name="level_01">(the average user)</string>
+    <string name="level_02">(permissions user)</string>
+    <string name="level_03">(the super user)</string>
+    <string name="item_change_password">Change the password</string>
+    <string name="item_delete_user">delete</string>
+    <string name="make_sure_deleted_user">Confirm whether to delete the user?</string>
+    <string name="make_sure_deleted_myself">Are you sure to delete yourself?</string>
+    <string name="toast_01">Please modify your password in my interface!</string>
+    <string name="toast_02">Insufficient permission level!</string>
+    <string name="toast_03">Can not delete anyone!</string>
+    <string name="toast_04">You can not delete other people!</string>
+    <string name="toast_05">Insufficient user permissions!</string>
+    <string name="toast_06">Superusers can not delete themselves!</string>
+    <string name="toast_07">The user name cannot be empty!</string>
+    <string name="toast_08">The user already exists</string>
+    <string name="toast_09">Password changed successfully</string>
+    <string name="toast_10">None Add user permission</string>
+
+
+    <!--设备界面-->
+    <string name="device_item_play_mode">Alternative plan</string>
+    <string name="device_item_change">change</string>
+    <string name="device_item_deleted">delete</string>
+    <string name="device_mark">Notes</string>
+    <string name="device_empty">Empty!</string>
+    <string name="device_kong">Empty</string>
+    <string name="device_search">search</string>
+    <string name="device_scan">scan</string>
+    <string name="device_writing">writing</string>
+    <string name="device_dialog_mic_name_title">voice nickname</string>
+    <string name="device_dialog_mic_name_hint">please enter a voice nickname</string>
+    <string name="device_dialog_mic_current_name">current name:</string>
+
+    <string name="device_dialog_clear_log">Do you want to clear the log?</string>
+    <string name="device_dialog_no_data_clear_log">No logs to clear!</string>
+
+    <!--    <string name="chose_device_type">Select a device type</string>-->
+    <!--    <string name="device_type_HD3">HD3</string>-->
+    <!--    <string name="device_type_HD3_4K">HD3-4K</string>-->
+    <!--    <string name="device_V1_YiTiJi">Smart devices</string>-->
+    <!--    <string name="device_EarNoseTable">ENT treatment table</string>-->
+    <!--    <string name="device_FuKeTable">Gynecology treatment table</string>-->
+    <!--    <string name="device_MiNiaoTable">urinary treatment table</string>-->
+    <!--    <string name="device_Work_Station">workstation</string>-->
+    <!--    <string name="device_Custom_Url">rebroadcast by shenzhou</string>-->
+    <!--设备码不替换-->
+    <string name="chose_device_type">Device Type</string>
+    <string name="device_type_HD3">HD3</string>
+    <string name="device_type_HD3_4K">HD3-4K</string>
+    <string name="device_type_RC200">RC200</string>
+    <string name="device_V1_YiTiJi">智能一体机</string>
+    <string name="device_Operation_YiTiJi">手术一体机</string>
+    <string name="device_EarNoseTable">耳鼻喉治疗台</string>
+    <string name="device_FuKeTable">妇科治疗台</string>
+    <string name="device_MiNiaoTable">泌尿治疗台</string>
+    <string name="device_Work_Station">工作站</string>
+    <string name="device_Custom_Url">神州转播</string>
+    <string name="device_work_type_title">working line</string>
+    <string name="device_work_type_01">line one</string>
+    <string name="device_work_type_02">line two</string>
+    <string name="device_work_type_03">line three</string>
+    <string name="add_device">add device</string>
+    <string name="change_device">change device</string>
+    <string name="device_name">device name</string>
+    <string name="device_code">device code</string>
+    <string name="device_mark_message">device notes message</string>
+    <string name="device_ip_url">ip or url</string>
+    <string name="device_ip_public">ip public</string>
+    <string name="device_ddns_account">ddns account </string>
+    <string name="device_ddns_password">ddns password</string>
+    <string name="device_ddns_url">DDNS address</string>
+    <string name="device_account">device account</string>
+    <string name="device_password">device password</string>
+    <string name="device_socket_port">socket port</string>
+    <string name="device_http_port">http port</string>
+    <string name="device_live_port">live port</string>
+    <string name="device_api_version">interface version number</string>
+    <string name="device_deviceType">device type</string>
+    <string name="device_dialog_delete_title">Are you sure you want to delete this device?</string>
+    <string name="device_toast01">play type error,please amend!</string>
+    <string name="device_toast02">Long denial of authorization</string>
+    <string name="device_toast03">Failed to obtain storage permission. Procedure</string>
+    <string name="device_toast04">Modify the success</string>
+    <string name="device_toast05">Add a success</string>
+    <string name="device_toast06">The title cannot be empty</string>
+    <string name="device_toast07">The ip cannot be empty</string>
+    <string name="device_toast08">The remarks cannot be empty</string>
+    <string name="device_toast09">The play type cannot be empty</string>
+    <string name="device_toast10">The device account cannot be empty</string>
+    <string name="device_toast11">The device password cannot be empty</string>
+    <string name="device_toast12">The port number cannot be empty</string>
+    <!--我的界面-->
+
+    <string name="mine_nor_user">the average user</string>
+    <string name="mine_permissions_user">permissions user</string>
+    <string name="mine_super_user">the super user</string>
+    <string name="mine_current_user">current user</string>
+    <string name="mine_permissions">permissions</string>
+    <string name="mine_about">about</string>
+    <string name="mine_permissions_instructions">permissions instructions</string>
+    <string name="mine_available_space">available space</string>
+    <string name="mine_operation_manual">operation manual</string>
+    <string name="mine_user_agreement">user agreement</string>
+    <string name="mine_privacy_policy">privacy policy</string>
+    <string name="mine_mic_name">voice nickname</string>
+
+    <string name="mine_change_password">change password</string>
+    <string name="mine_exit">exit</string>
+    <!--Jiangxi Shenzhou Medical equipment limited company-->
+    <string name="mine_about_name">name：CME Player</string>
+    <string name="mine_version">version：</string>
+    <string name="mine_property_in_copyright">copyright：</string>
+    <string name="mine_company">Jiangxi Shenzhou Medical equipment limited company</string>
+    <string name="mine_updated_date">updated：</string>
+    <string name="mine_updated_year">year</string>
+    <string name="mine_updated_month">month</string>
+    <string name="mine_confirm">confirm</string>
+    <string name="mine_old_password">please enter the old password</string>
+    <string name="mine_new_password">please enter a new password</string>
+    <string name="mine_live_steam">Please enter the live stream address.</string>
+    <string name="mine_mic_steam">Please enter the voice streaming address</string>
+    <string name="device_item_play_mode_start">open</string>
+    <string name="device_item_play_mode_close">close</string>
+    <string name="mine_exit_title">remind</string>
+    <string name="mine_exit_now">sign out?</string>
+    <string name="mine_exit_confirm">out</string>
+    <string name="mine_exit_cancel">cancel</string>
+    <string name="mine_toast01">Press again to exit the program</string>
+    <string name="mine_toast02">File does not exist</string>
+    <string name="mine_toast03">Modify the success</string>
+    <string name="mine_toast04">The old password is incorrect</string>
+
+    <string name="permission_to_illustrate">permission illustrate</string>
+    <string name="permission_level01">the average user:</string>
+    <string name="permission_common01">live：anything</string>
+    <string name="permission_common02"> device manager：check, add, delete, modify</string>
+    <string name="permission_level01_03">change the password：you can only change your own password</string>
+    <string name="permission_level01_04">user manager：Unable to operate</string>
+
+    <string name="permission_level02">permissions user:</string>
+    <string name="permission_level02_03">change the password：can own password and the average user password</string>
+    <string name="permission_level02_04_01">user manager：</string>
+    <string name="permission_level02_04">you can delete yourself, delete a common user, and add a common user</string>
+
+    <string name="permission_level03">the super user:</string>
+    <string name="permission_level03_03">change the password：you can change anything</string>
+    <string name="permission_level03_04_01">user manager：</string>
+    <string name="permission_level03_04_02">you can change anything</string>
+    <!--RC200界面-->
+    <string name="rc200_setting">setting</string>
+    <string name="rc200_setting_base_msg">basic information</string>
+    <string name="rc200_setting_account">account</string>
+    <string name="rc200_setting_net">network configuration</string>
+    <string name="rc200_setting_net_ip">ip address</string>
+    <string name="rc200_setting_net_subnet_mask">subnet mask</string>
+    <string name="rc200_setting_net_default_gateway">default gateway</string>
+    <string name="rc200_setting_net_subnet_dns">dns</string>
+    <string name="rc200_setting_change_password">change password</string>
+    <string name="rc200_setting_input01_password">please enter password</string>
+    <string name="rc200_setting_input02_password">please enter confirmation password</string>
+    <string name="rc200_setting_save">save</string>
+    <string name="rc200_setting_cancel">cancel</string>
+    <string name="rc200_setting_confirm">confirm</string>
+    <!--    登入界面-->
+    <string name="login_welcome">Welcome to CME Player</string>
+    <string name="login_account">Login to your account！</string>
+    <string name="login_account_name">account</string>
+    <string name="login_account_password">password</string>
+    <string name="login_password_remember">remember password</string>
+    <string name="login_in">login</string>
+
+
+    <!--VLC播放界面-->
+    <string name="vlc_HD">HD</string>
+    <string name="vlc_SD">SD</string>
+    <string name="vlc_open">open</string>
+    <string name="vlc_close">close</string>
+    <string name="vlc_error">error</string>
+
+    <string name="vlc_photo">photo</string>
+    <string name="vlc_video">video</string>
+    <string name="vlc_screenshot">shot </string>
+    <string name="vlc_toast01">Please enter the correct IP address!</string>
+    <string name="vlc_toast02">You can only open the album when it is playing</string>
+    <string name="vlc_toast03">It is only in HD mode!</string>
+    <string name="vlc_toast04">It can only be recorded while it is playing!</string>
+    <string name="vlc_toast05">Screenshot of success</string>
+    <string name="vlc_toast06">You can only take a screenshot while it is playing</string>
+    <string name="vlc_toast07">The live stream is not on</string>
+    <string name="vlc_toast08">There is currently no voice function for live streaming</string>
+    <string name="vlc_toast09">Video success</string>
+    <string name="vlc_toast10">Is already</string>
+    <string name="vlc_toast11">The connection is successful</string>
+    <string name="vlc_toast13"> disconnection is failed</string>
+    <string name="vlc_toast13a">Connection failed, upload audio stream to Nginx failed</string>
+    <string name="vlc_toast14"> disconnec</string>
+    <string name="vlc_toast12">Reload the video stream!</string>
+    <string name="vlc_toast15">The voice control server is disconnected</string>
+    <string name="vlc_toast16">The voice control server link has been restored</string>
+    <string name="vlc_toast17">Permission request successful, please start recording</string>
+    <string name="vlc_toast18">Permission application succeeded, please start screenshot</string>
+
+
+    <!--ZXing-->
+    <string name="zxing_two_code">Put the two-dimensional code into the box, you can automatically scan</string>
+    <string name="zxing_open_light">Turn on the flash</string>
+    <string name="zxing_close_light">Turn off the flash</string>
+    <string name="zxing_open_photo">Open the photo album</string>
+    <string name="zxing_open_camera">Error opening camera</string>
+
+
+    <!--搜索设界面-->
+    <string name="device_search_title">Smart search</string>
+    <string name="device_search_dialog_title">Smart scan in progress</string>
+    <string name="device_search_dialog_msg">Please do not cancel</string>
+    <string name="device_search_confirm">confirm</string>
+    <string name="device_search_cancel">cancel</string>
+    <string name="device_search_empty">Empty!</string>
+    <string name="device_search_dialog_title_config">configuration</string>
+    <string name="device_search_dialog_title_port">broadcast port</string>
+    <string name="device_search_dialog_local_listener_port">local listener port</string>
+    <string name="device_search_dialog_prompt">hint</string>
+    <string name="device_search_enter_code">Please enter the authorization code</string>
+    <string name="device_search_added">added</string>
+    <string name="device_search_not_added">not added</string>
+    <string name="device_search_toast01">Add a success</string>
+    <string name="device_search_toast02">Password mistake</string>
+    <string name="device_search_toast03">Not allowed to access</string>
+    <string name="device_search_toast04">Have been authorized</string>
+    <string name="device_search_toast05">Data update completed!</string>
+    <string name="device_search_toast06">The port cannot be empty</string>
+    <string name="device_search_toast09">The local listener port cannot be empty</string>
+
+    <string name="device_search_toast07">Local listening port configured successfully</string>
+    <string name="device_search_toast10">The local broadcast transmission port is successfully configured</string>
+    <string name="device_search_toast08">The port cannot be empty!</string>
+    <string name="notification_call">Voice call</string>
+    <string name="notification_call_online">on the line..</string>
+    <string name="player_video_voice_turn_on">The video sound is enabled</string>
+    <string name="player_video_voice_turn_off">Video sound has been turned off</string>
+
+
+    <!--RC200 设置和播放界面-->
+    <string name="device_rc200_setting_save_fail">save failed</string>
+    <string name="device_rc200_setting_complete">the configuration is complete, please wait for the remote device to restart (about 30S)</string>
+    <string name="device_rc200_setting_restart_error">failed to restart device</string>
+    <string name="device_rc200_setting_restart_success">the remote device is restarting, please do not save repeatedly</string>
+    <string name="device_rc200_setting_ip_incorrect">the newly entered ip address does not match the ip format</string>
+
+
+    <string name="line3_no_choice"> "Only current resolution </string>
+    <string name="line3_start_record"> Start recording </string>
+    <string name="line3_check_mic_code_fail"> Failed to query voice communication table </string>
+    <string name="line3_uploading_to_nginx_failed"> Failed to upload audio stream to Nginx </string>
+    <string name="line3_nginx_service_not_started"> Nginx service not started </string>
+    <string name="line3_error_from_nginx"> Failed to fetch audio stream from Nginx </string>
+    <string name="line3_failed_to_obtain_the_current_live_stream_address"> Failed to get the current live stream address! </string>
+    <string name="line3_network_disconnection"> Network disconnected! </string>
+    <string name="line3_the_network_has_been_restored"> Network connection has been restored! </string>
+    <string name="line3_nicename_not_null"> Nickname cannot be empty! </string>
+    <string name="line1_get_voice_id_fail"> Get the current host VoiceID == Exception! </string>
+    <string name="line_on_the_phone"> on the phone </string>
+    <string name="line_on_connecting">connecting</string>
+
+    <string name="mine_current_nickname"> "Current nickname: </string>
+
+
+    <string name="device_api_version_is_null"> Device API version is empty, please update device information </string>
+    <string name="device_check_error"> The connected device is abnormal, please try again later </string>
+    <string name="device_no_permission_to_look"> No viewing permission yet, please check whether the account password is correct! </string>
+    <string name="device_check_fail"> The current line and the device line are inconsistent and cannot be viewed </string>
+    <string name="device_line_one_not_supported"> Route 1, no alternatives </string>
+    <string name="device_close_success"> Close successfully </string>
+    <string name="device_steam_address_not_null"> Live address and voice streaming address cannot be empty </string>
+    <string name="device_open_success"> Open successfully </string>
+    <string name="device_update_success"> Update successful! </string>
+    <string name="device_add_success"> Added successfully! </string>
+    <string name="device_update_fail"> Device already exists, modification failed! </string>
+    <string name="device_add_fail"> The device already exists, the addition failed!</string>
+
+    <string name="device_parsing_error"> Parsing error! </string>
+    <string name="device_the_scan_code_is_abnormal"> Exception! </string>
+
+
+    <string name="login_username_not_null"> Username cannot be empty! </string>
+    <string name="login_chose_agreement"> Please tick to agree to read the User Agreement and Privacy Policy! </string>
+    <string name="login_password_error"> Incorrect password! </string>
+    <string name="login_accort_no_exit"> Account does not exist! </string>
+    <string name="guide_user_agreement"> Before you use CME Player, please read and understand the 《Service Agreement》 and 《Privacy Policy》 carefully. Clicking Agree means you have read and understood. And the App needs real-time socket communication and will start a keep-alive service, so the App may have the behavior of running the application to start or start socket Comm. Svcs. associated with it; the App integrates the Tencent bugly third-party SDK, which will upload the App crash information to the Tencent bugly background to analyze the specific cause of the error on the mobile phone. In the above two cases, the App will obtain information such as mobile phone number, IMEI, OAID, IMSI, MAC, etc. to calculate the unique identification code of the device, and access the SD card data permission; the App integrates Tencent TBS browsing service to open the word user manual locally, this SDK will obtain (SD card data) the behavior of the installed APP information. "Here inform the user that clicking Agree means that you have agreed and are aware of the behavior. </string>
+
+    <string name="login_and">and</string>
+    <string name="login_service_agreement">《Service Agreement》</string>
+    <string name="login_privacy_policy">《Privacy Policy》</string>
+    <string name = "permission_camera_description" > App now applies for camera permission for the App scan code function. If you refuse, the scan code function will not be available! </string >
+    <string name = "permission_setting_description" > At this time, the App needs to jump to the system settings interface to view the relevant permission application. Do you want to jump to the settings interface? </string >
+    <string name = "gallery_camera_description" > App now applies for album read and write permission like you, which is used to access the album in the App scan code function, select the QR code from the album, and identify the picture scan code. If you refuse this permission, then the scan code function will not be able to access the album to obtain the picture scan code! </string >
+    <string name = "guide_start_experiencing" > Start the experience </string >
+
+
+</resources>

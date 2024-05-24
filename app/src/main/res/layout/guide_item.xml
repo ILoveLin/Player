@@ -6,4 +6,4 @@
     android:layout_height="match_parent"
     android:paddingBottom="@dimen/dp_50"
     tools:context="com.company.shenzhou.ui.adapter.GuideAdapter"
-    tools:src="@drawable/guide_1_bg" />
+    tools:src="@mipmap/guide1" />

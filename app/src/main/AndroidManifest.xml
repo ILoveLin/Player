@@ -66,7 +66,7 @@
 
         <!-- 闪屏页 -->
         <activity
-            android:name="com.company.shenzhou.ui.activity.SplashActivity"
+            android:name="com.company.shenzhou.mineui.activity.SplashActivity"
             android:launchMode="singleTop"
             android:screenOrientation="portrait"
             android:theme="@style/SplashTheme">
@@ -81,11 +81,12 @@
 
         </activity>
 
+
         <!-- 引导页 -->
-        <activity
-            android:name="com.company.shenzhou.ui.activity.GuideActivity"
-            android:launchMode="singleTop"
-            android:screenOrientation="portrait" />
+        <!--        <activity-->
+        <!--            android:name="com.company.shenzhou.ui.activity.GuideActivity"-->
+        <!--            android:launchMode="singleTop"-->
+        <!--            android:screenOrientation="portrait" />-->
 
         <!-- 首页 -->
         <activity
@@ -95,11 +96,7 @@
             android:windowSoftInputMode="adjustPan" />
 
         <!-- 登录页 -->
-        <activity
-            android:name="com.company.shenzhou.ui.activity.LoginActivity"
-            android:launchMode="singleTop"
-            android:screenOrientation="portrait"
-            android:windowSoftInputMode="stateHidden" />
+
 
         <!-- 注册页 -->
         <activity
@@ -245,12 +242,6 @@
         <!-- CMEPlayer 主动添加的界面 -->
         <!-- CMEPlayer 主动添加的界面 -->
         <!-- CMEPlayer 主动添加的界面 -->
-
-        <activity
-            android:name=".mineui.MainActivity"
-            android:launchMode="singleTask"
-            android:screenOrientation="portrait"
-            android:windowSoftInputMode="adjustPan" />
         <!-- 永久保活Socket服务 -->
         <service
             android:name=".ui.service.ReceiveSocketService"
@@ -258,7 +249,29 @@
         <service
             android:name=".ui.service.NotificationService"
             tools:ignore="MissingClass" />
+        <!-- 主界面 -->
+        <activity
+            android:name=".mineui.MainActivity"
+            android:launchMode="singleTask"
+            android:screenOrientation="portrait"
+            android:windowSoftInputMode="adjustPan" />
 
+        <!-- 引导页 -->
+        <activity
+            android:name=".mineui.activity.GuideActivity"
+            android:launchMode="singleTop"
+            android:screenOrientation="portrait" />
+        <!-- 网页浏览 -->
+        <activity
+            android:name=".mineui.activity.BrowserActivity"
+            android:label="@string/web_title"
+            android:launchMode="singleTop"
+            android:screenOrientation="portrait" />
+        <!-- 登入界面 -->
+        <activity
+            android:name=".mineui.activity.LoginActivity"
+            android:launchMode="singleTop"
+            android:screenOrientation="portrait" />
 
     </application>
 

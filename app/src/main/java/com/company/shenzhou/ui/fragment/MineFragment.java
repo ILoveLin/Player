@@ -18,7 +18,6 @@ import com.company.shenzhou.ui.activity.GuideActivity;
 import com.company.shenzhou.ui.activity.HomeActivity;
 import com.company.shenzhou.ui.activity.ImagePreviewActivity;
 import com.company.shenzhou.ui.activity.ImageSelectActivity;
-import com.company.shenzhou.ui.activity.LoginActivity;
 import com.company.shenzhou.ui.activity.PasswordForgetActivity;
 import com.company.shenzhou.ui.activity.PasswordResetActivity;
 import com.company.shenzhou.ui.activity.PersonalDataActivity;
@@ -77,7 +76,7 @@ public final class MineFragment extends TitleBarFragment<HomeActivity> {
 
         } else if (viewId == R.id.btn_mine_login) {
 
-            startActivity(LoginActivity.class);
+//            startActivity(LoginActivity.class);
 
         } else if (viewId == R.id.btn_mine_register) {
 

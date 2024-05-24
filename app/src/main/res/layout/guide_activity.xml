@@ -36,7 +36,7 @@
             android:layout_height="wrap_content"
             android:layout_gravity="center"
             android:minWidth="@dimen/dp_160"
-            android:text="了解详情"
+            android:text="@string/guide_start_experiencing"
             android:visibility="invisible" />
 
     </FrameLayout>
