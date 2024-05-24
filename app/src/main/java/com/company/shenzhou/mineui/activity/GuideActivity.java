@@ -13,6 +13,7 @@ import android.widget.TextView;
 import androidx.annotation.NonNull;
 import androidx.viewpager2.widget.ViewPager2;
 
+import com.blankj.utilcode.util.DeviceUtils;
 import com.company.shenzhou.R;
 import com.company.shenzhou.aop.SingleClick;
 import com.company.shenzhou.app.AppActivity;
@@ -26,7 +27,7 @@ import com.company.shenzhou.utlis.LogUtils;
 import com.company.shenzhou.utlis.MD5ChangeUtil;
 import com.company.shenzhou.utlis.ScreenSizeUtil;
 import com.company.shenzhou.utlis.SharePreferenceUtil;
-import com.didichuxing.doraemonkit.util.DeviceUtils;
+import com.blankj.utilcode.util.DeviceUtils;
 import com.gyf.immersionbar.ImmersionBar;
 import com.hjq.base.BaseDialog;
 import com.hjq.language.MultiLanguages;

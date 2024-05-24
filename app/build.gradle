@@ -1,8 +1,8 @@
-apply plugin : 'com.android.application'
-apply plugin : 'android-aspectjx'
+apply plugin: 'com.android.application'
+apply plugin: 'android-aspectjx'
 apply plugin: 'org.greenrobot.greendao' //添加greendao相关的plugin
 
-apply from : '../common.gradle'
+apply from: '../common.gradle'
 
 // Android 代码规范文档：https://github.com/getActivity/AndroidCodeStandard
 android {
@@ -11,7 +11,7 @@ android {
     defaultConfig {
 
         // 无痛修改包名：https://www.jianshu.com/p/17327e191d2e
-        applicationId 'com.company.shenzhou2'
+        applicationId 'com.company.shenzhou'
 
         // 仅保留中文语种的资源
         resConfigs 'zh'
@@ -75,7 +75,7 @@ android {
             signingConfig signingConfigs.config
             // 添加清单占位符
             addManifestPlaceholders([
-                    'app_name'    :    'CMEPlayer Debug 版'
+                    'app_name': 'CMEPlayer Debug 版'
             ])
             // 调试模式下只保留一种架构的 so 库，提升打包速度
             ndk {
@@ -87,7 +87,7 @@ android {
 //                32 ：lib/x86
 //                64 ：lib/x86_64
 //                abiFilters 'armeabi-v7a' //32位
-                abiFilters 'x86','armeabi-v7a'
+                abiFilters 'x86', 'armeabi-v7a'
 //                abiFilters 'armeabi-v7a' //32位
 //                abiFilters 'armeabi-v7a'
             }
@@ -98,7 +98,7 @@ android {
             applicationIdSuffix ''
             // 添加清单占位符
             addManifestPlaceholders([
-                    'app_name'    :    '安卓技术中台 Preview 版'
+                    'app_name': '安卓技术中台 Preview 版'
             ])
         }
 
@@ -116,14 +116,18 @@ android {
             signingConfig signingConfigs.config
             // 添加清单占位符
             addManifestPlaceholders([
-                    'app_name'    :    '@string/app_name'
+                    'app_name': '@string/app_name'
             ])
             // 仅保留两种架构的 so 库，根据 Bugly 统计得出
             ndk {
                 // armeabi：万金油架构平台（占用率：0%）
                 // armeabi-v7a：曾经主流的架构平台（占用率：10%）
                 // arm64-v8a：目前主流架构平台（占用率：95%）
-                abiFilters 'armeabi-v7a', 'arm64-v8a'
+
+                //abiFilters 'arm64-v8a'   //ARM架构,64位
+                //abiFilters 'armeabi-v7a,'   //ARM架构 32位
+                abiFilters 'arm64-v8a'     //arm64位
+                //abiFilters 'armeabi-v7a' //arm32位
             }
         }
     }
@@ -163,7 +167,6 @@ android {
         generateTests false //设置为true以自动生成单元测试。
         targetGenDirTests 'src/main/java' //应存储生成的单元测试的基本目录。默认为 src / androidTest / java。
     }
-
 
 
 }
@@ -256,7 +259,6 @@ dependencies {
     //Dokit 调试日志
     debugImplementation 'io.github.didi.dokit:dokitx:3.5.0.1'
     releaseImplementation 'io.github.didi.dokit:dokitx-no-op:3.5.0.1'
-
     //greendao 数据库
     implementation 'org.greenrobot:greendao:3.2.2'
     //https://www.jianshu.com/p/721381cf974f     okhttputils使用链接
@@ -270,6 +272,14 @@ dependencies {
     //腾讯快直播SDK
     //https://cloud.tencent.com/document/product/881/81205   11.8.0.14176  这个版本不会出现直播画面语音，左右声道不一致的问题
     implementation 'com.tencent.liteav:LiteAVSDK_Professional:11.8.0.14176'
+    //android 工具类(网络监测等等)
+    implementation 'com.blankj:utilcode:1.30.7'
+
+
+
+
+
+
 
 
 

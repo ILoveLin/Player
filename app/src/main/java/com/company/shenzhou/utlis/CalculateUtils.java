@@ -3,7 +3,7 @@ package com.company.shenzhou.utlis;
 import android.content.Context;
 
 import com.company.shenzhou.global.Constants;
-import com.didichuxing.doraemonkit.util.DeviceUtils;
+import com.blankj.utilcode.util.DeviceUtils;
 import com.google.gson.Gson;
 
 import java.math.BigInteger;
