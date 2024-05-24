@@ -30,7 +30,6 @@ import com.company.shenzhou.mineui.MainActivity;
 import com.company.shenzhou.mineui.popup.LoginListPopup;
 import com.company.shenzhou.other.KeyboardWatcher;
 import com.company.shenzhou.playerdb.manager.UserDBRememberBeanUtils;
-import com.company.shenzhou.ui.activity.HomeActivity;
 import com.company.shenzhou.utlis.CommonUtil;
 import com.company.shenzhou.utlis.LogUtils;
 import com.company.shenzhou.utlis.ScreenSizeUtil;
@@ -67,14 +66,15 @@ public final class LoginActivity extends AppActivity implements KeyboardWatcher.
     private int mPhoneViewWidth;
     private final float mLogoScale = 0.8f;   //缩放比例
     private final int mAnimTime = 300;      //动画时间
+    private static final int ChooseUser = 100;
     @SuppressLint("HandlerLeak")
     private Handler mHandler = new Handler() {
         @Override
         public void handleMessage(@NonNull Message msg) {
             super.handleMessage(msg);
             switch (msg.what) {
-                case 1:  //点击历史记录之后的操作
-                    LogUtils.e(TAG + "path=====录像--是否存在=====" + UserDBRememberBeanUtils.queryListIsExist((String) msg.obj));
+                case ChooseUser:  //点击用户列表之后的操作
+                    LogUtils.e(TAG + "=====ChooseUser--是否存在=====" + UserDBRememberBeanUtils.queryListIsExist((String) msg.obj));
                     if (UserDBRememberBeanUtils.queryListIsExist((String) msg.obj)) {
                         UserDBRememberBean userDBRememberBean = UserDBRememberBeanUtils.queryListByName((String) msg.obj);
                         username_right.setTag("close");
@@ -224,7 +224,7 @@ public final class LoginActivity extends AppActivity implements KeyboardWatcher.
      */
     private void checkDBDataToChangeCurrentUserMsg() {
         boolean isExist = UserDBRememberBeanUtils.queryListIsExist(username);
-        LogUtils.e(TAG + "==isExist===" + isExist);
+        LogUtils.e(TAG + "==isExist==" + isExist);
         if (isExist) {  //存在
 //            List<UserDBRememberBean> mList = UserDBRememberBeanUtils.queryListByMessage(username);
 //            UserDBRememberBean
@@ -233,7 +233,7 @@ public final class LoginActivity extends AppActivity implements KeyboardWatcher.
             String dbpassword = userRememberBean.getPassword().toString().trim();
             int dbusertype = userRememberBean.getUserType();
             Long id = userRememberBean.getId();
-            LogUtils.e(TAG + "==登录--username===" + dbusername + "====password==" + dbpassword + "====usertype==" + dbusertype + "====id==" + id);
+            LogUtils.e(TAG + "==username==" + dbusername + "==password==" + dbpassword + "==usertype==" + dbusertype + "==id==" + id);
             if (password.equals(dbpassword)) {  //判断数据库密码和输入密码是否一致,之后更新SP的当前用户信息
                 SharePreferenceUtil.put(LoginActivity.this, SharePreferenceUtil.Current_RememberPassword, checkbox.isChecked());  //是否记住密码
                 SharePreferenceUtil.put(LoginActivity.this, SharePreferenceUtil.Current_Username, dbusername);
@@ -256,8 +256,8 @@ public final class LoginActivity extends AppActivity implements KeyboardWatcher.
                 if (checkbox.isChecked()) {
                     SharePreferenceUtil.put(LoginActivity.this, SharePreferenceUtil.Current_Username, dbusername);
                     SharePreferenceUtil.put(LoginActivity.this, SharePreferenceUtil.Current_Password, dbpassword);
-                    LogUtils.e(TAG + "====登入==db--username===" + dbusername);
-                    LogUtils.e(TAG + "====登入==db--password===" + dbpassword);
+                    LogUtils.e(TAG + "======db==username==" + dbusername);
+                    LogUtils.e(TAG + "======db==password==" + dbpassword);
                     if (!"".equals(currentPassword)) {  //密码不为空的时候才做操作
                         if (isExistt) { //存在
                             UserDBRememberBean userDBRememberBean = UserDBRememberBeanUtils.queryListByName(currentPhone);
@@ -292,14 +292,14 @@ public final class LoginActivity extends AppActivity implements KeyboardWatcher.
      */
     private void showUserListDialog() {
         List<UserDBRememberBean> list = UserDBRememberBeanUtils.queryAll(UserDBRememberBean.class);
-        LogUtils.e(TAG + "==========数据库======list===" + list.size());
+        LogUtils.e(TAG + "==========数据库======list==" + list.size());
         ArrayList<String> nameList = CommonUtil.getNameList(list);
 
         username_right.setImageResource(R.drawable.login_icon_down);
         username_right.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                LogUtils.e(TAG + "==========Tag======Tag===" + username_right.getTag());
+                LogUtils.e(TAG + "======Tag==" + username_right.getTag());
                 if ("close".equals(username_right.getTag())) {
                     username_right.setTag("open");
                     username_right.setImageResource(R.drawable.login_icon_up);
@@ -319,7 +319,7 @@ public final class LoginActivity extends AppActivity implements KeyboardWatcher.
                         .setAnimStyle(AnimAction.ANIM_SCALE)
                         .setListener((LoginListPopup.OnListener<String>) (popupWindow, position, str) -> {
                             Message tempMsg = mHandler.obtainMessage();
-                            tempMsg.what = 1;
+                            tempMsg.what = ChooseUser;
                             tempMsg.obj = str;
                             mHandler.sendMessage(tempMsg);
 
@@ -341,7 +341,7 @@ public final class LoginActivity extends AppActivity implements KeyboardWatcher.
     //没有创建admin用户,才创建超级用户，并且创建之后设置账号密码
     private void checkAdminIsEmptyOrCreated() {
         boolean flag = UserDBRememberBeanUtils.queryAdminIsExist();
-        LogUtils.e(TAG + "=====isExist===" + flag);
+        LogUtils.e(TAG + "=====isExist==" + flag);
         //数据库不存在，就创建admin
         if (!flag) {
             //存入数据库
@@ -353,15 +353,15 @@ public final class LoginActivity extends AppActivity implements KeyboardWatcher.
             userDBBean.setUserType(2);
             userDBBean.setId(ID);
             UserDBRememberBeanUtils.insertOrReplaceData(userDBBean);
-            LogUtils.e(TAG + "=====isExist===" + flag);
+            LogUtils.e(TAG + "=====isExist==" + flag);
             String str = "admin";
             List<UserDBRememberBean> userDBRememberBeans = UserDBRememberBeanUtils.queryListByMessage(str);
             for (int i = 0; i < userDBRememberBeans.size(); i++) {
                 String username = userDBRememberBeans.get(i).getUsername();
                 String password = userDBRememberBeans.get(i).getPassword();
-                LogUtils.e(TAG + "=====username===" + username + "==password==" + password);
+                LogUtils.e(TAG + "=====username==" + username + "==password==" + password);
             }
-            LogUtils.e(TAG + "=====isExist===" + flag);
+            LogUtils.e(TAG + "=====isExist==" + flag);
             SharePreferenceUtil.put(LoginActivity.this, SharePreferenceUtil.Current_Username, "admin");
             SharePreferenceUtil.put(LoginActivity.this, SharePreferenceUtil.Current_Password, "admin");
             SharePreferenceUtil.put(LoginActivity.this, SharePreferenceUtil.Current_UserType, 2);
