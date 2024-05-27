@@ -61,21 +61,6 @@ public final class MineFragment extends TitleBarFragment<MainActivity> {
         //可用空间
         mSpaceSize = findViewById(R.id.bar_mine_use_pace);
         //关于
-        SettingBar mAbout = findViewById(R.id.bar_mine_about);
-        //权限说明
-        SettingBar mPowerExplain = findViewById(R.id.bar_mine_power_explain);
-        //操作手册
-        SettingBar mHow2Use = findViewById(R.id.bar_mine_how_use);
-        //用户协议
-        SettingBar mUseWeb = findViewById(R.id.bar_mine_use);
-        //隐私条款
-        SettingBar mSecretWeb = findViewById(R.id.bar_mine_secret);
-        //修改昵称
-        SettingBar mMicName = findViewById(R.id.bar_mine_mic_name);
-        //修改密码
-        SettingBar mChangePassword = findViewById(R.id.bar_mine_change_password);
-        //退出登录
-        SettingBar mExit = findViewById(R.id.bar_mine_exit);
         setOnClickListener(R.id.bar_mine_about, R.id.bar_mine_power_explain, R.id.bar_mine_how_use, R.id.bar_mine_use,
                 R.id.bar_mine_secret, R.id.bar_mine_mic_name, R.id.bar_mine_change_password, R.id.bar_mine_exit);
 
@@ -126,7 +111,7 @@ public final class MineFragment extends TitleBarFragment<MainActivity> {
             BrowserActivity.start(getActivity(), "http://www.szcme.com/EMAIL/NOTICE-USER.HTML");
             //隐私条款
         } else if (viewId == R.id.bar_mine_secret) {
-            //"http://www.szcme.com/EMAIL/NOTICE-b.HTML";  //隐私条款
+            //隐私条款
             BrowserActivity.start(getActivity(), "http://www.szcme.com/EMAIL/NOTICE-b.HTML");
             //修改昵称
         } else if (viewId == R.id.bar_mine_mic_name) {
