@@ -20,7 +20,7 @@ import com.company.shenzhou.app.AppApplication;
 import com.company.shenzhou.bean.dbbean.UserDBRememberBean;
 import com.company.shenzhou.global.Constants;
 import com.company.shenzhou.mineui.MainActivity;
-import com.company.shenzhou.playerdb.manager.UserDBRememberBeanUtils;
+import com.company.shenzhou.playerdb.manager.UserDBBeanUtils;
 import com.company.shenzhou.ui.adapter.GuideAdapter;
 import com.company.shenzhou.utlis.LogUtils;
 import com.company.shenzhou.utlis.MD5ChangeUtil;
@@ -35,8 +35,9 @@ import java.util.List;
 import me.relex.circleindicator.CircleIndicator3;
 
 /**
- * author : Android 轮子哥
- * time   : 2019/09/21
+ * company: 江西神州医疗设备有限公司
+ * author : LoveLin
+ * time   : 2024/5/27 11:50
  * desc   : 应用引导页
  */
 public final class GuideActivity extends AppActivity {
@@ -170,12 +171,12 @@ public final class GuideActivity extends AppActivity {
         userDBBean.setTag("admin");
         userDBBean.setUserType(2);
         userDBBean.setId(ID);
-        UserDBRememberBeanUtils.insertOrReplaceData(userDBBean);
+        UserDBBeanUtils.insertOrReplaceData(userDBBean);
 //        UserDBUtils.insertOrReplaceData(userDBBean);
-        boolean isExist = UserDBRememberBeanUtils.queryListIsExist("admin");
+        boolean isExist = UserDBBeanUtils.queryListIsExist("admin");
         LogUtils.e("DB=====isExist===" + isExist);
         String str = "admin";
-        List<UserDBRememberBean> userDBRememberBeans = UserDBRememberBeanUtils.queryListByMessage(str);
+        List<UserDBRememberBean> userDBRememberBeans = UserDBBeanUtils.queryListByMessage(str);
         for (int i = 0; i < userDBRememberBeans.size(); i++) {
             String username = userDBRememberBeans.get(i).getUsername();
             String password = userDBRememberBeans.get(i).getPassword();

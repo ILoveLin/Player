@@ -34,7 +34,6 @@ public class SharePreferenceUtil {
     public static final String Current_Password = "123456000";    //
     public static final String Current_ToastShow = "ToastShow";    //解决第一次登入，用户列表显示adapter中toast，bug
     public static final String Current_ID = "1";
-    public static final String Current_RememberPassword = "false";    //默认不记住密码
 
 //    public static final String Type_HD3 = "HD3";                 //0代表,HD3
 //    public static final String Type_HD3_4K = "HD3-4K";           //1代表,HD3

@@ -23,8 +23,9 @@ import java.util.Arrays;
 import java.util.List;
 
 /**
- * author : Android 轮子哥
- * time   : 2019/10/18
+ * company: 江西神州医疗设备有限公司
+ * author : LoveLin
+ * time   : 2024/5/27 11:50
  * desc   : 列表弹窗
  */
 public final class LoginListPopup {

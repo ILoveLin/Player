@@ -15,7 +15,7 @@ import java.util.List;
  * <p>
  * Describe 用户表的CURD操作工具类
  */
-public class UserDBRememberBeanUtils {
+public class UserDBBeanUtils {
     /**
      * 增  --插入数据
      * insert： 会进行去重，保存第一次的数据，也就是不会进行更新。至于是 由于主键去重，还是有重复的元素就去我还会在看看
@@ -59,8 +59,7 @@ public class UserDBRememberBeanUtils {
 
 
     public static void updateData(UserDBRememberBean bean) {
-        AppApplication.getDaoSession().update(bean);
-
+        AppApplication.getDaoSession().insertOrReplace(bean);
     }
 
 
@@ -148,7 +147,7 @@ public class UserDBRememberBeanUtils {
             }
             for (int i = 0; i < list.size(); i++) {
                 UserDBRememberBean bean = list.get(i);
-                if (1 == bean.getId() && "admin".equals(bean.getUsername()) && "admin".equals(bean.getPassword())) {
+                if (1 == bean.getId() && "admin".equals(bean.getUsername()) ) {
                     return true;
                 }
             }

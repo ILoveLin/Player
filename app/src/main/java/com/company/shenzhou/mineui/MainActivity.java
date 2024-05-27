@@ -19,13 +19,13 @@ import com.company.shenzhou.mineui.fragment.MineFragment;
 import com.company.shenzhou.mineui.fragment.UserFragment;
 import com.company.shenzhou.other.DoubleClickHelper;
 import com.company.shenzhou.ui.adapter.NavigationAdapter;
-import com.company.shenzhou.ui.fragment.HomeFragment;
 import com.gyf.immersionbar.ImmersionBar;
 import com.hjq.base.FragmentPagerAdapter;
 
 /**
- * author : Android 轮子哥
- * time   : 2018/10/18
+ * company: 江西神州医疗设备有限公司
+ * author : LoveLin
+ * time   : 2024/5/27 11:50
  * desc   : 主界面
  */
 public final class MainActivity extends AppActivity
@@ -41,7 +41,7 @@ public final class MainActivity extends AppActivity
     private FragmentPagerAdapter<AppFragment<?>> mPagerAdapter;
 
     public static void start(Context context) {
-        start(context, HomeFragment.class);
+        start(context, MineFragment.class);
     }
 
     public static void start(Context context, Class<? extends AppFragment<?>> fragmentClass) {
@@ -64,11 +64,14 @@ public final class MainActivity extends AppActivity
         mNavigationView = findViewById(R.id.rv_home_navigation);
         mNavigationAdapter = new NavigationAdapter(this);
         mNavigationAdapter.addItem(new NavigationAdapter.MenuItem(getString(R.string.main_nav_user),
-                ContextCompat.getDrawable(this, R.drawable.home_home_selector)));
+                ContextCompat.getDrawable(this, R.drawable.main_user_selector)));
+//                ContextCompat.getDrawable(this, R.drawable.home_home_selector)));
         mNavigationAdapter.addItem(new NavigationAdapter.MenuItem(getString(R.string.main_nav_device),
-                ContextCompat.getDrawable(this, R.drawable.home_found_selector)));
+                ContextCompat.getDrawable(this, R.drawable.main_device_selector)));
+//                ContextCompat.getDrawable(this, R.drawable.home_found_selector)));
         mNavigationAdapter.addItem(new NavigationAdapter.MenuItem(getString(R.string.main_nav_mine),
-                ContextCompat.getDrawable(this, R.drawable.home_message_selector)));
+                ContextCompat.getDrawable(this, R.drawable.main_mine_selector)));
+//                ContextCompat.getDrawable(this, R.drawable.home_message_selector)));
         mNavigationAdapter.setOnNavigationListener(this);
         mNavigationView.setAdapter(mNavigationAdapter);
     }
@@ -80,7 +83,6 @@ public final class MainActivity extends AppActivity
         mPagerAdapter.addFragment(DeviceFragment.newInstance());
         mPagerAdapter.addFragment(MineFragment.newInstance());
         mViewPager.setAdapter(mPagerAdapter);
-
         onNewIntent(getIntent());
     }
 

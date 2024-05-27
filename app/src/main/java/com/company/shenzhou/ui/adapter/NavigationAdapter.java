@@ -1,5 +1,6 @@
 package com.company.shenzhou.ui.adapter;
 
+import android.annotation.SuppressLint;
 import android.content.Context;
 import android.graphics.drawable.Drawable;
 import android.view.View;
@@ -15,6 +16,7 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.company.shenzhou.app.AppAdapter;
 import com.hjq.base.BaseAdapter;
 import com.company.shenzhou.R;
+import com.hjq.shape.view.ShapeTextView;
 
 /**
  *    author : Android 轮子哥
@@ -68,6 +70,7 @@ public final class NavigationAdapter extends AppAdapter<NavigationAdapter.MenuIt
      * {@link BaseAdapter.OnItemClickListener}
      */
 
+    @SuppressLint("ResourceAsColor")
     @Override
     public void onItemClick(RecyclerView recyclerView, View itemView, int position) {
         if (mSelectedPosition == position) {
@@ -83,7 +86,10 @@ public final class NavigationAdapter extends AppAdapter<NavigationAdapter.MenuIt
         if (mListener.onNavigationItemSelected(position)) {
             mSelectedPosition = position;
             notifyDataSetChanged();
+
         }
+
+
     }
 
     private final class ViewHolder extends AppAdapter<?>.ViewHolder {

@@ -17,7 +17,6 @@ import com.company.shenzhou.other.DoubleClickHelper;
 import com.company.shenzhou.ui.fragment.FindFragment;
 import com.company.shenzhou.ui.fragment.HomeFragment;
 import com.company.shenzhou.ui.fragment.MessageFragment;
-import com.company.shenzhou.ui.fragment.MineFragment;
 import com.gyf.immersionbar.ImmersionBar;
 import com.hjq.base.FragmentPagerAdapter;
 import com.company.shenzhou.R;
@@ -83,9 +82,8 @@ public final class HomeActivity extends AppActivity
         mPagerAdapter.addFragment(HomeFragment.newInstance());
         mPagerAdapter.addFragment(FindFragment.newInstance());
         mPagerAdapter.addFragment(MessageFragment.newInstance());
-        mPagerAdapter.addFragment(MineFragment.newInstance());
+//        mPagerAdapter.addFragment(MineUIFragment.newInstance());
         mViewPager.setAdapter(mPagerAdapter);
-
         onNewIntent(getIntent());
     }
 

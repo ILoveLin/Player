@@ -275,6 +275,8 @@ dependencies {
     implementation 'com.tencent.liteav:LiteAVSDK_Professional:11.8.0.14176'
     //android 工具类(网络监测等等)
     implementation 'com.blankj:utilcode:1.30.7'
+    //PDFView 本地加载pdf文件
+    implementation 'com.joanzapata.pdfview:android-pdfview:1.0.4@aar'
 
 
 

@@ -154,5 +154,12 @@
         <item name="android:foreground">@null</item>
     </style>
 
-
+    <style name="Font_Middle_Gray">
+        <item name="android:textSize">@dimen/sp_14</item>
+        <item name="android:textColor">@color/color_696969</item>
+    </style>
+    <style name="textInputLayoutHint">
+        <item name="android:textSize">@dimen/sp_12</item>
+        <item name="android:textColor">@color/black40</item>
+    </style>
 </resources>

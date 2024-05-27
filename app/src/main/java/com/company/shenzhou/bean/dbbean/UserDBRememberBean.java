@@ -71,12 +71,16 @@ public class UserDBRememberBean {
         this.userType = userType;
     }
 
-    
 
-
-
-
-
-
-
+    @Override
+    public String toString() {
+        return "UserDBRememberBean{" +
+                "id=" + id +
+                ", username='" + username + '\'' +
+                ", password='" + password + '\'' +
+                ", tag='" + tag + '\'' +
+                ", remember='" + remember + '\'' +
+                ", userType=" + userType +
+                '}';
+    }
 }

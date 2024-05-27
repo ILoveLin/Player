@@ -5,12 +5,15 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
-    tools:context="com.company.shenzhou.ui.fragment.CopyFragment">
+    tools:context="com.company.shenzhou.ui.activity.CopyActivity">
 
     <com.hjq.bar.TitleBar
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        app:leftIcon="@null"
-        app:title="@string/main_nav_mine" />
+        app:title="@string/mine_operation_manual" />
 
+    <com.joanzapata.pdfview.PDFView
+        android:id="@+id/pdfview"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent" />
 </LinearLayout>

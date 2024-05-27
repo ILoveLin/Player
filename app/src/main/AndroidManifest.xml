@@ -272,6 +272,16 @@
             android:name=".mineui.activity.LoginActivity"
             android:launchMode="singleTop"
             android:screenOrientation="portrait" />
+        <!-- 操作手册界面 -->
+        <activity
+            android:name=".mineui.activity.How2UseActivity"
+            android:launchMode="singleTop"
+            android:screenOrientation="portrait" />
+        <!-- 权限说明界面 -->
+        <activity
+            android:name=".mineui.activity.PowerExplainActivity"
+            android:launchMode="singleTop"
+            android:screenOrientation="portrait" />
 
     </application>
 

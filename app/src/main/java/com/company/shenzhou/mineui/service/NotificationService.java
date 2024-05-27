@@ -20,9 +20,9 @@ import com.company.shenzhou.utlis.LogUtils;
 import com.tencent.mmkv.MMKV;
 
 /**
- * company：江西神州医疗设备有限公司
- * author： LoveLin
- * time：2023/1/4 11:06
+ * company: 江西神州医疗设备有限公司
+ * author : LoveLin
+ * time   : 2024/5/27 11:50
  * desc：开启后台NotificationService    避免语音推流被杀死
  */
 public class NotificationService extends Service {

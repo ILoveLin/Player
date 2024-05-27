@@ -5,8 +5,9 @@ import com.company.shenzhou.app.TitleBarFragment;
 import com.company.shenzhou.mineui.MainActivity;
 
 /**
- * author : Android 轮子哥
- * time   : 2018/10/18
+ * company: 江西神州医疗设备有限公司
+ * author : LoveLin
+ * time   : 2024/5/27 11:50
  * desc   : 设备界面
  */
 public final class DeviceFragment extends TitleBarFragment<MainActivity> {

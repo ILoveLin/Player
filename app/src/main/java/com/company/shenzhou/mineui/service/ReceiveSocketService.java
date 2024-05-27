@@ -27,6 +27,9 @@ import io.reactivex.disposables.Disposable;
 
 
 /**
+ * company: 江西神州医疗设备有限公司
+ * author : LoveLin
+ * time   : 2024/5/27 11:50
  * 保活的Service通讯服务
  * <p>
  * 一直开启这监听线程,监听Socket
@@ -280,7 +283,7 @@ public class ReceiveSocketService extends AbsWorkService {
                                             LogUtils.e("语音通话:" + "UDP_41==str==" + str);
                                             LogUtils.e(TAG + "回调形式:--->语音接入:" + str);
                                             MicSocketResponseBean micSocketResponseBean = mGson.fromJson(str, MicSocketResponseBean.class);
-                                            mmkv.encode(Constants.KET_MIC_VOICE_ID_FOR_ME, micSocketResponseBean.getVoiceID() );
+                                            mmkv.encode(Constants.KET_MIC_VOICE_ID_FOR_ME, micSocketResponseBean.getVoiceID());
                                             event.setTga(true);
                                             event.setErrCode(micSocketResponseBean.getErrCode());
                                             event.setData(micSocketResponseBean.getUrl());
@@ -348,7 +351,6 @@ public class ReceiveSocketService extends AbsWorkService {
 
     /**
      * App启动的时候初始化第一次默认端口线程
-     *
      */
     public void initFirstThread() {
         LogUtils.e("App-server-initLiveService--初始化监听服务--initFirstThread开启了");
@@ -425,7 +427,6 @@ public class ReceiveSocketService extends AbsWorkService {
     @Override
     public void onServiceKilled(Intent rootIntent) {
     }
-
 
 
     @Override

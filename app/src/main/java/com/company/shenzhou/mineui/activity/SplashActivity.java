@@ -19,8 +19,9 @@ import com.gyf.immersionbar.BarHide;
 import com.gyf.immersionbar.ImmersionBar;
 
 /**
- * author : Android 轮子哥
- * time   : 2018/10/18
+ * company: 江西神州医疗设备有限公司
+ * author : LoveLin
+ * time   : 2024/5/27 11:50
  * desc   : 闪屏界面
  */
 public final class SplashActivity extends AppActivity {
