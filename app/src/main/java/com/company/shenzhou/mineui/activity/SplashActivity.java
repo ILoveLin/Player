@@ -1,5 +1,6 @@
 package com.company.shenzhou.mineui.activity;
 
+import android.annotation.SuppressLint;
 import android.content.Intent;
 import android.view.animation.AlphaAnimation;
 import android.view.animation.Animation;
@@ -8,7 +9,6 @@ import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 
-import com.airbnb.lottie.LottieAnimationView;
 import com.company.shenzhou.R;
 import com.company.shenzhou.app.AppActivity;
 import com.company.shenzhou.global.Constants;
@@ -17,35 +17,31 @@ import com.company.shenzhou.utlis.LogUtils;
 import com.company.shenzhou.utlis.SharePreferenceUtil;
 import com.gyf.immersionbar.BarHide;
 import com.gyf.immersionbar.ImmersionBar;
-import com.hjq.widget.view.SlantedTextView;
 
 /**
  * author : Android 轮子哥
- * github : https://github.com/getActivity/AndroidProject
  * time   : 2018/10/18
  * desc   : 闪屏界面
  */
 public final class SplashActivity extends AppActivity {
     private Boolean isFirstIn;
-    private ImageView ivSplash;
-    private Boolean isLogined;
-    private LottieAnimationView mLottieView;
-    private SlantedTextView mDebugView;
+    private Boolean isLogin;
 
     @Override
     protected int getLayoutId() {
         return R.layout.splash_activity;
     }
 
+    @SuppressLint("SetTextI18n")
     @Override
     protected void initView() {
-        ivSplash = findViewById(R.id.iv_splash);
+        ImageView ivSplash = findViewById(R.id.iv_splash);
         TextView tv_company = findViewById(R.id.tv_company);
         tv_company.setText("Copyright©" + getResources().getString(R.string.mine_company));
         //是否第一次进入app
         isFirstIn = (Boolean) SharePreferenceUtil.get(this, Constants.SP_IS_FIRST_IN, true);
         //是否登入
-        isLogined = (Boolean) SharePreferenceUtil.get(this, Constants.Is_Logined, false);
+        isLogin = (Boolean) SharePreferenceUtil.get(this, Constants.Is_Logined, false);
         // 从浅到深,从百分之10到百分之百
         AlphaAnimation aa = new AlphaAnimation(0.3f, 1.0f);
         aa.setDuration(1500);// 设置动画时间
@@ -79,7 +75,7 @@ public final class SplashActivity extends AppActivity {
 
     //判断进入那个activity
     private void switchGoing() {
-        LogUtils.e("login==isLogined==" + isLogined);
+        LogUtils.e("login==isLogin==" + isLogin);
         LogUtils.e("login==isFirstIn==" + isFirstIn);
         if (isFirstIn) {
             SharePreferenceUtil.put(SplashActivity.this, Constants.SP_IS_FIRST_IN, true);
@@ -88,7 +84,7 @@ public final class SplashActivity extends AppActivity {
             startActivity(intent);
             finish();
         } else {  //不是第一次进App,判断是否登陆过
-            if (!isLogined) {  //登入成功 ,false==未登录
+            if (!isLogin) {  //登入成功 ,false==未登录
                 startActivity(LoginActivity.class);
             } else {   //已经登陆
                 startActivity(MainActivity.class);

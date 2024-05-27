@@ -87,7 +87,8 @@ android {
 //                32 ：lib/x86
 //                64 ：lib/x86_64
 //                abiFilters 'armeabi-v7a' //32位
-                abiFilters 'x86', 'armeabi-v7a'
+//                abiFilters 'arm64-v8a'     //arm64位
+                abiFilters 'armeabi-v7a'
 //                abiFilters 'armeabi-v7a' //32位
 //                abiFilters 'armeabi-v7a'
             }

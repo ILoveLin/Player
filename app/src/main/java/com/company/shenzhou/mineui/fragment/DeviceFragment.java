@@ -1,15 +1,13 @@
 package com.company.shenzhou.mineui.fragment;
 
 import com.company.shenzhou.R;
-import com.company.shenzhou.app.AppFragment;
 import com.company.shenzhou.app.TitleBarFragment;
 import com.company.shenzhou.mineui.MainActivity;
 
 /**
- *    author : Android 轮子哥
- *    github : https://github.com/getActivity/AndroidProject
- *    time   : 2018/10/18
- *    desc   : 设备界面
+ * author : Android 轮子哥
+ * time   : 2018/10/18
+ * desc   : 设备界面
  */
 public final class DeviceFragment extends TitleBarFragment<MainActivity> {
 
@@ -31,6 +29,7 @@ public final class DeviceFragment extends TitleBarFragment<MainActivity> {
     protected void initData() {
 
     }
+
     @Override
     public boolean isStatusBarEnabled() {
         // 使用沉浸式状态栏

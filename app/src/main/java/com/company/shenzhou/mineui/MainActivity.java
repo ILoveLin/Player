@@ -14,8 +14,8 @@ import com.company.shenzhou.R;
 import com.company.shenzhou.app.AppActivity;
 import com.company.shenzhou.app.AppFragment;
 import com.company.shenzhou.manager.ActivityManager;
-import com.company.shenzhou.mineui.fragment.MineFragment;
 import com.company.shenzhou.mineui.fragment.DeviceFragment;
+import com.company.shenzhou.mineui.fragment.MineFragment;
 import com.company.shenzhou.mineui.fragment.UserFragment;
 import com.company.shenzhou.other.DoubleClickHelper;
 import com.company.shenzhou.ui.adapter.NavigationAdapter;
@@ -24,10 +24,9 @@ import com.gyf.immersionbar.ImmersionBar;
 import com.hjq.base.FragmentPagerAdapter;
 
 /**
- *    author : Android 轮子哥
- *    github : https://github.com/getActivity/AndroidProject
- *    time   : 2018/10/18
- *    desc   : 主界面
+ * author : Android 轮子哥
+ * time   : 2018/10/18
+ * desc   : 主界面
  */
 public final class MainActivity extends AppActivity
         implements NavigationAdapter.OnNavigationListener {

@@ -1,6 +1,5 @@
 package com.company.shenzhou.mineui.activity;
 
-import android.content.Intent;
 import android.text.SpannableString;
 import android.text.Spanned;
 import android.text.method.LinkMovementMethod;
@@ -22,13 +21,11 @@ import com.company.shenzhou.bean.dbbean.UserDBRememberBean;
 import com.company.shenzhou.global.Constants;
 import com.company.shenzhou.mineui.MainActivity;
 import com.company.shenzhou.playerdb.manager.UserDBRememberBeanUtils;
-import com.company.shenzhou.ui.activity.HomeActivity;
 import com.company.shenzhou.ui.adapter.GuideAdapter;
 import com.company.shenzhou.utlis.LogUtils;
 import com.company.shenzhou.utlis.MD5ChangeUtil;
 import com.company.shenzhou.utlis.ScreenSizeUtil;
 import com.company.shenzhou.utlis.SharePreferenceUtil;
-import com.blankj.utilcode.util.DeviceUtils;
 import com.gyf.immersionbar.ImmersionBar;
 import com.hjq.base.BaseDialog;
 import com.hjq.language.MultiLanguages;
@@ -39,7 +36,6 @@ import me.relex.circleindicator.CircleIndicator3;
 
 /**
  * author : Android 轮子哥
- * github : https://github.com/getActivity/AndroidProject
  * time   : 2019/09/21
  * desc   : 应用引导页
  */
@@ -50,10 +46,8 @@ public final class GuideActivity extends AppActivity {
     private CircleIndicator3 mIndicatorView;
     private View mCompleteView;
     private GuideAdapter mAdapter;
-    private Boolean userAgreementTag;
-    private Boolean isLogined;
-    private String userUrl = "http://www.szcme.com/EMAIL/NOTICE-USER.HTML";  //用户协议
-    private String privacyUrl = "http://www.szcme.com/EMAIL/NOTICE-b.HTML";  //隐私条款
+
+    private Boolean isLogin;
 
     @Override
     protected int getLayoutId() {
@@ -74,11 +68,11 @@ public final class GuideActivity extends AppActivity {
         mViewPager.setAdapter(mAdapter);
         mViewPager.registerOnPageChangeCallback(mCallback);
         mIndicatorView.setViewPager(mViewPager);
-        userAgreementTag = (Boolean) SharePreferenceUtil.get(GuideActivity.this, Constants.Sp_UserAgreement_Tag, false);
-        isLogined = (Boolean) SharePreferenceUtil.get(this, Constants.Is_Logined, false);
+        Boolean userAgreementTag = (Boolean) SharePreferenceUtil.get(GuideActivity.this, Constants.Sp_UserAgreement_Tag, false);
+        isLogin = (Boolean) SharePreferenceUtil.get(this, Constants.Is_Logined, false);
         LogUtils.e(TAG + "====userAgreementTag==:" + userAgreementTag);
-        LogUtils.e(TAG + "====isLogined==:" + isLogined);
-        if (!userAgreementTag) {
+        LogUtils.e(TAG + "====isLogin==:" + isLogin);
+        if (Boolean.FALSE.equals(userAgreementTag)) {
             showUserAgreementDialog();
         }
     }
@@ -92,13 +86,13 @@ public final class GuideActivity extends AppActivity {
         SpannableString mSpanned = new SpannableString(getResources().getString(R.string.guide_user_agreement));
         ClickableSpan clickableSpan = new ClickableSpan() {
             @Override
-            public void onClick(View view) {
+            public void onClick(@NonNull View view) {
                 BrowserActivity.start(GuideActivity.this, "http://www.szcme.com/EMAIL/NOTICE-USER.HTML");
             }
         };
         ClickableSpan clickableSpan2 = new ClickableSpan() {
             @Override
-            public void onClick(View view) {
+            public void onClick(@NonNull View view) {
                 //"http://www.szcme.com/EMAIL/NOTICE-b.HTML";  //隐私条款
                 BrowserActivity.start(GuideActivity.this, "http://www.szcme.com/EMAIL/NOTICE-b.HTML");
             }
@@ -117,9 +111,7 @@ public final class GuideActivity extends AppActivity {
                     33, 39, Spanned.SPAN_EXCLUSIVE_EXCLUSIVE);
         }
         int screenWidth = ScreenSizeUtil.getScreenWidth(this);
-        int heightWidth = ScreenSizeUtil.getScreenHeight(this);
         double v = screenWidth * 0.7;
-        double h = heightWidth * 0.9;
         // 自定义对话框
         BaseDialog.Builder<BaseDialog.Builder<?>> builderBuilder = new BaseDialog.Builder<>(this);
         builderBuilder
@@ -128,31 +120,26 @@ public final class GuideActivity extends AppActivity {
                 .setCanceledOnTouchOutside(false)
                 .setWidth((int) v)
                 .setText(R.id.tv_content, mSpanned)
-                .setOnClickListener(R.id.btn_dialog_custom_ok, new BaseDialog.OnClickListener<View>() {
-                    @Override
-                    public void onClick(BaseDialog dialog, View view) {
-                        /**
-                         * 为了上华为应用市场必须明确bugly的使用隐私和目的
-                         */
-                        SharePreferenceUtil.put(GuideActivity.this, SharePreferenceUtil.Bugly_CanUse, true);
-                        AppApplication.getInstance().intBugly();
-                        SharePreferenceUtil.put(GuideActivity.this, Constants.Sp_UserAgreement_Tag, true);
-                        String deviceId = DeviceUtils.getUniqueDeviceId();
-//                        String deviceId = FileUtils.getSDDeviceTxt();
-                        String mSend_IDBy32 = MD5ChangeUtil.Md5_32(deviceId);
-                        LogUtils.e("App--GuideActivity,==02==deviceId:" + deviceId);
-                        LogUtils.e("App--GuideActivity,==02==mSend_IDBy32:" + mSend_IDBy32);
+                .setOnClickListener(R.id.btn_dialog_custom_ok, (dialog, view) -> {
 
-                        if ("".equals(mSend_IDBy32)) {
-                            LogUtils.e("App--GuideActivity,==02==获取手机唯一标识码失败");
-                        } else {
-                            mmkv.encode(Constants.KEY_PhoneDeviceCode, mSend_IDBy32);
-                            LogUtils.e("App--GuideActivity,==02==获取手机唯一标识码成功:" + mSend_IDBy32);
-                            LogUtils.e("App--GuideActivity,==02==获取手机唯一标识码成功:已存入MMKV:" + mSend_IDBy32);
-                        }
-                        dialog.dismiss();
-                        setCurrentUserMsg();
+                    SharePreferenceUtil.put(GuideActivity.this, SharePreferenceUtil.Bugly_CanUse, true);
+                    AppApplication.getInstance().intBugly();
+                    SharePreferenceUtil.put(GuideActivity.this, Constants.Sp_UserAgreement_Tag, true);
+                    String deviceId = DeviceUtils.getUniqueDeviceId();
+//                        String deviceId = FileUtils.getSDDeviceTxt();
+                    String mSend_IDBy32 = MD5ChangeUtil.Md5_32(deviceId);
+                    LogUtils.e("App--GuideActivity,==02==deviceId:" + deviceId);
+                    LogUtils.e("App--GuideActivity,==02==mSend_IDBy32:" + mSend_IDBy32);
+
+                    if (mSend_IDBy32.isEmpty()) {
+                        LogUtils.e("App--GuideActivity,==02==获取手机唯一标识码失败");
+                    } else {
+                        mmkv.encode(Constants.KEY_PhoneDeviceCode, mSend_IDBy32);
+                        LogUtils.e("App--GuideActivity,==02==获取手机唯一标识码成功:" + mSend_IDBy32);
+                        LogUtils.e("App--GuideActivity,==02==获取手机唯一标识码成功:已存入mmkv:" + mSend_IDBy32);
                     }
+                    dialog.dismiss();
+                    setCurrentUserMsg();
                 }).show();
 
 
@@ -202,7 +189,7 @@ public final class GuideActivity extends AppActivity {
     @Override
     public void onClick(View view) {
         if (view == mCompleteView) {
-            if (!isLogined) {  //未登入,跳转登入界面
+            if (!isLogin) {  //未登入,跳转登入界面
                 startActivity(LoginActivity.class);
                 mmkv.encode(Constants.KEY_Login_Tag, false);//是否登入成功
                 SharePreferenceUtil.put(GuideActivity.this, Constants.SP_IS_FIRST_IN, false);

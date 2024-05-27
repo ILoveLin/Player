@@ -73,7 +73,6 @@ public class UserDBRememberBeanUtils {
 
 
     public static List queryAll(Class clazz) {
-
         List list = AppApplication.getDaoSession().loadAll(clazz);
         return list;
     }
