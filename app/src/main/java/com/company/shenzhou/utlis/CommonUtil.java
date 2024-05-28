@@ -11,9 +11,11 @@ import android.widget.EditText;
 
 import com.company.shenzhou.R;
 import com.company.shenzhou.bean.dbbean.DeviceDBBean;
+import com.company.shenzhou.bean.dbbean.UserDBBean;
 import com.company.shenzhou.bean.dbbean.UserDBRememberBean;
 import com.company.shenzhou.bean.socket.MicSocketBean;
 import com.company.shenzhou.global.Constants;
+import com.company.shenzhou.playerdb.manager.UserDBBeanUtils;
 
 import java.io.File;
 import java.io.FileNotFoundException;
@@ -43,7 +45,7 @@ public class CommonUtil {
         }
         int i1 = socketUrl.lastIndexOf(":");
         String substring = socketUrl.substring(i1);
-        LogUtils.e("ANetty:ddns模式 getMicUrl:"+substring);
+        LogUtils.e("ANetty:ddns模式 getMicUrl:" + substring);
 
         return "rtmp://" + currentIP + substring;
 
@@ -60,6 +62,7 @@ public class CommonUtil {
 
         }
     }
+
     public static MicSocketBean getSocketBean(String errCode, String operation, String mMicName) {
         MicSocketBean startBean = new MicSocketBean();
         startBean.setErrCode(errCode);
@@ -121,7 +124,7 @@ public class CommonUtil {
         //显示软键盘
 //        activity.getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_ALWAYS_VISIBLE);
         //如果上面的代码没有弹出软键盘 可以使用下面另一种方式
-        InputMethodManager imm = (InputMethodManager) activity.getSystemService(Context.INPUT_METHOD_SERVICE);
+        InputMethodManager imm = (InputMethodManager) activity.getSystemService(android.content.Context.INPUT_METHOD_SERVICE);
         imm.showSoftInput(editText, 0);
     }
 
@@ -147,7 +150,7 @@ public class CommonUtil {
     }
 
 
-    public static ArrayList<String> getNameList(List<UserDBRememberBean> list) {
+    public static ArrayList<String> getNameList(List<UserDBBean> list) {
         if (null != list) {
             ArrayList<String> nameList = new ArrayList<>();
             for (int i = 0; i < list.size(); i++) {
@@ -173,7 +176,7 @@ public class CommonUtil {
             @Override
             public void run() {
                 InputMethodManager imm = (InputMethodManager) mContext
-                        .getSystemService(Context.INPUT_METHOD_SERVICE);
+                        .getSystemService(android.content.Context.INPUT_METHOD_SERVICE);
                 imm.showSoftInput(mEditText, InputMethodManager.RESULT_SHOWN);
                 imm.toggleSoftInput(InputMethodManager.SHOW_FORCED,
                         InputMethodManager.HIDE_IMPLICIT_ONLY);
@@ -195,7 +198,7 @@ public class CommonUtil {
      * <p>
      * string从随机之开始到校验和处结束的String
      *
-     * @return  返回的是16进制的设备类型
+     * @return 返回的是16进制的设备类型
      */
     public static String getDeviceTypeHexNum(Context context, String typeDesc) {
         //字符串--48位--50位表示的是设备类型
@@ -205,7 +208,7 @@ public class CommonUtil {
         if (context.getResources().getString(R.string.device_Work_Station).equals(typeDesc)) {
             result = Constants.Type_HexString_00;//00  双重判断
         } else if (context.getResources().getString(R.string.device_type_HD3).equals(typeDesc)) {//HD3摄像机
-            result =Constants.Type_HexString_01;//1 双重判断
+            result = Constants.Type_HexString_01;//1 双重判断
         } else if (context.getResources().getString(R.string.device_type_HD3_4K).equals(typeDesc)) {
             result = Constants.Type_HexString_05;
         } else if (context.getResources().getString(R.string.device_V1_YiTiJi).equals(typeDesc)) {
@@ -218,7 +221,7 @@ public class CommonUtil {
             result = Constants.Type_HexString_0A;
         } else if (context.getResources().getString(R.string.device_Custom_Url).equals(typeDesc)) {
             result = Constants.Type_HexString_FF;
-        }else if (context.getResources().getString(R.string.device_type_RC200).equals(typeDesc)) {
+        } else if (context.getResources().getString(R.string.device_type_RC200).equals(typeDesc)) {
             result = Constants.Type_HexString_A2;
         }
 
@@ -226,8 +229,6 @@ public class CommonUtil {
 
 
     }
-
-
 
 
     /**
@@ -244,7 +245,7 @@ public class CommonUtil {
      * <p>
      * string从随机之开始到校验和处结束的String
      *
-     * @return  返回的是 10 进制的设备类型
+     * @return 返回的是 10 进制的设备类型
      */
     public static String getDeviceTypeDecNum(Context context, String typeDesc) {
         switch (typeDesc) {
@@ -274,7 +275,6 @@ public class CommonUtil {
 
 
     }
-
 
 
     /**
@@ -428,9 +428,15 @@ public class CommonUtil {
      */
     public static void closeKeybord(EditText mEditText, Context mContext) {
         InputMethodManager imm = (InputMethodManager) mContext
-                .getSystemService(Context.INPUT_METHOD_SERVICE);
+                .getSystemService(android.content.Context.INPUT_METHOD_SERVICE);
 
         imm.hideSoftInputFromWindow(mEditText.getWindowToken(), 0);
     }
+
+
+
+
+
+
 }
 

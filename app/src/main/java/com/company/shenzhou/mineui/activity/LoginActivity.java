@@ -22,7 +22,7 @@ import androidx.annotation.NonNull;
 import com.company.shenzhou.R;
 import com.company.shenzhou.aop.SingleClick;
 import com.company.shenzhou.app.AppActivity;
-import com.company.shenzhou.bean.dbbean.UserDBRememberBean;
+import com.company.shenzhou.bean.dbbean.UserDBBean;
 import com.company.shenzhou.global.Constants;
 import com.company.shenzhou.mineui.MainActivity;
 import com.company.shenzhou.mineui.popup.LoginListPopup;
@@ -53,8 +53,8 @@ public final class LoginActivity extends AppActivity implements KeyboardWatcher.
     private LinearLayout linear_top;
     private EditText mPhoneView;
     private PasswordEditText mPasswordView;
-    private CheckBox mCheckboxPrivacy;
-    private CheckBox checkbox;
+    private CheckBox mCheckboxRememberPrivacy;
+    private CheckBox mCheckBoxRememberPasswor;
     private View mBlankView;
     private int mPhoneViewWidth;
     private final float mLogoScale = 0.8f;   //缩放比例
@@ -68,11 +68,22 @@ public final class LoginActivity extends AppActivity implements KeyboardWatcher.
             if (msg.what == ChooseUser) {  //点击用户列表之后的操作
                 LogUtils.e(TAG + "=====ChooseUser--是否存在=====" + UserDBBeanUtils.queryListIsExist((String) msg.obj));
                 if (UserDBBeanUtils.queryListIsExist((String) msg.obj)) {
-                    UserDBRememberBean userDBRememberBean = UserDBBeanUtils.queryListByName((String) msg.obj);
                     username_right.setTag("close");
                     username_right.setImageResource(R.drawable.login_icon_down);
-                    initCurrentUserData();
-
+                    if (UserDBBeanUtils.queryListIsExist((String) msg.obj)) {
+                        UserDBBean bean = UserDBBeanUtils.queryListByName((String) msg.obj);
+                        username_right.setTag("close");
+                        username_right.setImageResource(R.drawable.login_icon_down);
+                        if (bean.rememberPassword) {
+                            mCheckBoxRememberPasswor.setChecked(true);
+                            mPhoneView.setText(bean.getUsername());
+                            mPasswordView.setText(bean.getPassword());
+                        } else {
+                            mPhoneView.setText(bean.getUsername());
+                            mPasswordView.setText("");
+                            mCheckBoxRememberPasswor.setChecked(false);
+                        }
+                    }
                 }
             }
         }
@@ -93,10 +104,11 @@ public final class LoginActivity extends AppActivity implements KeyboardWatcher.
         linear_top = findViewById(R.id.linear_top);
         mPhoneView = findViewById(R.id.et_login_phone);
         mPasswordView = findViewById(R.id.et_login_password);
-        mCheckboxPrivacy = findViewById(R.id.checkbox_privacy);
-        checkbox = findViewById(R.id.checkbox);
+        mCheckboxRememberPrivacy = findViewById(R.id.checkbox_privacy);
+        mCheckBoxRememberPasswor = findViewById(R.id.remember_password_checkbox);
         mBlankView = findViewById(R.id.v_login_blank);
         mPhoneView.getViewTreeObserver().addOnDrawListener(() -> mPhoneViewWidth = mPhoneView.getWidth());
+        username_right.setImageResource(R.drawable.login_icon_down);
     }
 
     @SuppressLint("SetTextI18n")
@@ -115,11 +127,9 @@ public final class LoginActivity extends AppActivity implements KeyboardWatcher.
         });
         //初始化设置用户账号密码
         initCurrentUserData();
-        //显示用户列表
-        showUserListDialog();
         //适配登入界面layout
         switchLoginBtnLayout();
-        setOnClickListener(R.id.checkbox_privacy, R.id.tv_privacy_desc1, R.id.tv_privacy_desc2, R.id.checkbox, R.id.btn_login_commit);
+        setOnClickListener(R.id.et_login_phone, R.id.username_right, R.id.checkbox_privacy, R.id.tv_privacy_desc1, R.id.tv_privacy_desc2, R.id.remember_password_checkbox, R.id.btn_login_commit);
 
     }
 
@@ -128,8 +138,12 @@ public final class LoginActivity extends AppActivity implements KeyboardWatcher.
     @Override
     public void onClick(View view) {
         switch (view.getId()) {
+            case R.id.et_login_phone://弹出用户列表
+            case R.id.username_right://弹出用户列表
+                showUserListDialog();
+                break;
             case R.id.checkbox_privacy://是否阅读了两个协议
-                mCheckboxPrivacy.setChecked(mCheckboxPrivacy.isChecked());
+                mCheckboxRememberPrivacy.setChecked(mCheckboxRememberPrivacy.isChecked());
                 break;
             case R.id.tv_privacy_desc1://用户协议
                 BrowserActivity.start(LoginActivity.this, "http://www.szcme.com/EMAIL/NOTICE-USER.HTML");
@@ -137,7 +151,7 @@ public final class LoginActivity extends AppActivity implements KeyboardWatcher.
             case R.id.tv_privacy_desc2://隐私政策
                 BrowserActivity.start(LoginActivity.this, "http://www.szcme.com/EMAIL/NOTICE-b.HTML");
             case R.id.checkbox://记住密码
-                checkbox.setChecked(checkbox.isChecked());
+                mCheckBoxRememberPasswor.setChecked(mCheckBoxRememberPasswor.isChecked());
                 break;
             case R.id.btn_login_commit:  //登入
                 checkData2Login();
@@ -154,7 +168,7 @@ public final class LoginActivity extends AppActivity implements KeyboardWatcher.
             toast(getResources().getString(R.string.login_username_not_null));
             return;
         }
-        if (!mCheckboxPrivacy.isChecked()) {
+        if (!mCheckboxRememberPrivacy.isChecked()) {
             toast(getResources().getString(R.string.login_chose_agreement));
             return;
         }
@@ -170,12 +184,10 @@ public final class LoginActivity extends AppActivity implements KeyboardWatcher.
         boolean isExist = UserDBBeanUtils.queryListIsExist(username);
         LogUtils.e(TAG + "==isExist==" + isExist);
         if (isExist) {  //存在
-//            List<UserDBRememberBean> mList = UserDBRememberBeanUtils.queryListByMessage(username);
-//            UserDBRememberBean
-            UserDBRememberBean userRememberBean = UserDBBeanUtils.queryListByMessageToGetPassword(username);
+            UserDBBean userRememberBean = UserDBBeanUtils.queryListByMessageToGetPassword(username);
             String dbUsername = userRememberBean.getUsername().trim();
             String dbPassword = userRememberBean.getPassword().trim();
-            int dbUsertype = userRememberBean.getUserType();
+            int dbUsertype = userRememberBean.getUserRole();
             Long id = userRememberBean.getId();
             LogUtils.e(TAG + "==username==" + dbUsername + "==password==" + dbPassword + "==usertype==" + dbUsertype + "==id==" + id);
             if (password.equals(dbPassword)) {  //判断数据库密码和输入密码是否一致,之后更新SP的当前用户信息
@@ -187,34 +199,40 @@ public final class LoginActivity extends AppActivity implements KeyboardWatcher.
                 SharePreferenceUtil.put(LoginActivity.this, Constants.Is_Logined, true);   //false  登录的标志 true表示登录了
                 SharePreferenceUtil.put(LoginActivity.this, SharePreferenceUtil.Current_ToastShow, "Yes");  //为了解决第一次登入toast的bug
                 mmkv.encode(Constants.KEY_Login_Tag, true);//是否登入成功
-
                 String currentPhone = mPhoneView.getText().toString();
                 String currentPassword = Objects.requireNonNull(mPasswordView.getText()).toString();
                 //提交数据的时候,对当前用户是否记住密码更新DB
                 boolean Exist = UserDBBeanUtils.queryListIsExist(currentPhone);
-                if (checkbox.isChecked()) {
-                    SharePreferenceUtil.put(LoginActivity.this, SharePreferenceUtil.Current_Username, dbUsername);
-                    SharePreferenceUtil.put(LoginActivity.this, SharePreferenceUtil.Current_Password, dbPassword);
-                    LogUtils.e(TAG + "======db==username==" + dbUsername);
-                    LogUtils.e(TAG + "======db==password==" + dbPassword);
+                LogUtils.e(TAG + "======db==username==" + dbUsername);
+                LogUtils.e(TAG + "======db==password==" + dbPassword);
+                if (mCheckBoxRememberPasswor.isChecked()) {
                     if (!currentPassword.isEmpty()) {  //密码不为空的时候才做操作
                         if (Exist) { //存在
-                            UserDBRememberBean userDBRememberBean = UserDBBeanUtils.queryListByName(currentPhone);
-                            userDBRememberBean.setId(userDBRememberBean.getId());
-                            userDBRememberBean.setRemember("Yes");
-                            UserDBBeanUtils.updateData(userDBRememberBean);
+                            UserDBBean userDBBean = UserDBBeanUtils.queryListByName(currentPhone);
+                            userDBBean.setId(userDBBean.getId());
+                            userDBBean.setRememberPassword(true);
+                            UserDBBeanUtils.updateData(userDBBean);
                         }
                     }
                 } else {
                     if (!currentPassword.isEmpty()) {  //密码不为空的时候才做操作
                         if (Exist) { //存在
-                            UserDBRememberBean userDBRememberBean = UserDBBeanUtils.queryListByName(currentPhone);
-                            userDBRememberBean.setId(userDBRememberBean.getId());
-                            userDBRememberBean.setRemember("No");
-                            UserDBBeanUtils.updateData(userDBRememberBean);
+                            UserDBBean userDBBean = UserDBBeanUtils.queryListByName(currentPhone);
+                            userDBBean.setId(userDBBean.getId());
+                            userDBBean.setRememberPassword(false);
+                            UserDBBeanUtils.updateData(userDBBean);
                         }
                     }
                 }
+                if (mCheckboxRememberPrivacy.isChecked()) {
+                    if (Exist) { //存在
+                        UserDBBean userDBBean = UserDBBeanUtils.queryListByName(currentPhone);
+                        userDBBean.setId(userDBBean.getId());
+                        userDBBean.setRememberPrivacy(true);
+                        UserDBBeanUtils.updateData(userDBBean);
+                    }
+                }
+
                 //进入主界面
                 MainActivity.start(LoginActivity.this);
                 finish();
@@ -230,45 +248,43 @@ public final class LoginActivity extends AppActivity implements KeyboardWatcher.
      * 显示用户列表
      */
     private void showUserListDialog() {
-        List<UserDBRememberBean> list = UserDBBeanUtils.queryAll(UserDBRememberBean.class);
+        List<UserDBBean> list = UserDBBeanUtils.queryAll(UserDBBean.class);
         ArrayList<String> nameList = CommonUtil.getNameList(list);
+        LogUtils.e(TAG + "======Tag==list==" + list.size());
+        LogUtils.e(TAG + "======Tag==" + username_right.getTag());
+        if ("close".equals(username_right.getTag())) {
+            username_right.setTag("open");
+            username_right.setImageResource(R.drawable.login_icon_up);
 
-        username_right.setImageResource(R.drawable.login_icon_down);
-        username_right.setOnClickListener(v -> {
-            LogUtils.e(TAG + "======Tag==" + username_right.getTag());
-            if ("close".equals(username_right.getTag())) {
-                username_right.setTag("open");
-                username_right.setImageResource(R.drawable.login_icon_up);
+        } else {
+            username_right.setTag("close");
+            username_right.setImageResource(R.drawable.login_icon_down);
+        }
+        LoginListPopup.Builder historyBuilder = new LoginListPopup.Builder(LoginActivity.this);
+        historyBuilder.setList(nameList)
+                .setGravity(Gravity.CENTER)
+                .setAutoDismiss(true)
+                .setOutsideTouchable(false)
+                .setWidth(mPhoneViewWidth + 60)
+                .setXOffset(-30)
+                .setHeight(650)
+                .setAnimStyle(AnimAction.ANIM_SCALE)
+                .setListener((LoginListPopup.OnListener<String>) (popupWindow, position, str) -> {
+                    Message tempMsg = mHandler.obtainMessage();
+                    tempMsg.what = ChooseUser;
+                    tempMsg.obj = str;
+                    mHandler.sendMessage(tempMsg);
 
-            } else {
+                })
+                .showAsDropDown(mPhoneView);
+        if (historyBuilder.getPopupWindow() != null) {
+            historyBuilder.getPopupWindow().addOnDismissListener(popupWindow -> {
                 username_right.setTag("close");
                 username_right.setImageResource(R.drawable.login_icon_down);
-            }
-            LoginListPopup.Builder historyBuilder = new LoginListPopup.Builder(LoginActivity.this);
-            historyBuilder.setList(nameList)
-                    .setGravity(Gravity.CENTER)
-                    .setAutoDismiss(true)
-                    .setOutsideTouchable(false)
-                    .setWidth(mPhoneViewWidth + 60)
-                    .setXOffset(-30)
-                    .setHeight(650)
-                    .setAnimStyle(AnimAction.ANIM_SCALE)
-                    .setListener((LoginListPopup.OnListener<String>) (popupWindow, position, str) -> {
-                        Message tempMsg = mHandler.obtainMessage();
-                        tempMsg.what = ChooseUser;
-                        tempMsg.obj = str;
-                        mHandler.sendMessage(tempMsg);
+            });
+        }
 
-                    })
-                    .showAsDropDown(mPhoneView);
-            if (historyBuilder.getPopupWindow() != null) {
-                historyBuilder.getPopupWindow().addOnDismissListener(popupWindow -> {
-                    username_right.setTag("close");
-                    username_right.setImageResource(R.drawable.login_icon_down);
-                });
-            }
 
-        });
     }
 
 
@@ -279,18 +295,20 @@ public final class LoginActivity extends AppActivity implements KeyboardWatcher.
         if (!flag) {
             //存入数据库
             long ID = 1;
-            UserDBRememberBean userDBBean = new UserDBRememberBean();
+            UserDBBean userDBBean = new UserDBBean();
             userDBBean.setUsername("admin");
             userDBBean.setPassword("admin");
             userDBBean.setTag("admin");
-            userDBBean.setUserType(2);
+            userDBBean.setUserRole(2);
+            userDBBean.setRememberPrivacy(false);
+            userDBBean.setRememberPassword(false);
             userDBBean.setId(ID);
             UserDBBeanUtils.insertOrReplaceData(userDBBean);
             String str = "admin";
-            List<UserDBRememberBean> userDBRememberBeans = UserDBBeanUtils.queryListByMessage(str);
-            for (int i = 0; i < userDBRememberBeans.size(); i++) {
-                String username = userDBRememberBeans.get(i).getUsername();
-                String password = userDBRememberBeans.get(i).getPassword();
+            List<UserDBBean> userDBBeans = UserDBBeanUtils.queryListByMessage(str);
+            for (int i = 0; i < userDBBeans.size(); i++) {
+                String username = userDBBeans.get(i).getUsername();
+                String password = userDBBeans.get(i).getPassword();
                 LogUtils.e(TAG + "=====username==" + username + "==password==" + password);
             }
             SharePreferenceUtil.put(LoginActivity.this, SharePreferenceUtil.Current_Username, "admin");
@@ -312,18 +330,20 @@ public final class LoginActivity extends AppActivity implements KeyboardWatcher.
         //获取上一次退出用户的username,如果为空默认选择 admin 用户名
         String name = mmkv.decodeString(Constants.KEY_Exit_Name, "");
         String index = TextUtils.isEmpty(name) ? "admin" : name;
-        UserDBRememberBean mBean = UserDBBeanUtils.queryListByMessageToGetPassword(index);
+        UserDBBean mBean = UserDBBeanUtils.queryListByMessageToGetPassword(index);
         LogUtils.e(TAG + "=====当前登入的用户==bean==" + mBean.toString());
-        if ("Yes".equals(mBean.getRemember())) {
+        if (mBean.rememberPassword) {
             //记住密码直接sp里面取,注意更改当前用户信息,需要实时更新Sp
             mPhoneView.setText(mBean.getUsername());
             mPasswordView.setText(mBean.getPassword());
-            checkbox.setChecked(true);
+            mCheckBoxRememberPasswor.setChecked(true);
         } else {
             mPhoneView.setText(mBean.getUsername());
             mPasswordView.setText("");
-            checkbox.setChecked(false);
+            mCheckBoxRememberPasswor.setChecked(false);
         }
+        //设置是否勾选用户协议和隐私政策
+        mCheckboxRememberPrivacy.setChecked(mBean.rememberPrivacy);
 
     }
 

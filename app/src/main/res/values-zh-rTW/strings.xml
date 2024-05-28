@@ -354,7 +354,7 @@
     <string name="login_accort_no_exit">賬戶不存在!</string>
     <string name="guide_user_agreement">在你使用CME Player之前，請你認真閱讀並了解《服務協議》和《隱私政策》，點擊同意即表示你已閱讀並且了解。並且該App需要實時進行socket通訊，會啟動一個保活服務，所以App可能存在運行應用自啟動或關聯啟動socket通訊服務行為；App集成了騰訊bugly第三方SDK，會上傳App崩潰信息給騰訊bugly後臺分析具體什麽手機出現的錯誤原因。以上兩種情況下App會獲取手機號碼、IMEI、OAID、IMSI、MAC等信息用於計算出設備唯一標識碼,和訪問SD卡數據權限；App集成了騰訊TBS瀏覽服務用於本地打開word使用手冊,此SDK會獲取(SD卡數據)已安裝APP信息的行為。" 這裏告知用戶，點擊同意，即表示你已同意並且知曉該行為。</string>
     <string name="login_and">和</string>
-    <string name="login_service_agreement">《服務協議》</string>
+    <string name="login_service_agreement">《用戶協議》</string>
     <string name="login_privacy_policy">《隱私政策》</string>
     <string name="permission_camera_description">App現在向你申請相機權限,用於App掃碼功能,您如果拒絕,那麽掃碼功能將不能使用!</string>
     <string name="permission_setting_description">此時App需要跳轉到系統設置界面查看相關權限申請情況，您是否跳轉設置界面?</string>

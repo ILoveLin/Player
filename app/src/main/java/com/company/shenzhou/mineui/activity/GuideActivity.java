@@ -17,7 +17,7 @@ import com.company.shenzhou.R;
 import com.company.shenzhou.aop.SingleClick;
 import com.company.shenzhou.app.AppActivity;
 import com.company.shenzhou.app.AppApplication;
-import com.company.shenzhou.bean.dbbean.UserDBRememberBean;
+import com.company.shenzhou.bean.dbbean.UserDBBean;
 import com.company.shenzhou.global.Constants;
 import com.company.shenzhou.mineui.MainActivity;
 import com.company.shenzhou.playerdb.manager.UserDBBeanUtils;
@@ -164,22 +164,22 @@ public final class GuideActivity extends AppActivity {
 
         //存入数据库
         long ID = 1;
-        UserDBRememberBean userDBBean = new UserDBRememberBean();
-//        UserDBBean userDBBean = new UserDBBean();
+        UserDBBean userDBBean = new UserDBBean();
         userDBBean.setUsername("admin");
         userDBBean.setPassword("admin");
         userDBBean.setTag("admin");
-        userDBBean.setUserType(2);
+        userDBBean.setUserRole(2);
+        userDBBean.setRememberPrivacy(false);
+        userDBBean.setRememberPassword(false);
         userDBBean.setId(ID);
         UserDBBeanUtils.insertOrReplaceData(userDBBean);
-//        UserDBUtils.insertOrReplaceData(userDBBean);
         boolean isExist = UserDBBeanUtils.queryListIsExist("admin");
-        LogUtils.e("DB=====isExist===" + isExist);
+        LogUtils.e(TAG + "DB=====isExist===" + isExist);
         String str = "admin";
-        List<UserDBRememberBean> userDBRememberBeans = UserDBBeanUtils.queryListByMessage(str);
-        for (int i = 0; i < userDBRememberBeans.size(); i++) {
-            String username = userDBRememberBeans.get(i).getUsername();
-            String password = userDBRememberBeans.get(i).getPassword();
+        List<UserDBBean> userDBBeans = UserDBBeanUtils.queryListByMessage(str);
+        for (int i = 0; i < userDBBeans.size(); i++) {
+            String username = userDBBeans.get(i).getUsername();
+            String password = userDBBeans.get(i).getPassword();
             LogUtils.e("DB=====username===" + username + "==password==" + password);
         }
         LogUtils.e("DB=====isExist===" + isExist);

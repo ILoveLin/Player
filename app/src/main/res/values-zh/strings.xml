@@ -363,7 +363,7 @@
     <string name="login_accort_no_exit">账户不存在!</string>
     <string name="guide_user_agreement">在你使用CME Player之前，请你认真阅读并了解《服务协议》和《隐私政策》，点击同意即表示你已阅读并且了解。并且该App需要实时进行socket通讯，会启动一个保活服务，所以App可能存在运行应用自启动或关联启动socket通讯服务行为；App集成了腾讯bugly第三方SDK，会上传App崩溃信息给腾讯bugly后台分析具体什么手机出现的错误原因。以上两种情况下App会获取手机号码、IMEI、OAID、IMSI、MAC等信息用于计算出设备唯一标识码,和访问SD卡数据权限；App集成了腾讯TBS浏览服务用于本地打开word使用手册,此SDK会获取(SD卡数据)已安装APP信息的行为。" 这里告知用户，点击同意，即表示你已同意并且知晓该行为。</string>
     <string name="login_and">和</string>
-    <string name="login_service_agreement">《服务协议》</string>
+    <string name="login_service_agreement">《用户协议》</string>
     <string name="login_privacy_policy">《隐私政策》</string>
     <string name="permission_camera_description">App现在向你申请相机权限,用于App扫码功能,您如果拒绝,那么扫码功能将不能使用!</string>
     <string name="permission_setting_description">此时App需要跳转到系统设置界面查看相关权限申请情况，您是否跳转设置界面?</string>

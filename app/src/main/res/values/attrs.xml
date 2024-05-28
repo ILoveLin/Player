@@ -17,14 +17,14 @@
     <!-- 设置栏 -->
     <declare-styleable name="SettingBar" tools:ignore="ResourceName">
         <!-- 左边 -->
-        <attr name="bar_leftText" format="string"/>
-        <attr name="bar_leftHint" format="string"/>
+        <attr name="bar_leftText" format="string" />
+        <attr name="bar_leftHint" format="string" />
         <attr name="bar_leftIcon" format="reference" />
         <attr name="bar_leftColor" format="color" />
         <attr name="bar_leftSize" format="dimension" />
         <!-- 右边 -->
         <attr name="bar_rightText" format="string" />
-        <attr name="bar_rightHint" format="string"/>
+        <attr name="bar_rightHint" format="string" />
         <attr name="bar_rightIcon" format="reference" />
         <attr name="bar_rightColor" format="color" />
         <attr name="bar_rightSize" format="dimension" />
@@ -46,7 +46,7 @@
         <!-- 正则输入限制 -->
         <attr name="inputRegex" format="string" />
         <!-- 常用正则类型 -->
-        <attr name="regexType" >
+        <attr name="regexType">
             <!-- 手机号（只能以 1 开头） -->
             <enum name="mobile" value="0x01" />
             <!-- 中文（普通的中文字符） -->
@@ -60,6 +60,13 @@
             <!-- 非空格字符 -->
             <enum name="nonnull" value="0x06" />
         </attr>
+    </declare-styleable>
+
+
+    <declare-styleable name="SwipeMenuLayout">
+        <attr name="swipeEnable" format="boolean" />
+        <attr name="ios" format="boolean" />
+        <attr name="leftSwipe" format="boolean" />
     </declare-styleable>
 
 </resources>

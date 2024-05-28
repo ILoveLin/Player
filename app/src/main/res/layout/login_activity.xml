@@ -89,8 +89,10 @@
                                 android:layout_height="@dimen/dp_40"
                                 android:layout_centerVertical="true"
                                 android:background="@drawable/shape_cme_login"
-                                android:clickable="false"
+                                android:clickable="true"
                                 android:drawablePadding="@dimen/dp_10"
+                                android:focusable="false"
+                                android:focusableInTouchMode="false"
                                 android:inputType="text"
                                 android:singleLine="true"
                                 android:textColor="@color/black"
@@ -115,7 +117,8 @@
                                 android:layout_centerVertical="true"
                                 android:background="@null"
                                 android:padding="@dimen/dp_10"
-                                android:tag="close" />
+                                android:tag="close"
+                                android:visibility="visible" />
 
                         </RelativeLayout>
 
@@ -172,7 +175,7 @@
                                 android:layout_weight="1" />
 
                             <CheckBox
-                                android:id="@+id/checkbox"
+                                android:id="@+id/remember_password_checkbox"
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
                                 android:layout_marginLeft="@dimen/dp_10"
@@ -197,7 +200,7 @@
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
                             android:layout_marginLeft="@dimen/dp_40"
-                            android:layout_marginRight="@dimen/dp_60"
+                            android:layout_marginRight="@dimen/dp_32"
                             android:orientation="horizontal"
                             android:paddingLeft="@dimen/dp_10">
 
@@ -207,7 +210,6 @@
                                 android:layout_weight="1" />
 
                             <CheckBox
-
                                 android:id="@+id/checkbox_privacy"
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"

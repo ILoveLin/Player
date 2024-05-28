@@ -8,6 +8,7 @@ import android.view.View;
 import com.company.shenzhou.R;
 import com.company.shenzhou.aop.SingleClick;
 import com.company.shenzhou.app.TitleBarFragment;
+import com.company.shenzhou.bean.dbbean.UserDBBean;
 import com.company.shenzhou.bean.dbbean.UserDBRememberBean;
 import com.company.shenzhou.global.Constants;
 import com.company.shenzhou.mineui.MainActivity;
@@ -162,9 +163,9 @@ public final class MineFragment extends TitleBarFragment<MainActivity> {
         String mCurrentUsername = (String) SharePreferenceUtil.get(getAttachActivity(), SharePreferenceUtil.Current_Username, "");
         LogUtils.e("TAG==current系统用户==" + mCurrentUsername);
         int mCurrenType = (int) SharePreferenceUtil.get(getAttachActivity(), SharePreferenceUtil.Current_UserType, 0);
-        UserDBRememberBean mBean = UserDBBeanUtils.queryListByMessageToGetPassword(mCurrentUsername);
+        UserDBBean mBean = UserDBBeanUtils.queryListByMessageToGetPassword(mCurrentUsername);
         LogUtils.e("TAG==Username==" + mBean.getUsername() + "====password==" + mBean.getPassword() +
-                "====Type==" + mBean.getUserType() + "====mBean.getId()==" + mBean.getId());
+                "====Type==" + mBean.getUserRole() + "====mBean.getId()==" + mBean.getId());
         // 输入对话框
         new Input2PasswordDialog.Builder(getActivity())
                 // 标题可以不用填写
@@ -184,16 +185,16 @@ public final class MineFragment extends TitleBarFragment<MainActivity> {
                             SharePreferenceUtil.put(getAttachActivity(), SharePreferenceUtil.Current_Username, mCurrentUsername);
                             SharePreferenceUtil.put(getAttachActivity(), SharePreferenceUtil.Current_Password, newpassword);
                             SharePreferenceUtil.put(getAttachActivity(), SharePreferenceUtil.Current_ID, mBean.getId() + "");
-                            UserDBRememberBean userRememberBean = new UserDBRememberBean();
-                            userRememberBean.setUsername(mCurrentUsername);
-                            userRememberBean.setPassword(newpassword);
-                            userRememberBean.setUserType(mCurrenType);
-                            userRememberBean.setId(mBean.getId());
+                            UserDBBean userDBBean = new UserDBBean();
+                            userDBBean.setUsername(mCurrentUsername);
+                            userDBBean.setPassword(newpassword);
+                            userDBBean.setUserRole(mCurrenType);
+                            userDBBean.setId(mBean.getId());
                             //添加失败
-                            UserDBBeanUtils.updateData(userRememberBean);
-                            UserDBRememberBean mBean = UserDBBeanUtils.queryListByMessageToGetPassword(mCurrentUsername);
+                            UserDBBeanUtils.updateData(userDBBean);
+                            UserDBBean mBean = UserDBBeanUtils.queryListByMessageToGetPassword(mCurrentUsername);
                             LogUtils.e("TAG=修改DB后这个用户的=Username==" + mBean.getUsername() + "====password==" + mBean.getPassword()
-                                    + "====Type==" + mBean.getUserType() + "====mBean.getId()==" + mBean.getId());
+                                    + "====Role==" + mBean.getUserRole() + "====mBean.getId()==" + mBean.getId());
                             toast(getResources().getString(R.string.mine_toast03));
                         } else {
                             toast(getResources().getString(R.string.mine_toast04));

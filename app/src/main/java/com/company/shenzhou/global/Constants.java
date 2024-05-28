@@ -7,9 +7,15 @@ package com.company.shenzhou.global;
  * desc：
  */
 public class Constants {
-    public static final int TAB_01 = 0;                 //用户管理
-    public static final int TAB_02 = 1;                 //视频
-    public static final int TAB_03 = 2;                 //我的
+    /**
+     * 本地数据库
+     * 0=普通用户，最低权限
+     * 1=权限用户，中等权限
+     * 0=超级管理员，最高权限
+     */
+    public static final int GeneralUser = 0;               //普通用户
+    public static final int PermissionUser = 1;            //权限用户
+    public static final int AdminUser = 2;                 //超级管理员
 
     //引导页
     public static final String SP_IS_FIRST_IN = "sp_is_first_in";  //是否第一次登入
@@ -510,7 +516,6 @@ public class Constants {
     public static final String Type_HexString_FF = "FF";     //神州转播
 
 
-
     //设备类型的，10进制字符串
     public static final String Type_DecString_00 = "00";     //工作站
     public static final String Type_DecString_01 = "01";     //HD3摄像机(HD3)
@@ -528,14 +533,6 @@ public class Constants {
     public static final String Type_DecString_A1 = "161";     //Android
     public static final String Type_DecString_A2 = "162";     //RC200
     public static final String Type_DecString_FF = "255";     //神州转播
-
-
-
-
-
-
-
-
 
 
     public static final String Type_00_DESC = "工作站";                                           //0x00

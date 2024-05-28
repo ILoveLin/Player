@@ -3,7 +3,7 @@ package com.company.shenzhou.playerdb.manager;
 import android.util.Log;
 
 import com.company.shenzhou.app.AppApplication;
-import com.company.shenzhou.bean.dbbean.UserDBRememberBean;
+import com.company.shenzhou.bean.dbbean.UserDBBean;
 import com.company.shenzhou.playerdb.DaoSession;
 
 import org.greenrobot.greendao.query.QueryBuilder;
@@ -24,7 +24,7 @@ public class UserDBBeanUtils {
      *
      * @param bean
      */
-    public static void insertData(UserDBRememberBean bean) {
+    public static void insertData(UserDBBean bean) {
         AppApplication.getDaoSession().insert(bean);
     }
 
@@ -33,7 +33,7 @@ public class UserDBBeanUtils {
      *
      * @param bean
      */
-    public static void insertOrReplaceData(UserDBRememberBean bean) {
+    public static void insertOrReplaceData(UserDBBean bean) {
         AppApplication.getDaoSession().insertOrReplace(bean);
     }
 
@@ -42,7 +42,7 @@ public class UserDBBeanUtils {
      * 删--delete()和deleteAll()；分别表示删除单个和删除所有。
      */
 
-    public static void deleteData(UserDBRememberBean bean) {
+    public static void deleteData(UserDBBean bean) {
         AppApplication.getDaoSession().delete(bean);
 
     }
@@ -58,7 +58,7 @@ public class UserDBBeanUtils {
      */
 
 
-    public static void updateData(UserDBRememberBean bean) {
+    public static void updateData(UserDBBean bean) {
         AppApplication.getDaoSession().insertOrReplace(bean);
     }
 
@@ -78,9 +78,9 @@ public class UserDBBeanUtils {
 
     public static List queryRaw(Long id) {
 
-        List<UserDBRememberBean> beanLis = (List<UserDBRememberBean>)//" where username = ?", name
-//                 AppApplication.getDaoSession().queryRaw(UserDBRememberBean.class, " where id = ?", id );
-                AppApplication.getDaoSession().queryRaw(UserDBRememberBean.class, " where id = ?", id.toString());
+        List<UserDBBean> beanLis = (List<UserDBBean>)//" where username = ?", name
+//                 AppApplication.getDaoSession().queryRaw(UserDBBean.class, " where id = ?", id );
+                AppApplication.getDaoSession().queryRaw(UserDBBean.class, " where id = ?", id.toString());
         return beanLis;
     }
 
@@ -90,20 +90,20 @@ public class UserDBBeanUtils {
      * @param name
      * @return
      */
-    public static UserDBRememberBean queryListByMessageToGetPassword(String name) {
+    public static UserDBBean queryListByMessageToGetPassword(String name) {
         boolean isExist = queryListIsExist(name);
         if (isExist) {
-            List<UserDBRememberBean> UserDBRememberBeanList = queryListByMessage(name);
-            Log.e("path=====:=====", UserDBRememberBeanList.size() + ""); //   /storage/emulated/0/1604026573438.mp4
-            for (int i = 0; i < UserDBRememberBeanList.size(); i++) {
+            List<UserDBBean> UserDBBeanList = queryListByMessage(name);
+            Log.e("path=====:=====", UserDBBeanList.size() + ""); //   /storage/emulated/0/1604026573438.mp4
+            for (int i = 0; i < UserDBBeanList.size(); i++) {
 
-                return UserDBRememberBeanList.get(0);
+                return UserDBBeanList.get(0);
 
             }
         } else {
-            return new UserDBRememberBean();
+            return new UserDBBean();
         }
-        return new UserDBRememberBean();
+        return new UserDBBean();
 
     }
 
@@ -113,41 +113,41 @@ public class UserDBBeanUtils {
      * @param name
      * @return
      */
-    public static List<UserDBRememberBean> queryListByMessage(String name) {
+    public static List<UserDBBean> queryListByMessage(String name) {
         DaoSession daoSession = AppApplication.getDaoSession();
-        QueryBuilder<UserDBRememberBean> qb = daoSession.queryBuilder(UserDBRememberBean.class);
-        List<UserDBRememberBean> students = daoSession.queryRaw(UserDBRememberBean.class, " where username = ?", name);
+        QueryBuilder<UserDBBean> qb = daoSession.queryBuilder(UserDBBean.class);
+        List<UserDBBean> students = daoSession.queryRaw(UserDBBean.class, " where username = ?", name);
         return students;
     }
     //tag其实就是id，但是greendao查找id会报错，只能通过tag标识
 
-    public static List<UserDBRememberBean> queryListByBeanIDTag(String tag) {
+    public static List<UserDBBean> queryListByBeanIDTag(String tag) {
         DaoSession daoSession = AppApplication.getDaoSession();
-        QueryBuilder<UserDBRememberBean> qb = daoSession.queryBuilder(UserDBRememberBean.class);
-        List<UserDBRememberBean> students = daoSession.queryRaw(UserDBRememberBean.class, " where tag = ?", tag);
+        QueryBuilder<UserDBBean> qb = daoSession.queryBuilder(UserDBBean.class);
+        List<UserDBBean> students = daoSession.queryRaw(UserDBBean.class, " where tag = ?", tag);
         return students;
     }
 
-    public static UserDBRememberBean queryListByName(String name) {
+    public static UserDBBean queryListByName(String name) {
         DaoSession daoSession = AppApplication.getDaoSession();
-        QueryBuilder<UserDBRememberBean> qb = daoSession.queryBuilder(UserDBRememberBean.class);
-        List<UserDBRememberBean> students = daoSession.queryRaw(UserDBRememberBean.class, " where username = ?", name);
-        UserDBRememberBean userDBRememberBean = students.get(0);
-        return userDBRememberBean;
+        QueryBuilder<UserDBBean> qb = daoSession.queryBuilder(UserDBBean.class);
+        List<UserDBBean> students = daoSession.queryRaw(UserDBBean.class, " where username = ?", name);
+        UserDBBean UserDBBean = students.get(0);
+        return UserDBBean;
     }
 
     //查询 超级管理员admin，用户是否存在，true=存在
     public static boolean queryAdminIsExist() {
         //查询所有数据
         try {
-            List<UserDBRememberBean> list = AppApplication.getDaoSession().getUserDBRememberBeanDao().queryBuilder().list();
+            List<UserDBBean> list = AppApplication.getDaoSession().getUserDBBeanDao().queryBuilder().list();
 
             if (null == list || list.isEmpty()) {
                 return false;
             }
             for (int i = 0; i < list.size(); i++) {
-                UserDBRememberBean bean = list.get(i);
-                if (1 == bean.getId() && "admin".equals(bean.getUsername()) ) {
+                UserDBBean bean = list.get(i);
+                if (1 == bean.getId() && "admin".equals(bean.getUsername())) {
                     return true;
                 }
             }
@@ -165,8 +165,8 @@ public class UserDBBeanUtils {
      */
     public static boolean queryListIsExist(String name) {
         DaoSession daoSession = AppApplication.getDaoSession();
-        QueryBuilder<UserDBRememberBean> qb = daoSession.queryBuilder(UserDBRememberBean.class);
-        List<UserDBRememberBean> students = daoSession.queryRaw(UserDBRememberBean.class, " where username = ?", name);
+        QueryBuilder<UserDBBean> qb = daoSession.queryBuilder(UserDBBean.class);
+        List<UserDBBean> students = daoSession.queryRaw(UserDBBean.class, " where username = ?", name);
 //        List<Student> students = daoSession.loadAll(Student.class);
 //        return students;
         Log.e("path=====Start:=====", students.size() + ""); //   /storage/emulated/0/1604026573438.mp4
@@ -184,8 +184,8 @@ public class UserDBBeanUtils {
      */
     public static boolean queryListIsIDExist(String id) {
         DaoSession daoSession = AppApplication.getDaoSession();
-        QueryBuilder<UserDBRememberBean> qb = daoSession.queryBuilder(UserDBRememberBean.class);
-        List<UserDBRememberBean> students = daoSession.queryRaw(UserDBRememberBean.class, " where id = ?", id);
+        QueryBuilder<UserDBBean> qb = daoSession.queryBuilder(UserDBBean.class);
+        List<UserDBBean> students = daoSession.queryRaw(UserDBBean.class, " where id = ?", id);
 //        List<Student> students = daoSession.loadAll(Student.class);
 //        return students;
         Log.e("path=====Start:=====", students.size() + ""); //   /storage/emulated/0/1604026573438.mp4
