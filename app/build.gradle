@@ -277,7 +277,8 @@ dependencies {
     implementation 'com.blankj:utilcode:1.30.7'
     //PDFView 本地加载pdf文件
     implementation 'com.joanzapata.pdfview:android-pdfview:1.0.4@aar'
-
+    //华为扫码
+    implementation 'com.huawei.hms:scanplus:2.10.0.301'
 
 
 

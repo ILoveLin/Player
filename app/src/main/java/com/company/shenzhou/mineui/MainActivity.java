@@ -6,6 +6,7 @@ import android.content.Intent;
 import android.os.Bundle;
 
 import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 import androidx.core.content.ContextCompat;
 import androidx.recyclerview.widget.RecyclerView;
 import androidx.viewpager.widget.ViewPager;
@@ -41,6 +42,7 @@ public final class MainActivity extends AppActivity
 
     private NavigationAdapter mNavigationAdapter;
     private FragmentPagerAdapter<AppFragment<?>> mPagerAdapter;
+    private DeviceFragment deviceFragment;
 
     public static void start(Context context) {
         start(context, UserFragment.class);
@@ -82,7 +84,8 @@ public final class MainActivity extends AppActivity
     protected void initData() {
         mPagerAdapter = new FragmentPagerAdapter<>(this);
         mPagerAdapter.addFragment(UserFragment.newInstance());
-        mPagerAdapter.addFragment(DeviceFragment.newInstance());
+        deviceFragment = DeviceFragment.newInstance();
+        mPagerAdapter.addFragment(deviceFragment);
         mPagerAdapter.addFragment(MineFragment.newInstance());
         mViewPager.setAdapter(mPagerAdapter);
         onNewIntent(getIntent());
@@ -142,6 +145,14 @@ public final class MainActivity extends AppActivity
         }
     }
 
+    //华为扫码，查看图库的时候需要权限申请
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        if (null!=deviceFragment) {
+            deviceFragment.onActivityResult(requestCode, resultCode, data);
+        }
+    }
     @NonNull
     @Override
     protected ImmersionBar createStatusBarConfig() {

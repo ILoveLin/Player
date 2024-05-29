@@ -1,16 +1,67 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:orientation="vertical"
-    tools:context="com.company.shenzhou.ui.fragment.CopyFragment">
+    android:orientation="vertical">
 
     <com.hjq.bar.TitleBar
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         app:leftIcon="@null"
+        app:rightIcon="@drawable/selector_add_something"
         app:title="@string/main_nav_device" />
+
+    <com.company.shenzhou.widget.StatusLayout
+        android:id="@+id/status_layout"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        app:srlAccentColor="@color/gray">
+
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical">
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:background="@color/white"
+                android:orientation="vertical">
+
+                <TextView
+                    android:id="@+id/tv_01_camera"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:background="@color/black20"
+                    android:padding="@dimen/padding_10"
+                    android:text="@string/permission_camera_description"
+                    android:textColor="@color/white"
+                    android:textSize="@dimen/dp_14"
+                    android:visibility="gone" />
+
+                <TextView
+                    android:id="@+id/tv_02_read"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:background="@color/black20"
+                    android:padding="@dimen/dp_10"
+                    android:text="@string/gallery_camera_description"
+                    android:textColor="@color/white"
+                    android:textSize="@dimen/dp_14"
+                    android:visibility="gone" />
+
+            </LinearLayout>
+
+            <androidx.recyclerview.widget.RecyclerView
+                android:id="@+id/device_recycleview"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent" />
+
+        </LinearLayout>
+
+
+    </com.company.shenzhou.widget.StatusLayout>
 
 </LinearLayout>

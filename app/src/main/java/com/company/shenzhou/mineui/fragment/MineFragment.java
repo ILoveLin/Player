@@ -92,6 +92,7 @@ public final class MineFragment extends TitleBarFragment<MainActivity> {
                 break;
         }
 
+    
     }
 
     @Override

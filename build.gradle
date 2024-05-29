@@ -8,6 +8,7 @@ buildscript {
     repositories {
         // 阿里云云效仓库（Gradle 插件）：https://maven.aliyun.com/mvn/guide
         maven { url 'https://maven.aliyun.com/repository/gradle-plugin' }
+        maven {url 'https://developer.huawei.com/repo/'}
         addCommonMaven(repositories)
         google()
     }
@@ -31,6 +32,7 @@ allprojects {
     repositories {
         // 友盟远程仓库：https://info.umeng.com/detail?id=443&cateId=1
         maven { url 'https://repo1.maven.org/maven2' }
+        maven {url 'https://developer.huawei.com/repo/'}
         addCommonMaven(repositories)
         google()
     }
