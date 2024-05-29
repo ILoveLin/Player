@@ -21,6 +21,7 @@ import com.company.shenzhou.bean.dbbean.DownBindNameListBean;
 import com.company.shenzhou.mineui.MainActivity;
 import com.company.shenzhou.mineui.activity.SearchDeviceActivity;
 import com.company.shenzhou.mineui.adapter.DeviceAdapter;
+import com.company.shenzhou.mineui.popup.ListIconPopup;
 import com.company.shenzhou.playerdb.manager.DeviceDBUtils;
 import com.company.shenzhou.ui.dialog.MessageDialog;
 import com.company.shenzhou.ui.popup.ListPopup;
@@ -156,9 +157,9 @@ public final class DeviceFragment extends TitleBarFragment<MainActivity> impleme
 
             @Override
             public void onRightClick(View view) {
-                new ListPopup.Builder(getActivity()).setList(getResources().getString(R.string.device_search), getResources().getString(R.string.device_scan), getResources().getString(R.string.device_writing))//icon_video_code
+                new ListIconPopup.Builder(getActivity()).setList(getResources().getString(R.string.device_search), getResources().getString(R.string.device_scan), getResources().getString(R.string.device_writing))//icon_video_code
 //                        .setBackground(1,getActivity().getResources().getDrawable(R.drawable.icon_video_code))
-                        .setListener((ListPopup.OnListener<String>) (popupWindow, position, s) -> {
+                        .setListener((ListIconPopup.OnListener<String>) (popupWindow, position, s) -> {
                             if (s.equals(getResources().getString(R.string.device_scan))) {
                                 getPermission2StartHWScanKit();
                             } else if (s.equals(getResources().getString(R.string.device_writing))) {

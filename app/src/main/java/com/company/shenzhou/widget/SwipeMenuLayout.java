@@ -51,7 +51,7 @@ import com.company.shenzhou.R;
  *
  */
 public class SwipeMenuLayout extends ViewGroup {
-    private static final String TAG = "zxt/SwipeMenuLayout";
+    private static final String TAG = "SwipeMenuLayout,==";
 
     private int mScaleTouchSlop;//为了处理单击事件的冲突
     private int mMaxVelocity;//计算滑动速度用

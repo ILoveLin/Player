@@ -14,7 +14,7 @@ public final class SearchDeviceActivity extends AppActivity {
 
     @Override
     protected int getLayoutId() {
-        return R.layout.copy_activity;
+        return R.layout.search_device_activity;
     }
 
     @Override
