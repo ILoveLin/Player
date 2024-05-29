@@ -314,7 +314,7 @@ public final class LoginActivity extends AppActivity implements KeyboardWatcher.
             SharePreferenceUtil.put(LoginActivity.this, SharePreferenceUtil.Current_Username, "admin");
             SharePreferenceUtil.put(LoginActivity.this, SharePreferenceUtil.Current_Password, "admin");
             SharePreferenceUtil.put(LoginActivity.this, SharePreferenceUtil.Current_UserType, 2);
-            SharePreferenceUtil.put(LoginActivity.this, SharePreferenceUtil.Current_ID, 1);
+            SharePreferenceUtil.put(LoginActivity.this, SharePreferenceUtil.Current_ID, 2L);
             //超级用户只能修改一次密码
             SharePreferenceUtil.put(LoginActivity.this, SharePreferenceUtil.Current_Admin_ChangePassword, false);
         }

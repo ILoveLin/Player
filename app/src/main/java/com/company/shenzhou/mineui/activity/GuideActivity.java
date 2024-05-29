@@ -141,6 +141,9 @@ public final class GuideActivity extends AppActivity {
                     }
                     dialog.dismiss();
                     setCurrentUserMsg();
+                }).setOnClickListener(R.id.btn_dialog_custom_cancle, (dialog, view) -> {
+                    dialog.dismiss();
+                    finish();
                 }).show();
 
 
@@ -158,7 +161,7 @@ public final class GuideActivity extends AppActivity {
         SharePreferenceUtil.put(GuideActivity.this, SharePreferenceUtil.Current_Username, "admin");
         SharePreferenceUtil.put(GuideActivity.this, SharePreferenceUtil.Current_Password, "admin");
         SharePreferenceUtil.put(GuideActivity.this, SharePreferenceUtil.Current_UserType, 2);
-        SharePreferenceUtil.put(GuideActivity.this, SharePreferenceUtil.Current_ID, 1);
+        SharePreferenceUtil.put(GuideActivity.this, SharePreferenceUtil.Current_ID, 2L);
         //超级用户只能修改一次密码
         SharePreferenceUtil.put(GuideActivity.this, SharePreferenceUtil.Current_Admin_ChangePassword, false);
 

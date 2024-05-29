@@ -73,7 +73,7 @@ public final class MineFragment extends TitleBarFragment<MainActivity> {
         mmkv = MMKV.defaultMMKV();
         String username = (String) SharePreferenceUtil.get(getActivity(), SharePreferenceUtil.Current_Username, "");
         //0普通  1权限  2超级用户
-        int userType = (int) SharePreferenceUtil.get(getActivity(), SharePreferenceUtil.Current_UserType, 0);
+        int userType = (int) SharePreferenceUtil.get(getActivity(), SharePreferenceUtil.Current_UserType, 2);
         String romAvailableSize = FileUtil.getROMAvailableSize(getActivity());
         String romTotalSize = FileUtil.getROMTotalSize(getActivity());
         LogUtils.e("总空间==" + romTotalSize);
@@ -81,13 +81,13 @@ public final class MineFragment extends TitleBarFragment<MainActivity> {
         mSpaceSize.setRightText(romAvailableSize);
         mLoginUse.setRightText(username);
         switch (userType) {
-            case 0:
+            case Constants.GeneralUser:
                 mLoginUseLevel.setRightText(getResources().getString(R.string.mine_nor_user));
                 break;
-            case 1:
+            case Constants.PermissionUser:
                 mLoginUseLevel.setRightText(getResources().getString(R.string.mine_permissions));
                 break;
-            case 2:
+            case Constants.AdminUser:
                 mLoginUseLevel.setRightText(getResources().getString(R.string.mine_super_user));
                 break;
         }
@@ -184,7 +184,7 @@ public final class MineFragment extends TitleBarFragment<MainActivity> {
                                     "====mCurrenType==" + mCurrenType + "====mBean.getId()==" + mBean.getId());
                             SharePreferenceUtil.put(getAttachActivity(), SharePreferenceUtil.Current_Username, mCurrentUsername);
                             SharePreferenceUtil.put(getAttachActivity(), SharePreferenceUtil.Current_Password, newpassword);
-                            SharePreferenceUtil.put(getAttachActivity(), SharePreferenceUtil.Current_ID, mBean.getId() + "");
+                            SharePreferenceUtil.put(getAttachActivity(), SharePreferenceUtil.Current_ID, mBean.getId() );
                             UserDBBean userDBBean = new UserDBBean();
                             userDBBean.setUsername(mCurrentUsername);
                             userDBBean.setPassword(newpassword);

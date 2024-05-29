@@ -60,30 +60,32 @@ public final class UserAdapter extends AppAdapter<UserDBBean> {
         @Override
         public void onBindView(int position) {
             UserDBBean bean = getItem(position);
-            int userItemType = bean.getUserRole();
             int currentUserType = (int) SharePreferenceUtil.get(mContext, SharePreferenceUtil.Current_UserType, Constants.GeneralUser);
             mUserName.setText(bean.getUsername());
             //0普通  1权限  2超级用户
             switch (bean.getUserRole()) {
                 case Constants.GeneralUser:
                     mUserrRole.setText(mContext.getResources().getString(R.string.level_01));
+                    mSwitchButton.setChecked(false);
+                    mSwitchButton.setVisibility(View.VISIBLE);
+                    mUpdatePassword.setVisibility(View.VISIBLE);
                     break;
                 case Constants.PermissionUser:
                     mUserrRole.setText(mContext.getResources().getString(R.string.level_02));
+                    mSwitchButton.setChecked(true);
+                    mSwitchButton.setVisibility(View.VISIBLE);
+                    mUpdatePassword.setVisibility(View.VISIBLE);
                     break;
                 case Constants.AdminUser:
                     mUserrRole.setText(mContext.getResources().getString(R.string.level_03));
+                    mSwitchButton.setVisibility(View.GONE);
+                    mUpdatePassword.setVisibility(View.GONE);
                     break;
             }
 
-            //超级管理员的时候，隐藏当前item
-            if (userItemType == 2) {
-                mSwitchButton.setVisibility(View.GONE);
-                mUpdatePassword.setVisibility(View.GONE);
-            }
             //设置是否是权限用户
             //0普通用户、1权限用户、2超级管理员  默认为0==普通用户
-            //进来的时候判断当前系统用户类型和当前item类型 然后做相对于的权限判断
+            //进来的时候判断当前系统用户权限和当前item权限 然后做相对于的权限判断c操作
             if (currentUserType == 2 && bean.getUserRole() == 2) {
                 mSwitchButton.setEnabled(false);  //超级用户对自己不能使用
             } else if (currentUserType == 2 && bean.getUserRole() < 2) {
@@ -91,7 +93,7 @@ public final class UserAdapter extends AppAdapter<UserDBBean> {
             } else {
                 mSwitchButton.setEnabled(false);
             }
-            LogUtils.e("TAG====adapter==currentUserType===" + currentUserType + "==userItemType==" + userItemType);
+            LogUtils.e("TAG====adapter==currentUserType===" + currentUserType + "==userItemType==" + bean.getUserRole());
             //设置item 的用户名
             mUserName.setText(getItem(position).getUsername());
 

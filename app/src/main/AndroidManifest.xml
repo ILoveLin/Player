@@ -252,7 +252,6 @@
         <!-- 主界面 -->
         <activity
             android:name=".mineui.MainActivity"
-            android:launchMode="singleTask"
             android:screenOrientation="portrait"
             android:windowSoftInputMode="adjustPan" />
 
