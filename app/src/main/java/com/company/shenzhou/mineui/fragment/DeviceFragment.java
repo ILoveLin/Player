@@ -5,7 +5,6 @@ import android.content.Intent;
 import android.os.Build;
 import android.os.Handler;
 import android.os.Message;
-import android.util.Log;
 import android.view.View;
 import android.widget.TextView;
 
@@ -17,25 +16,19 @@ import com.company.shenzhou.R;
 import com.company.shenzhou.action.StatusAction;
 import com.company.shenzhou.app.TitleBarFragment;
 import com.company.shenzhou.bean.RefreshEvent;
-import com.company.shenzhou.bean.ZXingLine1Bean;
-import com.company.shenzhou.bean.ZXingLine23Bean;
 import com.company.shenzhou.bean.dbbean.DeviceDBBean;
 import com.company.shenzhou.bean.dbbean.DownBindNameListBean;
-import com.company.shenzhou.global.Constants;
 import com.company.shenzhou.mineui.MainActivity;
 import com.company.shenzhou.mineui.activity.SearchDeviceActivity;
 import com.company.shenzhou.mineui.adapter.DeviceAdapter;
 import com.company.shenzhou.playerdb.manager.DeviceDBUtils;
 import com.company.shenzhou.ui.dialog.MessageDialog;
 import com.company.shenzhou.ui.popup.ListPopup;
-import com.company.shenzhou.utlis.AesUtils;
 import com.company.shenzhou.utlis.HuaweiScanPlus;
 import com.company.shenzhou.utlis.JsonUtil;
 import com.company.shenzhou.utlis.LogUtils;
 import com.company.shenzhou.utlis.SharePreferenceUtil;
 import com.company.shenzhou.widget.StatusLayout;
-import com.google.gson.Gson;
-import com.google.gson.reflect.TypeToken;
 import com.hjq.bar.OnTitleBarListener;
 import com.hjq.bar.TitleBar;
 import com.hjq.base.BaseDialog;
@@ -50,7 +43,6 @@ import org.greenrobot.eventbus.EventBus;
 import org.greenrobot.eventbus.Subscribe;
 import org.greenrobot.eventbus.ThreadMode;
 
-import java.lang.reflect.Type;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -69,6 +61,8 @@ public final class DeviceFragment extends TitleBarFragment<MainActivity> impleme
     private RecyclerView mRecyclerView;
     private TitleBar mTitleBar;
     private DeviceAdapter mAdapter;
+    //当前登入用户的 username
+    private String currentUsername;
     //此处查询数据库所有设备,在根据name,筛选出当前用户名创建(绑定)的所有设备
     private DownBindNameListBean indexBean;
     private List<DeviceDBBean> currentRecycleViewList = new ArrayList<>();
@@ -84,6 +78,8 @@ public final class DeviceFragment extends TitleBarFragment<MainActivity> impleme
     private static final int Set_MsgDialogData = 0x12;
     //填一填，弹出设备类型对话框
     private static final int Show_DeviceType_Dialog = 0x13;
+
+
     @SuppressLint("HandlerLeak")
     private Handler mHandler = new Handler() {
         @Override
@@ -109,7 +105,6 @@ public final class DeviceFragment extends TitleBarFragment<MainActivity> impleme
             }
         }
     };
-    private String currentUsername;
 
 
     public static DeviceFragment newInstance() {
@@ -117,31 +112,15 @@ public final class DeviceFragment extends TitleBarFragment<MainActivity> impleme
     }
 
     @Override
+    protected int getLayoutId() {
+        return R.layout.device_fragment;
+    }
+
+    @Override
     public void onResume() {
         super.onResume();
         LogUtils.e(TAG + "========onResume==");
-        startThreadReadDBData();
-    }
-
-    @Override
-    public void onDestroy() {
-        super.onDestroy();
-        EventBus.getDefault().unregister(this);
-    }
-
-    @Subscribe(threadMode = ThreadMode.MAIN)
-    public void onRefreshEvent(RefreshEvent event) {
-        //刷新列表数据
-        startThreadReadDBData();
-        //显示toast
-        toast(event.getToastStr());
-
-    }
-
-
-    @Override
-    protected int getLayoutId() {
-        return R.layout.device_fragment;
+        startThreadNotifyDataSetChanged();
     }
 
 
@@ -380,7 +359,8 @@ public final class DeviceFragment extends TitleBarFragment<MainActivity> impleme
     //** * * * * * * * * * * * * * * * * * * * * 华为扫码相关code* * * * * * * * * * * * * * * * * * *
     //** * * * * * * * * * * * * * * * * * * * * 结束-结束-结束* * * * * * * * * * * * * * * * * * *
 
-    private void startThreadReadDBData() {
+    //开启线程，读取数据库数据，然后刷新界面
+    private void startThreadNotifyDataSetChanged() {
         new Thread(() -> {
             if (indexBean == null) {
                 indexBean = new DownBindNameListBean();
@@ -408,10 +388,13 @@ public final class DeviceFragment extends TitleBarFragment<MainActivity> impleme
         }).start();
     }
 
-    @Override
-    public boolean isStatusBarEnabled() {
-        // 使用沉浸式状态栏
-        return !super.isStatusBarEnabled();
+    @Subscribe(threadMode = ThreadMode.MAIN)
+    public void onRefreshEvent(RefreshEvent event) {
+        //刷新列表数据
+        startThreadNotifyDataSetChanged();
+        //显示toast
+        toast(event.getToastStr());
+
     }
 
     @Override
@@ -419,6 +402,17 @@ public final class DeviceFragment extends TitleBarFragment<MainActivity> impleme
         return mStatusLayout;
     }
 
+    @Override
+    public boolean isStatusBarEnabled() {
+        // 使用沉浸式状态栏
+        return !super.isStatusBarEnabled();
+    }
+
+    @Override
+    public void onDestroy() {
+        super.onDestroy();
+        EventBus.getDefault().unregister(this);
+    }
 
 //
 //    private void getJsonData(String result) {

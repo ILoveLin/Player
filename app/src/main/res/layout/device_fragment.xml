@@ -5,7 +5,9 @@
     android:layout_height="match_parent"
     android:orientation="vertical">
 
+
     <com.hjq.bar.TitleBar
+        android:id="@+id/title_bar"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         app:leftIcon="@null"
@@ -35,10 +37,10 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:background="@color/black20"
-                    android:padding="@dimen/padding_10"
+                    android:padding="@dimen/dp_10"
                     android:text="@string/permission_camera_description"
                     android:textColor="@color/white"
-                    android:textSize="@dimen/dp_14"
+                    android:textSize="@dimen/sp_14"
                     android:visibility="gone" />
 
                 <TextView
@@ -49,7 +51,7 @@
                     android:padding="@dimen/dp_10"
                     android:text="@string/gallery_camera_description"
                     android:textColor="@color/white"
-                    android:textSize="@dimen/dp_14"
+                    android:textSize="@dimen/sp_14"
                     android:visibility="gone" />
 
             </LinearLayout>

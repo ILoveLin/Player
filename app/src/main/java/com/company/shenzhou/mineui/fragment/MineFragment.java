@@ -76,8 +76,8 @@ public final class MineFragment extends TitleBarFragment<MainActivity> {
         int userType = (int) SharePreferenceUtil.get(getActivity(), SharePreferenceUtil.Current_UserRole, 2);
         String romAvailableSize = FileUtil.getROMAvailableSize(getActivity());
         String romTotalSize = FileUtil.getROMTotalSize(getActivity());
-        LogUtils.e("总空间==" + romTotalSize);
-        LogUtils.e("可用空间==" + romAvailableSize);
+        LogUtils.e(TAG+"总空间==" + romTotalSize);
+        LogUtils.e(TAG+"可用空间==" + romAvailableSize);
         mSpaceSize.setRightText(romAvailableSize);
         mLoginUse.setRightText(username);
         switch (userType) {
@@ -92,7 +92,7 @@ public final class MineFragment extends TitleBarFragment<MainActivity> {
                 break;
         }
 
-    
+
     }
 
     @Override
