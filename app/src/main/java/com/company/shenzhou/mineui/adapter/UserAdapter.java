@@ -93,7 +93,7 @@ public final class UserAdapter extends AppAdapter<UserDBBean> {
             } else {
                 mSwitchButton.setEnabled(false);
             }
-            LogUtils.e("TAG====adapter==currentUserType===" + currentUserType + "==userItemType==" + bean.getUserRole());
+            LogUtils.e("TAG==adapter==currentUserType=" + currentUserType + "==userItemType==" + bean.getUserRole());
             //设置item 的用户名
             mUserName.setText(getItem(position).getUsername());
 

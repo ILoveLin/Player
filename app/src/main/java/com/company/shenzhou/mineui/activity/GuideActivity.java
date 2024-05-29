@@ -41,7 +41,7 @@ import me.relex.circleindicator.CircleIndicator3;
  * desc   : 应用引导页
  */
 public final class GuideActivity extends AppActivity {
-    private static final String TAG = "guide，界面==";
+    private static final String TAG = "GuideActivity，界面==";
 
     private ViewPager2 mViewPager;
     private CircleIndicator3 mIndicatorView;

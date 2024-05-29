@@ -30,6 +30,8 @@ import com.hjq.base.FragmentPagerAdapter;
  */
 public final class MainActivity extends AppActivity
         implements NavigationAdapter.OnNavigationListener {
+    private static final String TAG = "MainActivity，界面==";
+
 
     private static final String INTENT_KEY_IN_FRAGMENT_INDEX = "fragmentIndex";
     private static final String INTENT_KEY_IN_FRAGMENT_CLASS = "fragmentClass";
@@ -41,7 +43,7 @@ public final class MainActivity extends AppActivity
     private FragmentPagerAdapter<AppFragment<?>> mPagerAdapter;
 
     public static void start(Context context) {
-        start(context, MineFragment.class);
+        start(context, UserFragment.class);
     }
 
     public static void start(Context context, Class<? extends AppFragment<?>> fragmentClass) {

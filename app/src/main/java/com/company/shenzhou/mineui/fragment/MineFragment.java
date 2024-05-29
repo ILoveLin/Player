@@ -36,6 +36,7 @@ import java.util.Calendar;
  * desc   : 可我的界面
  */
 public final class MineFragment extends TitleBarFragment<MainActivity> {
+    private static final String TAG = "MineFragment，界面==";
 
     private SettingBar mLoginUse;
     private SettingBar mLoginUseLevel;
@@ -91,6 +92,13 @@ public final class MineFragment extends TitleBarFragment<MainActivity> {
                 break;
         }
 
+    }
+
+    @Override
+    public void onResume() {
+        super.onResume();
+        LogUtils.e(TAG + "========onResume==");
+        initData();
     }
 
     @SingleClick
@@ -160,7 +168,6 @@ public final class MineFragment extends TitleBarFragment<MainActivity> {
 
     private void updatePassword() {
         String mCurrentUsername = (String) SharePreferenceUtil.get(getAttachActivity(), SharePreferenceUtil.Current_Username, "");
-        LogUtils.e("TAG==current系统用户==" + mCurrentUsername);
         int mCurrenType = (int) SharePreferenceUtil.get(getAttachActivity(), SharePreferenceUtil.Current_UserRole, 0);
         UserDBBean mBean = UserDBBeanUtils.queryListByMessageToGetPassword(mCurrentUsername);
         LogUtils.e("TAG==Username==" + mBean.getUsername() + "====password==" + mBean.getPassword() +

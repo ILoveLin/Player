@@ -10,6 +10,7 @@ import com.company.shenzhou.app.AppActivity;
  * desc   : 可进行拷贝的副本
  */
 public final class CopyActivity extends AppActivity {
+    private static final String TAG = "CopyActivity，界面==";
 
     @Override
     protected int getLayoutId() {

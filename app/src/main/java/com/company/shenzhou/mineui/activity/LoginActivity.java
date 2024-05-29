@@ -46,7 +46,7 @@ import java.util.Objects;
  * desc   : 登入界面
  */
 public final class LoginActivity extends AppActivity implements KeyboardWatcher.SoftKeyboardStateListener {
-    private static final String TAG = "登入，界面==";
+    private static final String TAG = "LoginActivity，界面==";
     private ImageView mLogoView;
     private ImageButton username_right;
     private LinearLayout mBodyLayout;

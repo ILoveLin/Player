@@ -79,14 +79,8 @@ public final class UserFragment extends TitleBarFragment<MainActivity> implement
         LogUtils.e(TAG + "========loginUserRole==" + loginUserRole);
         LogUtils.e(TAG + "========loginUsername==" + loginUsername);
         mLoginUsername.setText(loginUsername);
-
         mDataList = (ArrayList) UserDBBeanUtils.queryAll(UserDBBean.class);
-        for (int i = 0; i < mDataList.size(); i++) {
-            UserDBBean a = (UserDBBean) mDataList.get(i);
-            LogUtils.e(TAG + "==init==bean.toString====" + a.toString());
-        }
         mAdapter.setData(mDataList);
-
         mTitleBar.setOnTitleBarListener(new OnTitleBarListener() {
             @Override
             public void onLeftClick(View view) {
@@ -111,6 +105,13 @@ public final class UserFragment extends TitleBarFragment<MainActivity> implement
             }
         });
 
+    }
+
+    @Override
+    public void onResume() {
+        super.onResume();
+        LogUtils.e(TAG + "========onResume==");
+        initData();
     }
 
     @Override
@@ -188,8 +189,6 @@ public final class UserFragment extends TitleBarFragment<MainActivity> implement
                     toast(getResources().getString(R.string.toast_01));
                     break;
                 case Constants.PermissionUser:  //权限用户
-
-
                     if (role == Constants.AdminUser) {
                         toast(getResources().getString(R.string.toast_02));
                         //修改密码
@@ -248,7 +247,7 @@ public final class UserFragment extends TitleBarFragment<MainActivity> implement
      * 修改密码对话框
      *
      * @param bean
-     * @param type  当前被修改用户的    权限等级，因为超级用户只能被修改一次密码的机会，所以如果是admin 需要添加sp 标识
+     * @param type 当前被修改用户的    权限等级，因为超级用户只能被修改一次密码的机会，所以如果是admin 需要添加sp 标识
      */
     private void showChangePasswordDialog(UserDBBean bean, String type) {
 

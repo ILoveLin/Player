@@ -11,6 +11,7 @@ import com.company.shenzhou.ui.activity.CopyActivity;
  * desc   : 可进行拷贝的副本
  */
 public final class CopyFragment extends AppFragment<CopyActivity> {
+    private static final String TAG = "CopyFragment，界面==";
 
     public static CopyFragment newInstance() {
         return new CopyFragment();

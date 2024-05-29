@@ -30,7 +30,6 @@ public final class Input2PasswordDialog {
         public Builder(Context context) {
             super(context);
             setCustomView(R.layout.input_2_passwrod_dialog);
-
             mInputOldView = findViewById(R.id.cet_cme_old_password);
             mInputNewView = findViewById(R.id.cet_cme_new_password);
             addOnShowListener(this);
