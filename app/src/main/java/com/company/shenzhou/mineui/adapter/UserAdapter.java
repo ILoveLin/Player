@@ -60,7 +60,7 @@ public final class UserAdapter extends AppAdapter<UserDBBean> {
         @Override
         public void onBindView(int position) {
             UserDBBean bean = getItem(position);
-            int currentUserType = (int) SharePreferenceUtil.get(mContext, SharePreferenceUtil.Current_UserType, Constants.GeneralUser);
+            int currentUserType = (int) SharePreferenceUtil.get(mContext, SharePreferenceUtil.Current_UserRole, Constants.GeneralUser);
             mUserName.setText(bean.getUsername());
             //0普通  1权限  2超级用户
             switch (bean.getUserRole()) {

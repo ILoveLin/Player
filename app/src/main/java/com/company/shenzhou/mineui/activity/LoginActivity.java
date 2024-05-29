@@ -193,7 +193,7 @@ public final class LoginActivity extends AppActivity implements KeyboardWatcher.
             if (password.equals(dbPassword)) {  //判断数据库密码和输入密码是否一致,之后更新SP的当前用户信息
                 SharePreferenceUtil.put(LoginActivity.this, SharePreferenceUtil.Current_Username, dbUsername);
                 SharePreferenceUtil.put(LoginActivity.this, SharePreferenceUtil.Current_Password, dbPassword);
-                SharePreferenceUtil.put(LoginActivity.this, SharePreferenceUtil.Current_UserType, dbUsertype);
+                SharePreferenceUtil.put(LoginActivity.this, SharePreferenceUtil.Current_UserRole, dbUsertype);
                 SharePreferenceUtil.put(LoginActivity.this, SharePreferenceUtil.Current_ID, id);
                 SharePreferenceUtil.put(LoginActivity.this, Constants.SP_IS_FIRST_IN, false);   //false 不是第一次登入了
                 SharePreferenceUtil.put(LoginActivity.this, Constants.Is_Logined, true);   //false  登录的标志 true表示登录了
@@ -313,7 +313,7 @@ public final class LoginActivity extends AppActivity implements KeyboardWatcher.
             }
             SharePreferenceUtil.put(LoginActivity.this, SharePreferenceUtil.Current_Username, "admin");
             SharePreferenceUtil.put(LoginActivity.this, SharePreferenceUtil.Current_Password, "admin");
-            SharePreferenceUtil.put(LoginActivity.this, SharePreferenceUtil.Current_UserType, 2);
+            SharePreferenceUtil.put(LoginActivity.this, SharePreferenceUtil.Current_UserRole, 2);
             SharePreferenceUtil.put(LoginActivity.this, SharePreferenceUtil.Current_ID, 2L);
             //超级用户只能修改一次密码
             SharePreferenceUtil.put(LoginActivity.this, SharePreferenceUtil.Current_Admin_ChangePassword, false);

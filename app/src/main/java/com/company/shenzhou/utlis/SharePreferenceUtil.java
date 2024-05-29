@@ -29,7 +29,7 @@ public class SharePreferenceUtil {
     public static final String DYNAMIC_SWITCH_TAB = "dynamic.switching.tab";
 
     //用户登入的时候存入
-    public static final String Current_UserType = "2";  //0普通  1权限  2超级用户
+    public static final String Current_UserRole = "2";  //0普通  1权限  2超级用户
     public static final String Current_Username = "admin";     // 虽然是不同字段表示，但是"admin" 如果同时存储username和password  后者会覆盖前者
     public static final String Current_Password = "123456000";    //
     public static final String Current_ToastShow = "ToastShow";    //解决第一次登入，用户列表显示adapter中toast，bug
@@ -47,7 +47,7 @@ public class SharePreferenceUtil {
     //("HD3", "HD3-4K", "一代一体机","耳鼻喉治疗台","妇科治疗台","泌尿治疗台","工作站","神州转播")
     //  0         1        2               3           4           5           6       7   ,此处是设备类型选择的position
 
-    public static final String Current_Admin_ChangePassword = "change";  //0普通  1权限  2超级用户
+    public static final String Current_Admin_ChangePassword = "change";  //0普通  1权限  2超级用户    超级用户只能被修改一次密码的机会   的标识
 
     /**
      * HD3   ==rtsp://username:password@ip/MediaInput/h264/stream_1 ------     --HD3，高清

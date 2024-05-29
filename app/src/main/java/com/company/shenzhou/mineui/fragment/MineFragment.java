@@ -9,7 +9,6 @@ import com.company.shenzhou.R;
 import com.company.shenzhou.aop.SingleClick;
 import com.company.shenzhou.app.TitleBarFragment;
 import com.company.shenzhou.bean.dbbean.UserDBBean;
-import com.company.shenzhou.bean.dbbean.UserDBRememberBean;
 import com.company.shenzhou.global.Constants;
 import com.company.shenzhou.mineui.MainActivity;
 import com.company.shenzhou.mineui.activity.BrowserActivity;
@@ -73,7 +72,7 @@ public final class MineFragment extends TitleBarFragment<MainActivity> {
         mmkv = MMKV.defaultMMKV();
         String username = (String) SharePreferenceUtil.get(getActivity(), SharePreferenceUtil.Current_Username, "");
         //0普通  1权限  2超级用户
-        int userType = (int) SharePreferenceUtil.get(getActivity(), SharePreferenceUtil.Current_UserType, 2);
+        int userType = (int) SharePreferenceUtil.get(getActivity(), SharePreferenceUtil.Current_UserRole, 2);
         String romAvailableSize = FileUtil.getROMAvailableSize(getActivity());
         String romTotalSize = FileUtil.getROMTotalSize(getActivity());
         LogUtils.e("总空间==" + romTotalSize);
@@ -162,7 +161,7 @@ public final class MineFragment extends TitleBarFragment<MainActivity> {
     private void updatePassword() {
         String mCurrentUsername = (String) SharePreferenceUtil.get(getAttachActivity(), SharePreferenceUtil.Current_Username, "");
         LogUtils.e("TAG==current系统用户==" + mCurrentUsername);
-        int mCurrenType = (int) SharePreferenceUtil.get(getAttachActivity(), SharePreferenceUtil.Current_UserType, 0);
+        int mCurrenType = (int) SharePreferenceUtil.get(getAttachActivity(), SharePreferenceUtil.Current_UserRole, 0);
         UserDBBean mBean = UserDBBeanUtils.queryListByMessageToGetPassword(mCurrentUsername);
         LogUtils.e("TAG==Username==" + mBean.getUsername() + "====password==" + mBean.getPassword() +
                 "====Type==" + mBean.getUserRole() + "====mBean.getId()==" + mBean.getId());

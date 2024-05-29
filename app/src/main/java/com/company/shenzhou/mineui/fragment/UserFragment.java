@@ -9,7 +9,6 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.company.shenzhou.R;
 import com.company.shenzhou.app.TitleBarFragment;
 import com.company.shenzhou.bean.dbbean.UserDBBean;
-import com.company.shenzhou.bean.dbbean.UserDBRememberBean;
 import com.company.shenzhou.global.Constants;
 import com.company.shenzhou.mineui.MainActivity;
 import com.company.shenzhou.mineui.activity.LoginActivity;
@@ -43,8 +42,8 @@ public final class UserFragment extends TitleBarFragment<MainActivity> implement
 
     private WrapRecyclerView mRecyclerView;
     private UserAdapter mAdapter;
-    private int currentUserType;
-    private String currentUsername;
+    private int loginUserRole;
+    private String loginUsername;
     private ArrayList<UserDBBean> mDataList = new ArrayList<>();
     ;
     private TextView mLoginUsername;
@@ -75,11 +74,11 @@ public final class UserFragment extends TitleBarFragment<MainActivity> implement
 
     @Override
     protected void initData() {
-        currentUserType = (int) SharePreferenceUtil.get(getActivity(), SharePreferenceUtil.Current_UserType, 0);
-        currentUsername = (String) SharePreferenceUtil.get(getActivity(), SharePreferenceUtil.Current_Username, "");
-        LogUtils.e(TAG + "======db==currentUserType==" + currentUserType);
-        LogUtils.e(TAG + "======db==currentUsername==" + currentUsername);
-        mLoginUsername.setText(currentUsername);
+        loginUserRole = (int) SharePreferenceUtil.get(getActivity(), SharePreferenceUtil.Current_UserRole, 0);
+        loginUsername = (String) SharePreferenceUtil.get(getActivity(), SharePreferenceUtil.Current_Username, "");
+        LogUtils.e(TAG + "========loginUserRole==" + loginUserRole);
+        LogUtils.e(TAG + "========loginUsername==" + loginUsername);
+        mLoginUsername.setText(loginUsername);
 
         mDataList = (ArrayList) UserDBBeanUtils.queryAll(UserDBBean.class);
         for (int i = 0; i < mDataList.size(); i++) {
@@ -101,11 +100,11 @@ public final class UserFragment extends TitleBarFragment<MainActivity> implement
 
             @Override
             public void onRightClick(View view) {
-                if (currentUserType == Constants.GeneralUser) { //普通用户
+                if (loginUserRole == Constants.GeneralUser) { //普通用户
                     toast(getResources().getString(R.string.toast_10));
-                } else if (currentUserType == Constants.PermissionUser) {//权限用户
+                } else if (loginUserRole == Constants.PermissionUser) {//权限用户
                     showAddUserDialog();
-                } else if (currentUserType == Constants.AdminUser) {//超级管理员
+                } else if (loginUserRole == Constants.AdminUser) {//超级管理员
                     showAddUserDialog();
 
                 }
@@ -164,7 +163,7 @@ public final class UserFragment extends TitleBarFragment<MainActivity> implement
 
 
                 //0普通用户、1权限用户、2超级管理员  默认为0-普通用户
-                if (currentUserType == Constants.AdminUser && role < Constants.AdminUser) {  //只有超级管理员才可以设置权限
+                if (loginUserRole == Constants.AdminUser && role < Constants.AdminUser) {  //只有超级管理员才可以设置权限
                     mSwitchButton.setEnabled(true);
                     if (isChecked) {
                         bean.setId(bean.id);
@@ -184,16 +183,20 @@ public final class UserFragment extends TitleBarFragment<MainActivity> implement
             });
             //修改密码
         } else if (viewId == R.id.update_password) {
-            switch (currentUserType) {  //当前用户权限 ---->只有超级用户才可以修改，其他用户去我的里面修改
+            switch (loginUserRole) {  //当前用户权限 ---->只有超级用户才可以修改，其他用户去我的里面修改
                 case Constants.GeneralUser:  //普通用户
                     toast(getResources().getString(R.string.toast_01));
                     break;
                 case Constants.PermissionUser:  //权限用户
-                    if (currentUserType > role) {
-                        //修改密码
-                        showChangePasswordDialog(bean, Constants.PermissionUser + "");
-                    } else {
+
+
+                    if (role == Constants.AdminUser) {
                         toast(getResources().getString(R.string.toast_02));
+                        //修改密码
+                    } else if (role == Constants.PermissionUser) {
+                        toast(getResources().getString(R.string.toast_01));
+                    } else {
+                        showChangePasswordDialog(bean, Constants.GeneralUser + "");
                     }
                     break;
                 case Constants.AdminUser:  //超级用户
@@ -208,14 +211,14 @@ public final class UserFragment extends TitleBarFragment<MainActivity> implement
                 mSwipeMenuLayout.quickClose();
             }
             //当前用户权限
-            switch (currentUserType) {
+            switch (loginUserRole) {
                 case Constants.GeneralUser:  //普通用户
                     toast(getResources().getString(R.string.toast_03));
                     break;
                 case Constants.PermissionUser:  //权限用户
-                    if (currentUserType > role) {  //大于权限才可以删除
+                    if (loginUserRole > role) {  //大于权限才可以删除
                         showDeleteDialog(bean, Constants.PermissionUser, position);
-                    } else if (currentUserType == role) {
+                    } else if (loginUserRole == role) {
                         String currentUsername = (String) SharePreferenceUtil.get(getActivity(), SharePreferenceUtil.Current_Username, "");
                         if (currentUsername.equals(bean.getUsername())) {
                             showDeleteMineDialog(bean);
@@ -245,7 +248,7 @@ public final class UserFragment extends TitleBarFragment<MainActivity> implement
      * 修改密码对话框
      *
      * @param bean
-     * @param type
+     * @param type  当前被修改用户的    权限等级，因为超级用户只能被修改一次密码的机会，所以如果是admin 需要添加sp 标识
      */
     private void showChangePasswordDialog(UserDBBean bean, String type) {
 
@@ -268,6 +271,7 @@ public final class UserFragment extends TitleBarFragment<MainActivity> implement
                         UserDBBeanUtils.updateData(bean);
                         List list = UserDBBeanUtils.queryAll(UserDBBean.class);
                         mAdapter.setData(list);
+                        //超级用户只能被修改一次密码的机会   的标识
                         if (type.equals(Constants.AdminUser + "")) {
                             SharePreferenceUtil.put(getActivity(), SharePreferenceUtil.Current_Admin_ChangePassword, true);
                         }
@@ -308,7 +312,7 @@ public final class UserFragment extends TitleBarFragment<MainActivity> implement
                         SharePreferenceUtil.put(getActivity(), Constants.Is_Logined, false);
                         startActivity(new Intent(getActivity(), LoginActivity.class));
                         String name = (String) SharePreferenceUtil.get(getActivity(), SharePreferenceUtil.Current_Username, "");
-                        int type = (int) SharePreferenceUtil.get(getActivity(), SharePreferenceUtil.Current_UserType, Constants.GeneralUser);
+                        int type = (int) SharePreferenceUtil.get(getActivity(), SharePreferenceUtil.Current_UserRole, Constants.GeneralUser);
                         LogUtils.e("TAG====是否确认删除你自己==username===" + name + "==type==" + type);
 
                     }
