@@ -93,9 +93,12 @@ public class Constants {
      * 默认:0==模式一(常规socket通讯),1==通道123(http模式),2==通道456(腾讯云转播)
      */
     public static final String KEY_VLC_PLAYER_CHANNEL = "KEY_VLC_PLAYER_MODE";          //0=模式1,1=模式2,2=模式3;(VLC播放模式)
-    public static final String PLAYER_CHANNEL2 = "0";                                   //线路1:(常规socket通讯,p2p);线路2:(http模式);线路3:(腾讯云);
-    public static final String PLAYER_CHANNEL1 = "1";                                   //线路1:(常规socket通讯,p2p);线路2:(http模式);线路3:(腾讯云);
-    public static final String PLAYER_CHANNEL3 = "2";                                   //线路1:(常规socket通讯,p2p);线路2:(http模式);线路3:(腾讯云);
+    //扫码出来呢channel的数字也是0-1-2；
+    //后台接口存的数字是：0-1-2:分别表示线路1；线路2；线路3；
+    // App里面显示的是线路1-p2p，2-Nginx，3-WebRTC
+    public static final String Line1 = "0";                                   //线路1:(socket通讯);线路2:(Nginx);线路3:(WebRTC);
+    public static final String Line2 = "1";                                   //线路2:(socket通讯);线路2:(Nginx);线路3:(WebRTC);
+    public static final String Line3 = "2";                                   //线路3:(socket通讯);线路2:(Nginx);线路3:(WebRTC);
     //正式服务器  https://111.77.154.44
     //public static final String BaseUrl = "http://www.cmejx.com:50002/api";
     public static final String BaseUrl = "https://www.cmejx.com:60002/api";

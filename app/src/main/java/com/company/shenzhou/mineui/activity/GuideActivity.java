@@ -42,12 +42,10 @@ import me.relex.circleindicator.CircleIndicator3;
  */
 public final class GuideActivity extends AppActivity {
     private static final String TAG = "GuideActivity，界面==";
-
     private ViewPager2 mViewPager;
     private CircleIndicator3 mIndicatorView;
     private View mCompleteView;
     private GuideAdapter mAdapter;
-
     private Boolean isLogin;
 
     @Override
@@ -94,7 +92,7 @@ public final class GuideActivity extends AppActivity {
         ClickableSpan clickableSpan2 = new ClickableSpan() {
             @Override
             public void onClick(@NonNull View view) {
-                //"http://www.szcme.com/EMAIL/NOTICE-b.HTML";  //隐私条款
+                //隐私条款
                 BrowserActivity.start(GuideActivity.this, "http://www.szcme.com/EMAIL/NOTICE-b.HTML");
             }
         };
@@ -115,14 +113,12 @@ public final class GuideActivity extends AppActivity {
         double v = screenWidth * 0.7;
         // 自定义对话框
         BaseDialog.Builder<BaseDialog.Builder<?>> builderBuilder = new BaseDialog.Builder<>(this);
-        builderBuilder
-                .setContentView(R.layout.dialog_useragreement)
+        builderBuilder.setContentView(R.layout.dialog_useragreement)
                 .setAnimStyle(BaseDialog.ANIM_SCALE)
                 .setCanceledOnTouchOutside(false)
                 .setWidth((int) v)
                 .setText(R.id.tv_content, mSpanned)
                 .setOnClickListener(R.id.btn_dialog_custom_ok, (dialog, view) -> {
-
                     SharePreferenceUtil.put(GuideActivity.this, SharePreferenceUtil.Bugly_CanUse, true);
                     AppApplication.getInstance().intBugly();
                     SharePreferenceUtil.put(GuideActivity.this, Constants.Sp_UserAgreement_Tag, true);
@@ -148,9 +144,8 @@ public final class GuideActivity extends AppActivity {
 
 
         //注意：此时必须加这一句，不然点击事件不会生效
-        TextView tv_content = builderBuilder.findViewById(R.id.tv_content);
-        tv_content.setMovementMethod(LinkMovementMethod.getInstance());
-
+        TextView mContentView = builderBuilder.findViewById(R.id.tv_content);
+        mContentView.setMovementMethod(LinkMovementMethod.getInstance());
 
     }
 
@@ -164,7 +159,6 @@ public final class GuideActivity extends AppActivity {
         SharePreferenceUtil.put(GuideActivity.this, SharePreferenceUtil.Current_ID, 2L);
         //超级用户只能修改一次密码
         SharePreferenceUtil.put(GuideActivity.this, SharePreferenceUtil.Current_Admin_ChangePassword, false);
-
         //存入数据库
         long ID = 1;
         UserDBBean userDBBean = new UserDBBean();
@@ -177,23 +171,23 @@ public final class GuideActivity extends AppActivity {
         userDBBean.setId(ID);
         UserDBBeanUtils.insertOrReplaceData(userDBBean);
         boolean isExist = UserDBBeanUtils.queryListIsExist("admin");
-        LogUtils.e(TAG + "DB=====isExist===" + isExist);
+        LogUtils.e(TAG + "=====isExist==" + isExist);
         String str = "admin";
         List<UserDBBean> userDBBeans = UserDBBeanUtils.queryListByMessage(str);
         for (int i = 0; i < userDBBeans.size(); i++) {
             String username = userDBBeans.get(i).getUsername();
             String password = userDBBeans.get(i).getPassword();
-            LogUtils.e("DB=====username===" + username + "==password==" + password);
+            LogUtils.e("=====username==" + username + "==password==" + password);
         }
-        LogUtils.e("DB=====isExist===" + isExist);
+        LogUtils.e("=====isExist==" + isExist);
     }
-
 
     @SingleClick
     @Override
     public void onClick(View view) {
         if (view == mCompleteView) {
-            if (!isLogin) {  //未登入,跳转登入界面
+            //未登入,跳转登入界面
+            if (!isLogin) {
                 startActivity(LoginActivity.class);
                 mmkv.encode(Constants.KEY_Login_Tag, false);//是否登入成功
                 SharePreferenceUtil.put(GuideActivity.this, Constants.SP_IS_FIRST_IN, false);
@@ -203,7 +197,8 @@ public final class GuideActivity extends AppActivity {
                 SharePreferenceUtil.put(GuideActivity.this, Constants.SP_IS_FIRST_IN, false);   //false 不是第一次登入了
                 SharePreferenceUtil.put(GuideActivity.this, Constants.Is_Logined, false);
                 MainActivity.start(getContext());
-                mmkv.encode(Constants.KEY_Login_Tag, true);//是否登入成功
+                //是否登入成功
+                mmkv.encode(Constants.KEY_Login_Tag, true);
                 finish();
             }
         }
@@ -224,24 +219,20 @@ public final class GuideActivity extends AppActivity {
     }
 
     private final ViewPager2.OnPageChangeCallback mCallback = new ViewPager2.OnPageChangeCallback() {
-
         @Override
         public void onPageScrolled(int position, float positionOffset, int positionOffsetPixels) {
             if (mViewPager.getCurrentItem() != mAdapter.getCount() - 1 || positionOffsetPixels <= 0) {
                 return;
             }
-
             mIndicatorView.setVisibility(View.VISIBLE);
             mCompleteView.setVisibility(View.INVISIBLE);
             mCompleteView.clearAnimation();
         }
-
         @Override
         public void onPageScrollStateChanged(int state) {
             if (state != ViewPager2.SCROLL_STATE_IDLE) {
                 return;
             }
-
             boolean lastItem = mViewPager.getCurrentItem() == mAdapter.getCount() - 1;
             mIndicatorView.setVisibility(lastItem ? View.INVISIBLE : View.VISIBLE);
             mCompleteView.setVisibility(lastItem ? View.VISIBLE : View.INVISIBLE);

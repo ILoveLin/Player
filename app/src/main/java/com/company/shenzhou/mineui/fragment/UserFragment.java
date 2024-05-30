@@ -23,7 +23,6 @@ import com.company.shenzhou.widget.SwipeMenuLayout;
 import com.hjq.bar.OnTitleBarListener;
 import com.hjq.bar.TitleBar;
 import com.hjq.base.BaseAdapter;
-import com.hjq.base.BaseDialog;
 import com.hjq.widget.layout.WrapRecyclerView;
 import com.hjq.widget.view.SwitchButton;
 
@@ -39,14 +38,12 @@ import java.util.Objects;
  */
 public final class UserFragment extends TitleBarFragment<MainActivity> implements BaseAdapter.OnChildClickListener {
     private static final String TAG = "UserFragment，界面==";
-
     private WrapRecyclerView mRecyclerView;
     private UserAdapter mAdapter;
-    private int loginUserRole;
-    private String loginUsername;
+    private int mLoginUserRole;
+    private String mLoginUsername;
     private ArrayList<UserDBBean> mDataList = new ArrayList<>();
-    ;
-    private TextView mLoginUsername;
+    private TextView mViewLoginUsername;
     private TitleBar mTitleBar;
 
     public static UserFragment newInstance() {
@@ -62,55 +59,52 @@ public final class UserFragment extends TitleBarFragment<MainActivity> implement
     protected void initView() {
         mRecyclerView = findViewById(R.id.rv_status_list);
         mTitleBar = findViewById(R.id.title_bar);
-        mLoginUsername = findViewById(R.id.tv_username);
+        mViewLoginUsername = findViewById(R.id.tv_username);
         mAdapter = new UserAdapter(getAttachActivity());
         mAdapter.setOnChildClickListener(R.id.linear_item, this);
         mAdapter.setOnChildClickListener(R.id.slide_switch, this);
         mAdapter.setOnChildClickListener(R.id.update_password, this);
         mAdapter.setOnChildClickListener(R.id.delete, this);
         mRecyclerView.setAdapter(mAdapter);
-
     }
 
     @Override
     protected void initData() {
-        loginUserRole = (int) SharePreferenceUtil.get(getActivity(), SharePreferenceUtil.Current_UserRole, 0);
-        loginUsername = (String) SharePreferenceUtil.get(getActivity(), SharePreferenceUtil.Current_Username, "");
-        LogUtils.e(TAG + "========loginUserRole==" + loginUserRole);
-        LogUtils.e(TAG + "========loginUsername==" + loginUsername);
-        mLoginUsername.setText(loginUsername);
+        mLoginUserRole = (int) SharePreferenceUtil.get(getAttachActivity(), SharePreferenceUtil.Current_UserRole, Constants.GeneralUser);
+        mLoginUsername = (String) SharePreferenceUtil.get(getAttachActivity(), SharePreferenceUtil.Current_Username, "");
+        LogUtils.e(TAG + "==当前登入用户权限等级：0=普通用户，1=权限用户，2=超级管理员==" + mLoginUserRole);
+        LogUtils.e(TAG + "==当前登入用户名：==" + mLoginUsername);
+        mViewLoginUsername.setText(mLoginUsername);
         mDataList = (ArrayList) UserDBBeanUtils.queryAll(UserDBBean.class);
         mAdapter.setData(mDataList);
         mTitleBar.setOnTitleBarListener(new OnTitleBarListener() {
             @Override
             public void onLeftClick(View view) {
-
             }
 
             @Override
             public void onTitleClick(View view) {
-
             }
 
             @Override
             public void onRightClick(View view) {
-                if (loginUserRole == Constants.GeneralUser) { //普通用户
+                //普通用户
+                if (mLoginUserRole == Constants.GeneralUser) {
                     toast(getResources().getString(R.string.toast_10));
-                } else if (loginUserRole == Constants.PermissionUser) {//权限用户
+                    //权限用户
+                } else if (mLoginUserRole == Constants.PermissionUser) {
                     showAddUserDialog();
-                } else if (loginUserRole == Constants.AdminUser) {//超级管理员
+                    //超级管理员
+                } else if (mLoginUserRole == Constants.AdminUser) {
                     showAddUserDialog();
-
                 }
             }
         });
-
     }
 
     @Override
     public void onResume() {
         super.onResume();
-        LogUtils.e(TAG + "========onResume==");
         initData();
     }
 
@@ -125,46 +119,35 @@ public final class UserFragment extends TitleBarFragment<MainActivity> implement
         View itemView = Objects.requireNonNull(recyclerView.getLayoutManager()).findViewByPosition(position);
         int viewId = childView.getId();
         UserDBBean bean = mAdapter.getItem(position);
-        int role = bean.getUserRole();
+        int itemRole = bean.getUserRole();
         //ItemClick
         if (viewId == R.id.linear_item) {
             SwitchButton mSwitchButton = itemView.findViewById(R.id.slide_switch);
             //这么写是避免 computing a layout or scrolling  Bug
             if (mRecyclerView.isComputingLayout()) {
-                mRecyclerView.post(new Runnable() {
-                    @Override
-                    public void run() {
-                        if (role == 0) {
-                            //这么写是避免 computing a layout or scrolling  Bug
-                            mSwitchButton.setChecked(false);
-                        } else {
-                            mSwitchButton.setChecked(true);
-                        }
+                mRecyclerView.post(() -> {
+                    if (itemRole == Constants.GeneralUser) {
+                        //这么写是避免 computing a layout or scrolling  Bug
+                        mSwitchButton.setChecked(false);
+                    } else {
+                        mSwitchButton.setChecked(true);
                     }
                 });
             } else {
-                if (role == 0) {
+                if (itemRole == Constants.GeneralUser) {
                     //这么写是避免 computing a layout or scrolling  Bug
                     mSwitchButton.setChecked(false);
                 } else {
                     mSwitchButton.setChecked(true);
                 }
-
             }
             //切换管理员和普通用户
         } else if (viewId == R.id.slide_switch) {
-            if (0 == role) {
-                childView.setClickable(false);
-            } else {
-                childView.setClickable(true);
-            }
             //点击切换按钮，设置是否是权限用户
             SwitchButton mSwitchButton = itemView.findViewById(R.id.slide_switch);
             mSwitchButton.setOnCheckedChangeListener((button, isChecked) -> {
-
-
                 //0普通用户、1权限用户、2超级管理员  默认为0-普通用户
-                if (loginUserRole == Constants.AdminUser && role < Constants.AdminUser) {  //只有超级管理员才可以设置权限
+                if (mLoginUserRole == Constants.AdminUser && itemRole < Constants.AdminUser) {  //只有超级管理员才可以设置权限
                     mSwitchButton.setEnabled(true);
                     if (isChecked) {
                         bean.setId(bean.id);
@@ -176,23 +159,23 @@ public final class UserFragment extends TitleBarFragment<MainActivity> implement
                     UserDBBeanUtils.updateData(bean);
                     mDataList = (ArrayList) UserDBBeanUtils.queryAll(UserDBBean.class);
                     for (int i = 0; i < mDataList.size(); i++) {
-                        UserDBBean a = (UserDBBean) mDataList.get(i);
-                        LogUtils.e(TAG + "==2==bean.toString====" + a.toString());
+                        UserDBBean a = mDataList.get(i);
+                        LogUtils.e(TAG + "==bean.toString====" + a.toString());
                     }
                     mAdapter.setData(mDataList);
                 }
             });
             //修改密码
         } else if (viewId == R.id.update_password) {
-            switch (loginUserRole) {  //当前用户权限 ---->只有超级用户才可以修改，其他用户去我的里面修改
+            switch (mLoginUserRole) {  //当前用户权限 ---->只有超级用户才可以修改，其他用户去我的里面修改
                 case Constants.GeneralUser:  //普通用户
                     toast(getResources().getString(R.string.toast_01));
                     break;
                 case Constants.PermissionUser:  //权限用户
-                    if (role == Constants.AdminUser) {
+                    if (itemRole == Constants.AdminUser) {
                         toast(getResources().getString(R.string.toast_02));
                         //修改密码
-                    } else if (role == Constants.PermissionUser) {
+                    } else if (itemRole == Constants.PermissionUser) {
                         toast(getResources().getString(R.string.toast_01));
                     } else {
                         showChangePasswordDialog(bean, Constants.GeneralUser + "");
@@ -210,14 +193,17 @@ public final class UserFragment extends TitleBarFragment<MainActivity> implement
                 mSwipeMenuLayout.quickClose();
             }
             //当前用户权限
-            switch (loginUserRole) {
-                case Constants.GeneralUser:  //普通用户
+            switch (mLoginUserRole) {
+                //普通用户
+                case Constants.GeneralUser:
                     toast(getResources().getString(R.string.toast_03));
                     break;
-                case Constants.PermissionUser:  //权限用户
-                    if (loginUserRole > role) {  //大于权限才可以删除
+                //权限用户
+                case Constants.PermissionUser:
+                    //大于权限才可以删除
+                    if (mLoginUserRole > itemRole) {
                         showDeleteDialog(bean, Constants.PermissionUser, position);
-                    } else if (loginUserRole == role) {
+                    } else if (mLoginUserRole == itemRole) {
                         String currentUsername = (String) SharePreferenceUtil.get(getActivity(), SharePreferenceUtil.Current_Username, "");
                         if (currentUsername.equals(bean.getUsername())) {
                             showDeleteMineDialog(bean);
@@ -226,10 +212,10 @@ public final class UserFragment extends TitleBarFragment<MainActivity> implement
                         }
                     } else {
                         toast(getResources().getString(R.string.toast_05));
-
                     }
                     break;
-                case Constants.AdminUser:  //超级用户
+                //超级用户
+                case Constants.AdminUser:
                     if ("admin".equals(bean.getUsername())) {  //超级用户不能删除自己
                         toast(getResources().getString(R.string.toast_06));
                     } else {
@@ -250,38 +236,23 @@ public final class UserFragment extends TitleBarFragment<MainActivity> implement
      * @param type 当前被修改用户的    权限等级，因为超级用户只能被修改一次密码的机会，所以如果是admin 需要添加sp 标识
      */
     private void showChangePasswordDialog(UserDBBean bean, String type) {
-
-        // 输入对话框
-        InputDialog.Builder builder = new InputDialog.Builder(getActivity());
-        builder.setTitle(getResources().getString(R.string.item_change_password))
-                // 提示可以不用填写
-                // 确定按钮文本
+        new InputDialog.Builder(getActivity()).setTitle(getResources().getString(R.string.item_change_password))
                 .setConfirm(getString(R.string.common_confirm))
                 .setHint(getResources().getString(R.string.mine_new_password))
-                // 设置 null 表示不显示取消按钮
                 .setCancel(getString(R.string.common_cancel))
-                // 设置点击按钮后不关闭对话框
-                //.setAutoDismiss(false)
-                .setListener(new InputDialog.OnListener() {
-                    @Override
-                    public void onConfirm(BaseDialog dialog, String newPassword) {
-                        //对DB做修改或者增加的操作
-                        bean.setPassword(newPassword);
-                        UserDBBeanUtils.updateData(bean);
-                        List list = UserDBBeanUtils.queryAll(UserDBBean.class);
-                        mAdapter.setData(list);
-                        //超级用户只能被修改一次密码的机会   的标识
-                        if (type.equals(Constants.AdminUser + "")) {
-                            SharePreferenceUtil.put(getActivity(), SharePreferenceUtil.Current_Admin_ChangePassword, true);
-                        }
-                        toast(getResources().getString(R.string.toast_09));
+                .setListener((dialog, newPassword) -> {
+                    //对DB做修改或者增加的操作
+                    bean.setPassword(newPassword);
+                    UserDBBeanUtils.updateData(bean);
+                    List list = UserDBBeanUtils.queryAll(UserDBBean.class);
+                    mAdapter.setData(list);
+                    //超级用户只能被修改一次密码的机会   的标识
+                    if (type.equals(Constants.AdminUser + "")) {
+                        SharePreferenceUtil.put(getActivity(), SharePreferenceUtil.Current_Admin_ChangePassword, true);
                     }
-
-                })
-                .show();
-
+                    toast(getResources().getString(R.string.toast_09));
+                }).show();
     }
-
 
     /**
      * 删除自己对话框
@@ -289,34 +260,21 @@ public final class UserFragment extends TitleBarFragment<MainActivity> implement
      * @param bean
      */
     private void showDeleteMineDialog(UserDBBean bean) {
-        MessageDialog.Builder mExitDialog = new MessageDialog.Builder(getActivity());
-        // 标题可以不用填写
-        mExitDialog.setTitle(getResources().getString(R.string.mine_exit_title))
-                // 内容必须要填写
+        new MessageDialog.Builder(getActivity()).setTitle(getResources().getString(R.string.mine_exit_title))
                 .setMessage(getResources().getString(R.string.make_sure_deleted_myself))
-                // 确定按钮文本
                 .setConfirm(getResources().getString(R.string.common_confirm))
-                // 设置 null 表示不显示取消按钮
                 .setCancel(getString(R.string.common_cancel))
-                // 设置点击按钮后不关闭对话框
-                //.setAutoDismiss(false)
                 .setCanceledOnTouchOutside(false)
-                .setListener(new MessageDialog.OnListener() {
-
-                    @Override
-                    public void onConfirm(BaseDialog dialog) {
-                        UserDBBeanUtils.deleteData(bean);
-                        List list = UserDBBeanUtils.queryAll(UserDBBean.class);
-                        mAdapter.setData(list);
-                        SharePreferenceUtil.put(getActivity(), Constants.Is_Logined, false);
-                        startActivity(new Intent(getActivity(), LoginActivity.class));
-                        String name = (String) SharePreferenceUtil.get(getActivity(), SharePreferenceUtil.Current_Username, "");
-                        int type = (int) SharePreferenceUtil.get(getActivity(), SharePreferenceUtil.Current_UserRole, Constants.GeneralUser);
-                        LogUtils.e("TAG====是否确认删除你自己==username===" + name + "==type==" + type);
-
-                    }
-                })
-                .show();
+                .setListener(dialog -> {
+                    UserDBBeanUtils.deleteData(bean);
+                    List list = UserDBBeanUtils.queryAll(UserDBBean.class);
+                    mAdapter.setData(list);
+                    SharePreferenceUtil.put(getActivity(), Constants.Is_Logined, false);
+                    startActivity(new Intent(getActivity(), LoginActivity.class));
+                    String name = (String) SharePreferenceUtil.get(getActivity(), SharePreferenceUtil.Current_Username, "");
+                    int type = (int) SharePreferenceUtil.get(getActivity(), SharePreferenceUtil.Current_UserRole, Constants.GeneralUser);
+                    LogUtils.e("TAG====是否确认删除你自己==username===" + name + "==type==" + type);
+                }).show();
 
 
     }
@@ -328,33 +286,19 @@ public final class UserFragment extends TitleBarFragment<MainActivity> implement
      * @param type     用户类型
      * @param position 当前角标
      */
-
     private void showDeleteDialog(UserDBBean bean, int type, int position) {
-        MessageDialog.Builder mExitDialog = new MessageDialog.Builder(getActivity());
-        // 标题可以不用填写
-        mExitDialog.setTitle(getResources().getString(R.string.mine_exit_title))
-                // 内容必须要填写
+        new MessageDialog.Builder(getActivity()).setTitle(getResources().getString(R.string.mine_exit_title))
                 .setMessage(getResources().getString(R.string.make_sure_deleted_user))
-                // 确定按钮文本
                 .setConfirm(getResources().getString(R.string.common_confirm))
-                // 设置 null 表示不显示取消按钮
                 .setCancel(getString(R.string.common_cancel))
-                // 设置点击按钮后不关闭对话框
-                //.setAutoDismiss(false)
                 .setCanceledOnTouchOutside(false)
-                .setListener(new MessageDialog.OnListener() {
+                .setListener(dialog -> {
+                    UserDBBeanUtils.deleteData(bean);
+                    mAdapter.removeItem(position);
+                    mAdapter.notifyItemRemoved(position);
+                    mAdapter.notifyItemRangeChanged(0, mDataList.size());
 
-                    @Override
-                    public void onConfirm(BaseDialog dialog) {
-                        UserDBBeanUtils.deleteData(bean);
-                        mAdapter.removeItem(position);
-                        mAdapter.notifyItemRemoved(position);
-                        mAdapter.notifyItemRangeChanged(0, mDataList.size());
-
-                    }
-
-                })
-                .show();
+                }).show();
 
     }
 
@@ -362,7 +306,6 @@ public final class UserFragment extends TitleBarFragment<MainActivity> implement
      * 新增用户对话框
      */
     private void showAddUserDialog() {
-
         // 输入对话框
         new Input2AddUserDialog.Builder(getActivity())
                 .setTitle(getResources().getString(R.string.add_user))
@@ -388,13 +331,12 @@ public final class UserFragment extends TitleBarFragment<MainActivity> implement
                         mDataList = (ArrayList) UserDBBeanUtils.queryAll(UserDBBean.class);
                         LogUtils.e(TAG + "存储的数据" + mDataList.size());
                         for (int i = 0; i < mDataList.size(); i++) {
-                            UserDBBean a = (UserDBBean) mDataList.get(i);
+                            UserDBBean a = mDataList.get(i);
                             LogUtils.e(TAG + "==bean.toString====" + a.toString());
                         }
                         mAdapter.setData(mDataList);
                     }
-                })
-                .show();
+                }).show();
 
     }
 }

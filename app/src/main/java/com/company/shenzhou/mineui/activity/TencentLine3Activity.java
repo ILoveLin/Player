@@ -10,7 +10,7 @@ import com.company.shenzhou.app.AppActivity;
  * desc   : 线路3-WebRTC
  */
 public final class TencentLine3Activity extends AppActivity {
-    private static final String TAG = "TencentLine3Activity，界面==";
+    private static final String TAG = "线路3，界面==";
 
     @Override
     protected int getLayoutId() {

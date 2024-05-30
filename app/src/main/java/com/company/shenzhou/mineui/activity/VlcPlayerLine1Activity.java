@@ -10,7 +10,7 @@ import com.company.shenzhou.app.AppActivity;
  * desc   : 线路1-socket-p2p
  */
 public final class VlcPlayerLine1Activity extends AppActivity {
-    private static final String TAG = "VlcPlayerLine1Activity，界面==";
+    private static final String TAG = "线路1，界面==";
 
     @Override
     protected int getLayoutId() {

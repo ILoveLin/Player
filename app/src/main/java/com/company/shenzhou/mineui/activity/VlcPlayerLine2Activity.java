@@ -10,7 +10,7 @@ import com.company.shenzhou.app.AppActivity;
  * desc   : 线路2-http-Nginx
  */
 public final class VlcPlayerLine2Activity extends AppActivity {
-    private static final String TAG = "VlcPlayerLine2Activity，界面==";
+    private static final String TAG = "线路2，界面==";
 
     @Override
     protected int getLayoutId() {

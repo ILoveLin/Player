@@ -101,10 +101,9 @@ public final class DeviceFragment extends TitleBarFragment<MainActivity> impleme
     private Gson mGson;
     private DeviceAdapter mAdapter;
     //当前登入用户的 username
-    private String currentUsername;
+    private String mLoginUsername;
     //此处查询数据库所有设备,在根据name,筛选出当前用户名创建(绑定)的所有设备
     private DownBindNameListBean indexBean;
-    private List<DeviceDBBean> currentRecycleViewList = new ArrayList<>();
     private List<DeviceDBBean> mDataList = new ArrayList<>();
     //扫码出来呢channel的数字也是0-1-2；
     //后台接口存的数字是：0-1-2:分别表示线路1；线路2；线路3；
@@ -124,10 +123,10 @@ public final class DeviceFragment extends TitleBarFragment<MainActivity> impleme
     //防止点击设备类别  弹出多个DeviceDialog的Bug,默认不存在=false
     private boolean isDeviceDialogExist = false;
     private DeviceDBBean mDeviceDBBean;
-    //添加，设备信息对话框
-    private AddDeviceDialog.Builder addDeviceDialogBuilder;
-    //修改，设备信息对话框
-    private UpdateDeviceDialog.Builder updateDeviceDialogBuilder;
+    //添加，设备信息对话框:addDeviceDialogBuilder
+    private AddDeviceDialog.Builder addBuilder;
+    //修改，设备信息对话框：updateDeviceDialogBuilder
+    private UpdateDeviceDialog.Builder updateBuilder;
     private static final int REQUEST_CODE_SCAN_ONE = 0X01;
     //刷新界面列表数据
     private static final int Refresh_Recycleview = 0x10;
@@ -161,6 +160,7 @@ public final class DeviceFragment extends TitleBarFragment<MainActivity> impleme
     @Override
     public void onResume() {
         super.onResume();
+        LogUtils.e(TAG + "==onResume=====当前用户下,绑定的设备==currentUsername==" + mLoginUsername);
         startThreadNotifyDataSetChanged();
     }
 
@@ -187,11 +187,11 @@ public final class DeviceFragment extends TitleBarFragment<MainActivity> impleme
     protected void initData() {
         mmkv = MMKV.defaultMMKV();
         mGson = GsonFactory.getSingletonGson();
-        currentUsername = (String) SharePreferenceUtil.get(Objects.requireNonNull(getAttachActivity()), SharePreferenceUtil.Current_Username, "");
+        mLoginUsername = (String) SharePreferenceUtil.get(Objects.requireNonNull(getAttachActivity()), SharePreferenceUtil.Current_Username, "");
         //此处查询数据库所有设备,在根据name,筛选出当前用户名创建(绑定)的所有设备
         indexBean = new DownBindNameListBean();
         //绑定谁添加的设备--用户名
-        indexBean.setDownBindName(currentUsername);
+        indexBean.setDownBindName(mLoginUsername);
         mAdapter = new DeviceAdapter(getAttachActivity());
         mAdapter.setOnChildClickListener(R.id.linear_item, this);
         mAdapter.setOnChildClickListener(R.id.delete_device, this);
@@ -211,7 +211,7 @@ public final class DeviceFragment extends TitleBarFragment<MainActivity> impleme
 
             @Override
             public void onRightClick(View view) {
-                new ListIconPopup.Builder(getActivity()).setList(getResources().getString(R.string.device_search), getResources().getString(R.string.device_scan), getResources().getString(R.string.device_writing))//icon_video_code
+                new ListIconPopup.Builder(getActivity()).setList(getResources().getString(R.string.device_search), getResources().getString(R.string.device_scan), getResources().getString(R.string.device_writing))
                         .setListener((ListIconPopup.OnListener<String>) (popupWindow, position, s) -> {
                             if (s.equals(getResources().getString(R.string.device_scan))) {
                                 getPermission2StartHWScanKit();
@@ -220,10 +220,8 @@ public final class DeviceFragment extends TitleBarFragment<MainActivity> impleme
                                 isDeviceDialogInfoInputOrUpdateComplete = false;
                                 //弹出类别对话框
                                 showDeviceTypeDialog();
-
                             } else {
-                                Intent intent = new Intent(getActivity(), SearchDeviceActivity.class);
-                                startActivity(intent);
+                                startActivity(SearchDeviceActivity.class);
                             }
                         }).setYOffset(-30).showAsDropDown(mTitleBar.getRightView());
             }
@@ -254,8 +252,6 @@ public final class DeviceFragment extends TitleBarFragment<MainActivity> impleme
         } else if (viewId == R.id.play_mode) {
             swipeMenuLay.quickClose();
             showSparePlanDialog(bean);
-
-
         }
     }
 
@@ -279,7 +275,6 @@ public final class DeviceFragment extends TitleBarFragment<MainActivity> impleme
     }
 
     private void checkLine23Info(DeviceDBBean bean) {
-
         if ("".equals(bean.getApiVersion())) {
             toast(getResources().getString(R.string.device_api_version_is_null));
             return;
@@ -304,14 +299,14 @@ public final class DeviceFragment extends TitleBarFragment<MainActivity> impleme
                     call.enqueue(new Callback() {
                         @Override
                         public void onFailure(@NotNull Call call, @NotNull IOException e) {
-                            LogUtils.e(TAG + "==校验==HHHHHHHHHHH==e=:" + e);
+                            LogUtils.e(TAG + "==校验====e=:" + e);
                             toast(getResources().getString(R.string.device_check_error));
                         }
 
                         @Override
                         public void onResponse(@NotNull Call call, @NotNull Response response) throws IOException {
                             String body = response.body().string();
-                            LogUtils.e(TAG + "==校验==HHHHHHHHHHH==body=:" + body);
+                            LogUtils.e(TAG + "==校验====body=:" + body);
                             if (JsonUtil.parseJson2CheckCode(body)) {
                                 AppDeviceInfoBean queryBean = mGson.fromJson(body, AppDeviceInfoBean.class);
                                 if (!queryBean.getResult().isCheck()) {
@@ -337,7 +332,6 @@ public final class DeviceFragment extends TitleBarFragment<MainActivity> impleme
                             } else {
                                 toast(getResources().getString(R.string.device_check_error));
                             }
-
                         }
                     });
 
@@ -357,9 +351,9 @@ public final class DeviceFragment extends TitleBarFragment<MainActivity> impleme
      * @param bean 当前item的数据Bean
      */
     private void choseChannel1VLCActivity(DeviceDBBean bean) {
-        LogUtils.e(TAG + "跳转播放界面" + "username=:" + bean.getAccount() + ",  password=:" + bean.getPassword() + ",  ip:" + bean.getIp() + ",  备注:" + bean.getMsgMark() + ",  端口:"
+        LogUtils.e(TAG + "OnItemClic==k" + "username=:" + bean.getAccount() + ",  password=:" + bean.getPassword() + ",  ip:" + bean.getIp() + ",  备注:" + bean.getMsgMark() + ",  端口:"
                 + bean.getLivePort() + ",  类型:" + bean.getDeviceTypeDesc());
-        LogUtils.e(TAG + "跳转播放界面" + "DDNSAcount=:" + bean.getDDNSAcount() + ",  DDNSPassword=:" + bean.getDDNSPassword() + ",  getDDNSURL:" + bean.getDDNSURL());
+        LogUtils.e(TAG + "OnItemClick==" + "DDNSAccount=:" + bean.getDDNSAcount() + ",  DDNSPassword=:" + bean.getDDNSPassword() + ",  getDDNSURL:" + bean.getDDNSURL());
         /**
          * HD3      rtsp://username:password@ip/MediaInput/h264/stream_1 ------   --HD3，高清:端口是80不用添加端口，不是80，就需要手动添加
          * HD3      rtsp://username:password@ip/MediaInput/h264/stream_2 ------   --HD3，标清
@@ -368,7 +362,6 @@ public final class DeviceFragment extends TitleBarFragment<MainActivity> impleme
          * url      http://www.cme8848.com/live/cme.m3u8                          eg:链接地址=用户输入的url链接
          * url      http://www.cme8848.com/live/flv                               eg:链接地址=用户输入的url链接
          */
-
         mItemClickUserName = bean.getAccount();
         mItemClickPassword = bean.getPassword();
         mItemClickIp = bean.getIp();
@@ -379,7 +372,7 @@ public final class DeviceFragment extends TitleBarFragment<MainActivity> impleme
         String currentUrl01 = "";
         String currentUrl02 = "";
         Intent intent = new Intent(getActivity(), VlcPlayerLine1Activity.class);
-        mmkv.encode(Constants.KEY_VLC_PLAYER_CHANNEL, Constants.PLAYER_CHANNEL1);
+        mmkv.encode(Constants.KEY_VLC_PLAYER_CHANNEL, Constants.Line1);
         //存入当前选中设备的  socketPort
         mmkv.encode(Constants.KEY_Device_SocketPort, bean.getSocketPort());
         mmkv.encode(Constants.KEY_Device_HttpPort, bean.getHttpPort());
@@ -388,7 +381,7 @@ public final class DeviceFragment extends TitleBarFragment<MainActivity> impleme
         //       ("HD3", "HD3-4K", "一代一体机","耳鼻喉治疗台","妇科治疗台","泌尿治疗台","工作站","神州转播")  //对接协议 0:播放HD3,1:播放一体机,2:播放url链接地址
         //          0      1        2               3           4           5           6       7
         //对应上位机:01     05       07              8           9           10          00      FF
-        Log.e("path=====Start:=====", "bean.getType()====" + bean.getDeviceTypeDesc());
+        LogUtils.e(TAG + "==OnItemClick==设备类型：====" + bean.getDeviceTypeDesc());
         switch (bean.getDeviceTypeDesc()) {
             case Constants.Type_HD3: //HD3  高清:端口是80不用添加端口，不是80，就需要手动添加
                 currentUrl01 = "rtsp://" + mItemClickUserName + ":" + mItemClickPassword + "@" + mItemClickIp + ":" + mItemClickLivePort + "/MediaInput/h264/stream_1";
@@ -622,7 +615,7 @@ public final class DeviceFragment extends TitleBarFragment<MainActivity> impleme
         String currentUrl01 = "";
         String currentUrl02 = "";
         Intent intent = new Intent(getActivity(), VlcPlayerLine2Activity.class);
-        mmkv.encode(Constants.KEY_VLC_PLAYER_CHANNEL, Constants.PLAYER_CHANNEL2);
+        mmkv.encode(Constants.KEY_VLC_PLAYER_CHANNEL, Constants.Line2);
         //存入当前选中设备的  socketPort
         mmkv.encode(Constants.KEY_Device_SocketPort, bean.getSocketPort());
         mmkv.encode(Constants.KEY_Device_HttpPort, bean.getHttpPort());
@@ -870,7 +863,7 @@ public final class DeviceFragment extends TitleBarFragment<MainActivity> impleme
         String currentUrl01 = "";
         String currentUrl02 = "";
         Intent intent = new Intent(getActivity(), TencentLine3Activity.class);
-        mmkv.encode(Constants.KEY_VLC_PLAYER_CHANNEL, Constants.PLAYER_CHANNEL3);
+        mmkv.encode(Constants.KEY_VLC_PLAYER_CHANNEL, Constants.Line3);
         //存入当前选中设备的  socketPort
         mmkv.encode(Constants.KEY_Device_SocketPort, bean.getSocketPort());
         mmkv.encode(Constants.KEY_Device_HttpPort, bean.getHttpPort());
@@ -1118,17 +1111,17 @@ public final class DeviceFragment extends TitleBarFragment<MainActivity> impleme
      */
     private void showReInputDialog(DeviceDBBean bean) {
         isDeviceDialogInfoInputOrUpdateComplete = false;
-        updateDeviceDialogBuilder = new UpdateDeviceDialog.Builder(getActivity(), bean);
+        updateBuilder = new UpdateDeviceDialog.Builder(getActivity(), bean);
         LogUtils.e(TAG + "修改对话框--对话框的数据:" + bean.toString());
-        updateDeviceDialogBuilder.setTitle(getResources().getString(R.string.change_device));
-        mDeviceTypeDescView = updateDeviceDialogBuilder.getDeviceTypeView();
+        updateBuilder.setTitle(getResources().getString(R.string.change_device));
+        mDeviceTypeDescView = updateBuilder.getDeviceTypeView();
         // 内容必须要填写
         // 确定按钮文本
-        updateDeviceDialogBuilder.setConfirm(getString(R.string.common_confirm));
+        updateBuilder.setConfirm(getString(R.string.common_confirm));
         // 设置 null 表示不显示取消按钮
-        updateDeviceDialogBuilder.setCancel(getString(R.string.common_cancel));
-        updateDeviceDialogBuilder.setCanceledOnTouchOutside(false);
-        updateDeviceDialogBuilder.setListener(new UpdateDeviceDialog.OnListener() {
+        updateBuilder.setCancel(getString(R.string.common_cancel));
+        updateBuilder.setCanceledOnTouchOutside(false);
+        updateBuilder.setListener(new UpdateDeviceDialog.OnListener() {
             @Override
             public void onConfirm(BaseDialog dialog, HashMap<String, String> mMap) {
 //                对DB做修改或者增加的操作
@@ -1148,7 +1141,7 @@ public final class DeviceFragment extends TitleBarFragment<MainActivity> impleme
                     //RC200需要单独区分因为唯一标识不同,RC200标识: 用当前可用ip+deviceType+当前登入的用户名（admin）,比如:192.168.71.159RC200admin作为标识
                     if ("RC200".equals(deviceName)) {
                         //备注:此处存在一个问题,如果修改的时候切换了-设备类型,设备码就是空串,因为使用的都是默认值
-                        mDeviceDBBean.setAcceptAndInsertDB(mDeviceDBBean.getIp() + "RC200" + currentUsername + mDeviceDBBean.getChannel());
+                        mDeviceDBBean.setAcceptAndInsertDB(mDeviceDBBean.getIp() + "RC200" + mLoginUsername + mDeviceDBBean.getChannel());
                         mDeviceDBBean.setDeviceTypeNum(Constants.Type_HexString_A2);
                         mDeviceDBBean.setDeviceTypeHexNum(Constants.Type_HexString_A2);
                         mDeviceDBBean.setDeviceTypeDecNum(Constants.Type_DecString_A2);
@@ -1164,12 +1157,12 @@ public final class DeviceFragment extends TitleBarFragment<MainActivity> impleme
                     mDeviceDBBean.setId(bean.getId());
                     List<DownBindNameListBean> downBingNameList = bean.getDownBingNameList();
                     mDeviceDBBean.setDownBingNameList(downBingNameList);
-                    LogUtils.e(TAG + "修改对话框==00===singleIndex===" + singleIndex);
+                    LogUtils.e(TAG + "修改对话框==00==singleIndex==" + singleIndex);
                     List<DeviceDBBean> queryBeanByTag = DeviceDBUtils.getQueryBeanByTag(getActivity(), singleIndex);
-                    if (null != queryBeanByTag && 0 != queryBeanByTag.size()) {
+                    if (null != queryBeanByTag && !queryBeanByTag.isEmpty()) {
                         Long id = queryBeanByTag.get(0).getId();
-                        LogUtils.e(TAG + "修改对话框===修改之后,id==01==" + id);
-                        LogUtils.e(TAG + "修改对话框===修改之后,id==02==" + bean.getId());
+                        LogUtils.e(TAG + "修改对话框==修改之后,id==01==" + id);
+                        LogUtils.e(TAG + "修改对话框==修改之后,id==02==" + bean.getId());
                         //自增长ID相同，说明可以更新设备信息，反之不同，说明当前数据库当前singleIndex设备已存在，不允许修改成当期singleIndex的设备。
                         if (id == bean.getId()) {
                             DeviceDBUtils.insertOrReplaceInTx(getActivity(), mDeviceDBBean);
@@ -1195,14 +1188,14 @@ public final class DeviceFragment extends TitleBarFragment<MainActivity> impleme
                 mDeviceTypeDescView = mType;
                 showReSelectDeviceTypeDialog();
             }
+
             /**
              * 修改设备的时候,
              * 重新选择工作模式
              */
             @Override
             public void onReInputChannelClick() {
-                showChannelDialog(updateDeviceDialogBuilder.getChannelView());
-
+                showChannelDialog(updateBuilder.getChannelView());
             }
         }).show();
 
@@ -1238,8 +1231,7 @@ public final class DeviceFragment extends TitleBarFragment<MainActivity> impleme
      */
 
     private void showDeleteDialog(DeviceDBBean bean, int position) {
-        MessageDialog.Builder mExitDialog = new MessageDialog.Builder(getActivity());
-        mExitDialog.setTitle(getResources().getString(R.string.mine_exit_title))
+        new MessageDialog.Builder(getActivity()).setTitle(getResources().getString(R.string.mine_exit_title))
                 .setMessage(getResources().getString(R.string.device_dialog_delete_title))
                 .setConfirm(getResources().getString(R.string.common_confirm))
                 .setCancel(getString(R.string.common_cancel))
@@ -1266,7 +1258,7 @@ public final class DeviceFragment extends TitleBarFragment<MainActivity> impleme
             return;
         }
         LogUtils.e(TAG + "修改=========bean.getSparePlan()====" + bean.getSparePlan());
-        //默认未开启==false
+        //备用方案：默认未开启==false
         if (bean.getSparePlan()) {
             new Input2SteamDialog.Builder(getActivity())
                     .setTitle(getString(R.string.rc200_setting))
@@ -1280,8 +1272,7 @@ public final class DeviceFragment extends TitleBarFragment<MainActivity> impleme
                         bean.setSpareLiveSteam("");
                         bean.setSpareMicPushSteam("");
                         DeviceDBUtils.insertOrReplaceInTx(getActivity(), bean);
-                    })
-                    .show();
+                    }).show();
         } else {
             // 输入对话框
             new Input2SteamDialog.Builder(getActivity())
@@ -1301,8 +1292,7 @@ public final class DeviceFragment extends TitleBarFragment<MainActivity> impleme
                         bean.setSpareMicPushSteam(micSteam);
                         DeviceDBUtils.insertOrReplaceInTx(getActivity(), bean);
 
-                    })
-                    .show();
+                    }).show();
 
         }
 
@@ -1318,60 +1308,61 @@ public final class DeviceFragment extends TitleBarFragment<MainActivity> impleme
     /**
      * 设置数据-设备详细信息
      */
+    @SuppressLint("SetTextI18n")
     private void setDeviceDialogInfo() {
         isDeviceDialogExist = true;    //防止点击视频类别  弹出多个Dialog的Bug
-        if (null == addDeviceDialogBuilder) {
-            addDeviceDialogBuilder = new AddDeviceDialog.Builder(getActivity());
+        if (null == addBuilder) {
+            addBuilder = new AddDeviceDialog.Builder(getActivity());
         }
-        mDeviceNameView = addDeviceDialogBuilder.getDeviceNameView();
-        mDeviceCodeView = addDeviceDialogBuilder.getDeviceCodeView();
-        mMessageView = addDeviceDialogBuilder.getMessageMarkView();
-        mLiveIpView = addDeviceDialogBuilder.getLiveIpView();
-        mLiveIpPublicView = addDeviceDialogBuilder.getLiveIpPublicView();
-        mDDNSAccountView = addDeviceDialogBuilder.getDDNSAccountView();
-        mDDNSPasswordView = addDeviceDialogBuilder.getDDNSPasswordView();
-        mDDNSURLView = addDeviceDialogBuilder.getDDNSURLView();
-        mAccountView = addDeviceDialogBuilder.getAccountView();
-        mPasswordView = addDeviceDialogBuilder.getPasswordView();
-        mSocketPortView = addDeviceDialogBuilder.getSocketPortView();
-        mHttpPortView = addDeviceDialogBuilder.getHttpPortView();
-        mLivePortView = addDeviceDialogBuilder.getLivePortView();
-        mApiVersionView = addDeviceDialogBuilder.getApiVersionView();
-        mDeviceTypeView = addDeviceDialogBuilder.getDeviceTypeView();
+        mDeviceNameView = addBuilder.getDeviceNameView();
+        mDeviceCodeView = addBuilder.getDeviceCodeView();
+        mMessageView = addBuilder.getMessageMarkView();
+        mLiveIpView = addBuilder.getLiveIpView();
+        mLiveIpPublicView = addBuilder.getLiveIpPublicView();
+        mDDNSAccountView = addBuilder.getDDNSAccountView();
+        mDDNSPasswordView = addBuilder.getDDNSPasswordView();
+        mDDNSURLView = addBuilder.getDDNSURLView();
+        mAccountView = addBuilder.getAccountView();
+        mPasswordView = addBuilder.getPasswordView();
+        mSocketPortView = addBuilder.getSocketPortView();
+        mHttpPortView = addBuilder.getHttpPortView();
+        mLivePortView = addBuilder.getLivePortView();
+        mApiVersionView = addBuilder.getApiVersionView();
+        mDeviceTypeView = addBuilder.getDeviceTypeView();
 
-        mDeviceNameView.setText("" + deviceName);
-        mDeviceCodeView.setText("" + deviceCode);
-        mMessageView.setText("" + makeMessageMark);
-        mLiveIpView.setText("" + liveIp);
-        mLiveIpPublicView.setText("" + liveIpPublic);
-        mDDNSAccountView.setText("" + ddnsAccount);
-        mDDNSPasswordView.setText("" + ddnsPassword);
-        mDDNSURLView.setText("" + ddnsUrl);
+        mDeviceNameView.setText(deviceName);
+        mDeviceCodeView.setText(deviceCode);
+        mMessageView.setText(makeMessageMark);
+        mLiveIpView.setText(liveIp);
+        mLiveIpPublicView.setText(liveIpPublic);
+        mDDNSAccountView.setText(ddnsAccount);
+        mDDNSPasswordView.setText(ddnsPassword);
+        mDDNSURLView.setText(ddnsUrl);
         if (getResources().getString(R.string.device_Custom_Url).equals(deviceTypeDesc)) {
             mLiveIpView.setText("");
             mLiveIpPublicView.setText("");
-            CommonUtil.showSoftInputFromWindow(getActivity(), mLiveIpView);
+            CommonUtil.showSoftInputFromWindow(getAttachActivity(), mLiveIpView);
         } else {
-            mLiveIpView.setText("" + liveIp);
-            mLiveIpPublicView.setText("" + liveIpPublic);
+            mLiveIpView.setText(liveIp);
+            mLiveIpPublicView.setText(liveIpPublic);
         }
-        mAccountView.setText("" + account);
-        mPasswordView.setText("" + password);
-        mSocketPortView.setText("" + socketPort);
-        mHttpPortView.setText("" + httpPort);
-        mLivePortView.setText("" + livePort);
+        mAccountView.setText(account);
+        mPasswordView.setText(password);
+        mSocketPortView.setText(socketPort);
+        mHttpPortView.setText(httpPort);
+        mLivePortView.setText(livePort);
         String currentApiVersion = null == apiVersion ? Constants.ApiVersion.V1 : apiVersion;
-        mApiVersionView.setText("" + currentApiVersion);
-        mDeviceTypeView.setText("" + deviceTypeDesc);
+        mApiVersionView.setText(currentApiVersion);
+        mDeviceTypeView.setText(deviceTypeDesc);
 
-        addDeviceDialogBuilder.setTitle(getResources().getString(R.string.add_device));
+        addBuilder.setTitle(getResources().getString(R.string.add_device));
         // 确定按钮文本
-        addDeviceDialogBuilder.setConfirm(getString(R.string.common_confirm));
+        addBuilder.setConfirm(getString(R.string.common_confirm));
         // 设置 null 表示不显示取消按钮
-        addDeviceDialogBuilder.setCancel(getString(R.string.common_cancel));
-        addDeviceDialogBuilder.setBackgroundDimEnabled(true);
-        addDeviceDialogBuilder.setCanceledOnTouchOutside(false);
-        addDeviceDialogBuilder.setListener(new AddDeviceDialog.OnListener() {
+        addBuilder.setCancel(getString(R.string.common_cancel));
+        addBuilder.setBackgroundDimEnabled(true);
+        addBuilder.setCanceledOnTouchOutside(false);
+        addBuilder.setListener(new AddDeviceDialog.OnListener() {
             @Override
             public void onConfirm(BaseDialog dialog, HashMap<String, String> mMap) {
                 getMsgDialogData2Bean(mMap, null);
@@ -1381,27 +1372,22 @@ public final class DeviceFragment extends TitleBarFragment<MainActivity> impleme
                     String deviceTypeDesc = mDeviceDBBean.getDeviceTypeDesc();
                     String deviceCode = null == mMap.get("deviceCode") ? "" : mMap.get("deviceCode");
                     String singleIndex = deviceCode + deviceTypeDesc + mDeviceDBBean.getChannel();
-                    LogUtils.e(TAG + "新增设备对话框===修改之后,id==singleIndex==" + singleIndex);
+                    LogUtils.e(TAG + "新增设备对话框==修改之后,id==singleIndex==" + singleIndex);
                     //判断需要新增的设备，数据库，是否存在
                     List<DeviceDBBean> queryBeanByTag = DeviceDBUtils.getQueryBeanByTag(getActivity(), singleIndex);
-                    if (null != queryBeanByTag && 0 != queryBeanByTag.size()) {
-                        Long id = queryBeanByTag.get(0).getId();
-                        DeviceDBBean bean = queryBeanByTag.get(0);
-                        LogUtils.e(TAG + "新增设备对话框===修改之后,id==bean==" + bean.toString());
+                    if (queryBeanByTag != null && queryBeanByTag.isEmpty()) {
                         //新增设备的时候，数据库存在singleIndex的数据，说明设备已存在
                         toast(getResources().getString(R.string.device_add_fail));
-                    } else {
-                        DeviceDBUtils.insertOrReplaceInTx(getActivity(), mDeviceDBBean);
-                        toast(getResources().getString(R.string.device_toast05));
                     }
                     startThreadNotifyDataSetChanged();
-                    addDeviceDialogBuilder.dismissDialog();
+                    addBuilder.dismissDialog();
                     isDeviceDialogExist = false;
                 }
 
                 //确认新增设备的时候,选择了了工作模式,之后再添加设备会出现保存上一次工作模式类型,这里手动清除解决bug
-                addDeviceDialogBuilder.getChannelView().setText("");
+                addBuilder.getChannelView().setText("");
             }
+
             @Override
             public void onAddReInputDeviceTypeClick(TextView mTv) {
                 mDeviceTypeDescView = mTv;
@@ -1409,18 +1395,19 @@ public final class DeviceFragment extends TitleBarFragment<MainActivity> impleme
                 //类别输入对话框
                 showDeviceTypeDialog();
             }
+
             @Override
             public void onCancel(BaseDialog dialog) {
                 isDeviceDialogExist = false;
-
             }
+
             /**
              * 新增设备的时候
              * 重新修改工作模式
              */
             @Override
             public void onAddChoseModeTypeClick() {
-                showChannelDialog(addDeviceDialogBuilder.getChannelView());
+                showChannelDialog(addBuilder.getChannelView());
             }
         }).show();
     }
@@ -1429,93 +1416,90 @@ public final class DeviceFragment extends TitleBarFragment<MainActivity> impleme
      * 刷新数据-设备详细信息
      */
     private void refreshDeviceDialogInfo() {
-        if (null != updateDeviceDialogBuilder) {
-            mDeviceNameView = updateDeviceDialogBuilder.getDeviceNameView();
-            mDeviceCodeView = updateDeviceDialogBuilder.getDeviceCodeView();
-            mMessageView = updateDeviceDialogBuilder.getMessageMarkView();
-            mLiveIpView = updateDeviceDialogBuilder.getLiveIpView();
-            mLiveIpPublicView = updateDeviceDialogBuilder.getLiveIpPublicView();
-            mDDNSAccountView = updateDeviceDialogBuilder.getDDNSAccountView();
-            mDDNSPasswordView = updateDeviceDialogBuilder.getDDNSPasswordView();
-            mDDNSURLView = updateDeviceDialogBuilder.getDDNSURLView();
-            mAccountView = updateDeviceDialogBuilder.getAccountView();
-            mPasswordView = updateDeviceDialogBuilder.getPasswordView();
-            mSocketPortView = updateDeviceDialogBuilder.getSocketPortView();
-            mLivePortView = updateDeviceDialogBuilder.getLivePortView();
-            mApiVersionView = updateDeviceDialogBuilder.getApiVersionView();
-            mDeviceTypeView = updateDeviceDialogBuilder.getDeviceTypeView();
-            mDeviceNameView.setText("" + deviceName);
-            mDeviceCodeView.setText("" + deviceCode);
-            mMessageView.setText("" + makeMessageMark);
-            mLiveIpView.setText("" + liveIp);
-            mLiveIpPublicView.setText("" + liveIpPublic);
-            mDDNSAccountView.setText("" + ddnsAccount);
-            mDDNSPasswordView.setText("" + ddnsPassword);
-            mDDNSURLView.setText("" + ddnsUrl);
+        if (null != updateBuilder) {
+            mDeviceNameView = updateBuilder.getDeviceNameView();
+            mDeviceCodeView = updateBuilder.getDeviceCodeView();
+            mMessageView = updateBuilder.getMessageMarkView();
+            mLiveIpView = updateBuilder.getLiveIpView();
+            mLiveIpPublicView = updateBuilder.getLiveIpPublicView();
+            mDDNSAccountView = updateBuilder.getDDNSAccountView();
+            mDDNSPasswordView = updateBuilder.getDDNSPasswordView();
+            mDDNSURLView = updateBuilder.getDDNSURLView();
+            mAccountView = updateBuilder.getAccountView();
+            mPasswordView = updateBuilder.getPasswordView();
+            mSocketPortView = updateBuilder.getSocketPortView();
+            mLivePortView = updateBuilder.getLivePortView();
+            mApiVersionView = updateBuilder.getApiVersionView();
+            mDeviceTypeView = updateBuilder.getDeviceTypeView();
+            mDeviceNameView.setText(deviceName);
+            mDeviceCodeView.setText(deviceCode);
+            mMessageView.setText(makeMessageMark);
+            mLiveIpView.setText(liveIp);
+            mLiveIpPublicView.setText(liveIpPublic);
+            mDDNSAccountView.setText(ddnsAccount);
+            mDDNSPasswordView.setText(ddnsPassword);
+            mDDNSURLView.setText(ddnsUrl);
             if (Constants.Type_Custom_Url.equals(deviceTypeDesc)) {
                 mLiveIpView.setText("");
                 mLiveIpPublicView.setText("");
-                CommonUtil.showSoftInputFromWindow(getActivity(), mLiveIpView);
+                CommonUtil.showSoftInputFromWindow(getAttachActivity(), mLiveIpView);
             } else {
-                mLiveIpView.setText("" + liveIp);
-                mLiveIpPublicView.setText("" + liveIpPublic);
+                mLiveIpView.setText(liveIp);
+                mLiveIpPublicView.setText(liveIpPublic);
             }
-            mAccountView.setText("" + account);
-            mPasswordView.setText("" + password);
-            mSocketPortView.setText("" + socketPort);
-            mLivePortView.setText("" + livePort);
+            mAccountView.setText(account);
+            mPasswordView.setText(password);
+            mSocketPortView.setText(socketPort);
+            mLivePortView.setText(livePort);
             String currentApiVersion = null == apiVersion ? Constants.ApiVersion.V1 : apiVersion;
-            mApiVersionView.setText("" + currentApiVersion);
-            mDeviceTypeView.setText("" + deviceTypeDesc);
-
-
+            mApiVersionView.setText(currentApiVersion);
+            mDeviceTypeView.setText(deviceTypeDesc);
         }
 
-        if (null != addDeviceDialogBuilder) {
-            mDeviceNameView = addDeviceDialogBuilder.getDeviceNameView();
-            mDeviceCodeView = addDeviceDialogBuilder.getDeviceCodeView();
-            mMessageView = addDeviceDialogBuilder.getMessageMarkView();
-            mLiveIpView = addDeviceDialogBuilder.getLiveIpView();
-            mLiveIpPublicView = addDeviceDialogBuilder.getLiveIpPublicView();
-            mDDNSAccountView = addDeviceDialogBuilder.getDDNSAccountView();
-            mDDNSPasswordView = addDeviceDialogBuilder.getDDNSPasswordView();
-            mDDNSURLView = addDeviceDialogBuilder.getDDNSURLView();
+        if (null != addBuilder) {
+            mDeviceNameView = addBuilder.getDeviceNameView();
+            mDeviceCodeView = addBuilder.getDeviceCodeView();
+            mMessageView = addBuilder.getMessageMarkView();
+            mLiveIpView = addBuilder.getLiveIpView();
+            mLiveIpPublicView = addBuilder.getLiveIpPublicView();
+            mDDNSAccountView = addBuilder.getDDNSAccountView();
+            mDDNSPasswordView = addBuilder.getDDNSPasswordView();
+            mDDNSURLView = addBuilder.getDDNSURLView();
 
-            mAccountView = addDeviceDialogBuilder.getAccountView();
-            mPasswordView = addDeviceDialogBuilder.getPasswordView();
-            mAccountView = addDeviceDialogBuilder.getAccountView();
-            mPasswordView = addDeviceDialogBuilder.getPasswordView();
-            mSocketPortView = addDeviceDialogBuilder.getSocketPortView();
-            mLivePortView = addDeviceDialogBuilder.getLivePortView();
-            mApiVersionView = addDeviceDialogBuilder.getApiVersionView();
-            mDeviceTypeView = addDeviceDialogBuilder.getDeviceTypeView();
-//            mAccountView.setText("" + account);
-//            mPasswordView.setText("" + password);
-//            mDeviceNameView.setText("" + title);
-            mDeviceNameView.setText("" + deviceName);
-            mDeviceCodeView.setText("" + deviceCode);
-            mMessageView.setText("" + makeMessageMark);
-            mLiveIpView.setText("" + liveIp);
-            mLiveIpPublicView.setText("" + liveIpPublic);
-            mDDNSAccountView.setText("" + ddnsAccount);
-            mDDNSPasswordView.setText("" + ddnsPassword);
-            mDDNSURLView.setText("" + ddnsUrl);
+            mAccountView = addBuilder.getAccountView();
+            mPasswordView = addBuilder.getPasswordView();
+            mAccountView = addBuilder.getAccountView();
+            mPasswordView = addBuilder.getPasswordView();
+            mSocketPortView = addBuilder.getSocketPortView();
+            mLivePortView = addBuilder.getLivePortView();
+            mApiVersionView = addBuilder.getApiVersionView();
+            mDeviceTypeView = addBuilder.getDeviceTypeView();
+//            mAccountView.setText( account);
+//            mPasswordView.setText( password);
+//            mDeviceNameView.setText( title);
+            mDeviceNameView.setText(deviceName);
+            mDeviceCodeView.setText(deviceCode);
+            mMessageView.setText(makeMessageMark);
+            mLiveIpView.setText(liveIp);
+            mLiveIpPublicView.setText(liveIpPublic);
+            mDDNSAccountView.setText(ddnsAccount);
+            mDDNSPasswordView.setText(ddnsPassword);
+            mDDNSURLView.setText(ddnsUrl);
             if (Constants.Type_Custom_Url.equals(deviceTypeDesc)) {
                 mLiveIpView.setText("");
                 mLiveIpPublicView.setText("");
-                CommonUtil.showSoftInputFromWindow(getActivity(), mLiveIpView);
+                CommonUtil.showSoftInputFromWindow(getAttachActivity(), mLiveIpView);
             } else {
-                mLiveIpView.setText("" + liveIp);
-                mLiveIpPublicView.setText("" + liveIpPublic);
+                mLiveIpView.setText(liveIp);
+                mLiveIpPublicView.setText(liveIpPublic);
             }
-            mAccountView.setText("" + account);
-            mPasswordView.setText("" + password);
-            mSocketPortView.setText("" + socketPort);
-            mLivePortView.setText("" + livePort);
+            mAccountView.setText(account);
+            mPasswordView.setText(password);
+            mSocketPortView.setText(socketPort);
+            mLivePortView.setText(livePort);
             String currentApiVersion = null == apiVersion ? Constants.ApiVersion.V1 : apiVersion;
-            mApiVersionView.setText("" + currentApiVersion);
-            mDeviceTypeView.setText("" + deviceTypeDesc);
-
+            mApiVersionView.setText(currentApiVersion);
+            mDeviceTypeView.setText(deviceTypeDesc);
         }
 
     }
@@ -1541,9 +1525,7 @@ public final class DeviceFragment extends TitleBarFragment<MainActivity> impleme
                     String substring = data.toString().substring(1, 2);
                     //确定了设备类型,更新信息输入对话框的信息
                     updateDeviceMessageDialogData(substring);
-
-                })
-                .show();
+                }).show();
     }
 
     /**
@@ -1556,7 +1538,7 @@ public final class DeviceFragment extends TitleBarFragment<MainActivity> impleme
                 .setList(getResources().getString(R.string.device_work_type_01),
                         getResources().getString(R.string.device_work_type_02), getResources().getString(R.string.device_work_type_03))
                 .setSingleSelect()
-                .setSelect(0)
+                .setSelect(2)
                 .setCanceledOnTouchOutside(false)
                 .setListener((SelectDialog.OnListener<String>) (dialog, data) -> {
                     String mPosition = data.toString().substring(1, 2);
@@ -1604,9 +1586,7 @@ public final class DeviceFragment extends TitleBarFragment<MainActivity> impleme
         deviceTypeHexNum = mMap.get("deviceTypeHexNum");
         deviceTypeDecNum = mMap.get("deviceTypeDecNum");
         mChannel = mMap.get("channel");
-
         LogUtils.e(TAG + "getMsgDialogData2Bean==通道==" + mChannel);
-
         //解决手动切换之后判断条件失效问题
         if ("神州轉播".equals(deviceTypeDesc) || "神州转播".equals(deviceTypeDesc) || "rebroadcast by shenzhou".equals(deviceTypeDesc)) {
             if ("".equals(title)) {
@@ -1658,52 +1638,46 @@ public final class DeviceFragment extends TitleBarFragment<MainActivity> impleme
     private void getMsgData2Bean(DeviceDBBean bean) {
         mDeviceDBBean = new DeviceDBBean();
         mDeviceDBBean.setDeviceName(deviceName);
-        mDeviceDBBean.setDeviceCode(deviceCode + "");
+        mDeviceDBBean.setDeviceCode(deviceCode);
         mDeviceDBBean.setMsgMark(makeMessageMark);
-        mDeviceDBBean.setChannel(mChannel + "");
+        mDeviceDBBean.setChannel(mChannel);
         mDeviceDBBean.setIp(liveIp);
         if (null == ddnsAccount) {
             mDeviceDBBean.setDDNSAcount("");
         } else {
-            mDeviceDBBean.setDDNSAcount(ddnsAccount + "");
+            mDeviceDBBean.setDDNSAcount(ddnsAccount);
         }
         if (null == ddnsPassword) {
             mDeviceDBBean.setDDNSPassword("");
         } else {
-            mDeviceDBBean.setDDNSPassword(ddnsPassword + "");
+            mDeviceDBBean.setDDNSPassword(ddnsPassword);
         }
-
         if (null == ddnsUrl) {
             mDeviceDBBean.setDDNSURL("");
         } else {
-            mDeviceDBBean.setDDNSURL(ddnsUrl + "");
+            mDeviceDBBean.setDDNSURL(ddnsUrl);
         }
         mDeviceDBBean.setAccount(account);
         mDeviceDBBean.setPassword(password);
-        mDeviceDBBean.setSocketPort(socketPort + "");
-        mDeviceDBBean.setHttpPort(httpPort + "");
+        mDeviceDBBean.setSocketPort(socketPort);
+        mDeviceDBBean.setHttpPort(httpPort);
         mDeviceDBBean.setLivePort(livePort);
         String currentApiVersion = null == apiVersion ? Constants.ApiVersion.V1 : apiVersion;
-        mDeviceDBBean.setApiVersion(currentApiVersion + "");
+        mDeviceDBBean.setApiVersion(currentApiVersion);
         mDeviceDBBean.setDeviceTypeDesc(deviceTypeDesc);
         mDeviceDBBean.setDeviceTypeNum(deviceTypeHexNum);
         mDeviceDBBean.setDeviceTypeHexNum(deviceTypeHexNum);
         mDeviceDBBean.setDeviceTypeDecNum(deviceTypeDecNum);
-
-
-        mDeviceDBBean.setTag(currentUsername);
+        mDeviceDBBean.setTag(mLoginUsername);
         //填一填新增数据的时候，需要判断当前设备，数据库是否已经存在
         String singleIndex = mDeviceDBBean.getDeviceCode() + mDeviceDBBean.getDeviceTypeDesc() + mDeviceDBBean.getChannel();
-        LogUtils.e(TAG + "此设备===singleIndex==" + singleIndex);
-        LogUtils.e(TAG + "此设备===singleIndex=2=" + mDeviceDBBean.toString());
-
+        LogUtils.e(TAG + "此设备==singleIndex==" + singleIndex);
+        LogUtils.e(TAG + "此设备==singleIndex=2=" + mDeviceDBBean.toString());
         List<DeviceDBBean> queryBeanByTag = DeviceDBUtils.getQueryBeanByTag(getActivity(), singleIndex);
-        if (null != queryBeanByTag && 0 != queryBeanByTag.size()) {
-            LogUtils.e(TAG + "此设备存在===更新");
-
-            return;
+        if (null != queryBeanByTag && !queryBeanByTag.isEmpty()) {
+            LogUtils.e(TAG + "此设备存在==");
         } else {
-            LogUtils.e(TAG + "此设备不存在===需要新增");
+            LogUtils.e(TAG + "此设备不存在==需要新增");
             mDeviceDBBean.setAcceptAndInsertDB(mDeviceDBBean.getDeviceCode() + mDeviceDBBean.getDeviceTypeDesc() + mDeviceDBBean.getChannel());
             //新增设备的时候：设备类型数据库备用方案字段的默认值
             mDeviceDBBean.setSparePlan(Constants.Device_Common_Default_Spare);
@@ -1714,11 +1688,10 @@ public final class DeviceFragment extends TitleBarFragment<MainActivity> impleme
                 ArrayList<DownBindNameListBean> downNameList = new ArrayList<>();
                 DownBindNameListBean nameBean = new DownBindNameListBean();
                 //绑定谁添加的设备--用户名
-                nameBean.setDownBindName(currentUsername);
+                nameBean.setDownBindName(mLoginUsername);
                 downNameList.add(nameBean);
                 mDeviceDBBean.setDownBingNameList(downNameList);
             }
-            return;
         }
 
 
@@ -1754,7 +1727,6 @@ public final class DeviceFragment extends TitleBarFragment<MainActivity> impleme
          * url      http://www.cme8848.com/live/cme.m3u8                            eg:链接地址=用户输入的url链接
          * url      http://www.cme8848.com/live/flv                                 eg:链接地址=用户输入的url链接
          */
-
         //设备类型数据库备用方案字段的默认值
         spareStatue = Constants.Device_Common_Default_Spare;
         spareLiveSteam = Constants.Device_Common_Default_LiveSteam;
@@ -1784,7 +1756,6 @@ public final class DeviceFragment extends TitleBarFragment<MainActivity> impleme
                 } else {
                     mHandler.sendEmptyMessage(Refresh_DeviceDialogInfo); //刷新数据
                 }
-
                 break;
             case "1":   //HD3-4K
                 deviceName = getResources().getString(R.string.device_type_HD3_4K);
@@ -1804,14 +1775,12 @@ public final class DeviceFragment extends TitleBarFragment<MainActivity> impleme
                 deviceTypeDesc = getResources().getString(R.string.device_type_HD3_4K);
                 deviceTypeHexNum = Constants.Type_HexString_05;
                 deviceTypeDecNum = Constants.Type_DecString_05;
-
                 if (!isDeviceDialogExist) {   //不存在
                     mHandler.sendEmptyMessage(Set_DeviceDialogInfo);  //设置数据
                 } else {
                     mHandler.sendEmptyMessage(Refresh_DeviceDialogInfo); //刷新数据
                 }
                 break;
-
             case "2":   //RC200
                 deviceName = getResources().getString(R.string.device_type_RC200);
                 deviceCode = "";
@@ -1829,7 +1798,6 @@ public final class DeviceFragment extends TitleBarFragment<MainActivity> impleme
                 deviceTypeDesc = getResources().getString(R.string.device_type_RC200);
                 deviceTypeHexNum = Constants.Type_HexString_A2;
                 deviceTypeDecNum = Constants.Type_DecString_A2;
-
                 if (!isDeviceDialogExist) {   //不存在
                     mHandler.sendEmptyMessage(Set_DeviceDialogInfo);  //设置数据
                 } else {
@@ -1852,17 +1820,14 @@ public final class DeviceFragment extends TitleBarFragment<MainActivity> impleme
                 livePort = Constants.Type_V1_YiTiJi_LivePort;
                 apiVersion = Constants.ApiVersion.V1;
                 deviceTypeDesc = getResources().getString(R.string.device_V1_YiTiJi);
-
                 deviceTypeHexNum = Constants.Type_HexString_07;
                 deviceTypeDecNum = Constants.Type_DecString_07;
-
                 if (!isDeviceDialogExist) {   //不存在
                     mHandler.sendEmptyMessage(Set_DeviceDialogInfo);  //设置数据
                 } else {
                     mHandler.sendEmptyMessage(Refresh_DeviceDialogInfo); //刷新数据
                 }
                 break;
-
             case "4":   //手术一体机
                 deviceName = getResources().getString(R.string.device_Operation_YiTiJi);
                 deviceCode = "";
@@ -1881,7 +1846,6 @@ public final class DeviceFragment extends TitleBarFragment<MainActivity> impleme
                 deviceTypeDesc = getResources().getString(R.string.device_Operation_YiTiJi);
                 deviceTypeHexNum = Constants.Type_HexString_0B;
                 deviceTypeDecNum = Constants.Type_DecString_0B;
-
                 if (!isDeviceDialogExist) {   //不存在
                     mHandler.sendEmptyMessage(Set_DeviceDialogInfo);  //设置数据
                 } else {
@@ -1906,7 +1870,6 @@ public final class DeviceFragment extends TitleBarFragment<MainActivity> impleme
                 deviceTypeDesc = getResources().getString(R.string.device_EarNoseTable);
                 deviceTypeHexNum = Constants.Type_HexString_08;
                 deviceTypeDecNum = Constants.Type_DecString_08;
-
                 if (!isDeviceDialogExist) {   //不存在
                     mHandler.sendEmptyMessage(Set_DeviceDialogInfo);  //设置数据
                 } else {
@@ -1931,7 +1894,6 @@ public final class DeviceFragment extends TitleBarFragment<MainActivity> impleme
                 deviceTypeDesc = getResources().getString(R.string.device_FuKeTable);
                 deviceTypeHexNum = Constants.Type_HexString_09;
                 deviceTypeDecNum = Constants.Type_DecString_09;
-
                 if (!isDeviceDialogExist) {   //不存在
                     mHandler.sendEmptyMessage(Set_DeviceDialogInfo);  //设置数据
                 } else {
@@ -1956,7 +1918,6 @@ public final class DeviceFragment extends TitleBarFragment<MainActivity> impleme
                 deviceTypeDesc = getResources().getString(R.string.device_MiNiaoTable);
                 deviceTypeHexNum = Constants.Type_HexString_0A;
                 deviceTypeDecNum = Constants.Type_DecString_0A;
-
                 if (!isDeviceDialogExist) {   //不存在
                     mHandler.sendEmptyMessage(Set_DeviceDialogInfo);  //设置数据
                 } else {
@@ -1981,7 +1942,6 @@ public final class DeviceFragment extends TitleBarFragment<MainActivity> impleme
                 deviceTypeDesc = getResources().getString(R.string.device_Work_Station);
                 deviceTypeHexNum = Constants.Type_HexString_00;
                 deviceTypeDecNum = Constants.Type_DecString_00;
-
                 if (!isDeviceDialogExist) {   //不存在
                     mHandler.sendEmptyMessage(Set_DeviceDialogInfo);  //设置数据
                 } else {
@@ -2006,7 +1966,6 @@ public final class DeviceFragment extends TitleBarFragment<MainActivity> impleme
                 deviceTypeDesc = getResources().getString(R.string.device_Custom_Url);
                 deviceTypeHexNum = Constants.Type_HexString_FF;
                 deviceTypeDecNum = Constants.Type_DecString_FF;
-
                 if (!isDeviceDialogExist) {   //不存在
                     mHandler.sendEmptyMessage(Set_DeviceDialogInfo);  //设置数据
                 } else {
@@ -2033,10 +1992,6 @@ public final class DeviceFragment extends TitleBarFragment<MainActivity> impleme
         mCameraDescView.setVisibility(View.VISIBLE);
         mReadDescView.setVisibility(View.GONE);
         XXPermissions.with(this)
-                // 不适配 Android 11 可以这样写
-                //.permission(Permission.Group.STORAGE)
-                // 适配 Android 11 需要这样写，这里无需再写 Permission.Group.STORAGE
-                //.permission(Permission.MANAGE_EXTERNAL_STORAGE)
                 .permission(Permission.CAMERA).request(new OnPermissionCallback() {
                     @Override
                     public void onGranted(List<String> permissions, boolean all) {
@@ -2109,7 +2064,7 @@ public final class DeviceFragment extends TitleBarFragment<MainActivity> impleme
                                     @Override
                                     public void run() {
                                         super.run();
-                                        HuaweiScanPlus.getJsonData(getAttachActivity(), currentUsername, result);
+                                        HuaweiScanPlus.getJsonData(getAttachActivity(), mLoginUsername, result);
                                     }
                                 }.start();
                             } else {//暂时认定为自定义url链接
@@ -2117,14 +2072,13 @@ public final class DeviceFragment extends TitleBarFragment<MainActivity> impleme
                                     @Override
                                     public void run() {
                                         super.run();
-                                        HuaweiScanPlus.getCustomUrl(getAttachActivity(), currentUsername, result);
+                                        HuaweiScanPlus.getCustomUrl(getAttachActivity(), mLoginUsername, result);
                                     }
                                 }.start();
                             }
                         }
                     } catch (Exception e) {
                         toast(getResources().getString(R.string.device_the_scan_code_is_abnormal));
-
                     }
                 }
             }
@@ -2142,9 +2096,6 @@ public final class DeviceFragment extends TitleBarFragment<MainActivity> impleme
         mCameraDescView.setVisibility(View.GONE);
         mReadDescView.setVisibility(View.VISIBLE);
         XXPermissions.with(this)
-                // 不适配 Android 11 可以这样写
-                //.permission(Permission.Group.STORAGE)
-                // 适配 Android 11 需要这样写，这里无需再写 Permission.Group.STORAGE
                 .permission(Permission.READ_EXTERNAL_STORAGE)  //正式版本
                 .request(new OnPermissionCallback() {
                     @Override
@@ -2154,7 +2105,6 @@ public final class DeviceFragment extends TitleBarFragment<MainActivity> impleme
                         if (all) {
                             HmsScanAnalyzerOptions options = new HmsScanAnalyzerOptions.Creator().setHmsScanTypes(HmsScan.QRCODE_SCAN_TYPE, HmsScan.DATAMATRIX_SCAN_TYPE).setViewType(1).setErrorCheck(true).create();
                             ScanUtil.startScan(getActivity(), REQUEST_CODE_SCAN_ONE, options);
-
                         }
                     }
 
@@ -2180,22 +2130,12 @@ public final class DeviceFragment extends TitleBarFragment<MainActivity> impleme
 
     private void go2SystemSettingDialog(List<String> permissions) {
         new MessageDialog.Builder(getActivity()).setTitle(getResources().getString(R.string.mine_exit_title))
-                // 内容必须要填写
                 .setMessage(getResources().getString(R.string.permission_setting_description))
-                // 确定按钮文本
                 .setConfirm(getString(R.string.common_confirm))
-                // 设置 null 表示不显示取消按钮
                 .setCancel(getString(R.string.common_cancel))
-                // 设置点击按钮后不关闭对话框
-                //.setAutoDismiss(false)
-                .setCanceledOnTouchOutside(false).setListener(new MessageDialog.OnListener() {
-
-                    @Override
-                    public void onConfirm(BaseDialog dialog) {
-                        XXPermissions.startPermissionActivity(getAttachActivity(), permissions);
-                    }
-
-                }).show();
+                .setCanceledOnTouchOutside(false)
+                .setListener(dialog -> XXPermissions.startPermissionActivity(getAttachActivity(), permissions))
+                .show();
 
 
     }
@@ -2205,28 +2145,27 @@ public final class DeviceFragment extends TitleBarFragment<MainActivity> impleme
     //开启线程，读取数据库数据，然后刷新界面
     private void startThreadNotifyDataSetChanged() {
         new Thread(() -> {
-            if (indexBean == null) {
-                indexBean = new DownBindNameListBean();
-                //绑定谁添加的设备--用户名
-                indexBean.setDownBindName(currentUsername);
-            }
-            currentRecycleViewList.clear();
-            List<DeviceDBBean> deviceDBBeans = DeviceDBUtils.queryAll(getActivity());
-            currentRecycleViewList = DeviceDBUtils.getQueryBeanByNameBean(getActivity(), indexBean);
-            if (null != deviceDBBeans) {
-                LogUtils.e(TAG + "当前用户下,绑定的设备==总数量==" + deviceDBBeans.size());
-                LogUtils.e(TAG + "当前用户下,绑定的设备==列表长度==" + currentRecycleViewList.size());
-                for (int i = 0; i < deviceDBBeans.size(); i++) {
-                    LogUtils.e("当前用户下,绑定的设备==总长度=第=" + i + "=条数据==" + deviceDBBeans.get(i).toString());
+            mLoginUsername = (String) SharePreferenceUtil.get(Objects.requireNonNull(getAttachActivity()), SharePreferenceUtil.Current_Username, "");
+            indexBean = new DownBindNameListBean();
+            //绑定谁添加的设备--用户名
+            indexBean.setDownBindName(mLoginUsername);
+            LogUtils.e(TAG + "当前登入的用户名：mLoginUsername==" + mLoginUsername);
+            //查询出设备表所有设备数据
+            List<DeviceDBBean> AllDeviceDBBeanList = DeviceDBUtils.queryAll(getActivity());
+            mDataList.clear();
+            mDataList = DeviceDBUtils.getQueryBeanByNameBean(getActivity(), indexBean);
+            if (null != AllDeviceDBBeanList) {
+                LogUtils.e(TAG + "设备表总数==" + AllDeviceDBBeanList.size());
+                LogUtils.e(TAG + "当前登入的用户下,绑定的设备总数==" + mDataList.size());
+                for (int i = 0; i < AllDeviceDBBeanList.size(); i++) {
+                    LogUtils.e("设备表总数,==第==" + i + "=条数据==" + AllDeviceDBBeanList.get(i).toString());
                 }
-                for (int i = 0; i < currentRecycleViewList.size(); i++) {
-                    LogUtils.e(TAG + "当前用户下,绑定的设备==列表=第=" + i + "=条数据==" + currentRecycleViewList.get(i).toString());
+                for (int i = 0; i < mDataList.size(); i++) {
+                    LogUtils.e(TAG + "当前登入的用户下,绑定的设备==第==" + i + "=条数据==" + mDataList.get(i).toString());
                 }
             } else {
-                LogUtils.e(TAG + "当前用户下,绑定的设备==集合==null");
+                LogUtils.e(TAG + "设备表总数==0");
             }
-            mDataList.clear();
-            mDataList.addAll(currentRecycleViewList);
             mHandler.sendEmptyMessage(Refresh_Recycleview);
         }).start();
     }
@@ -2280,17 +2219,17 @@ public final class DeviceFragment extends TitleBarFragment<MainActivity> impleme
 //                String currentStrLine = "";
 //                if (!("".equals(ln))) {
 //                    if ("0".equals(ln)) {
-//                        currentStrLine = "" + getResources().getString(R.string.device_work_type_01);
+//                        currentStrLine =  getResources().getString(R.string.device_work_type_01);
 //                        insertBean.setChannel(currentStrLine);
 //                    } else if ("1".equals(ln)) {
-//                        currentStrLine = "" + getResources().getString(R.string.device_work_type_02);
+//                        currentStrLine =  getResources().getString(R.string.device_work_type_02);
 //                        insertBean.setChannel(currentStrLine);
 //                    } else if ("2".equals(ln)) {
-//                        currentStrLine = "" + getResources().getString(R.string.device_work_type_03);
+//                        currentStrLine =  getResources().getString(R.string.device_work_type_03);
 //                        insertBean.setChannel(currentStrLine);
 //                    }
 //                } else {
-//                    currentStrLine = "" + getResources().getString(R.string.device_work_type_03);
+//                    currentStrLine =  getResources().getString(R.string.device_work_type_03);
 //                    insertBean.setChannel(currentStrLine);
 //                }
 //                //("HD3", "HD3-4K", "一代一体机","耳鼻喉治疗台","妇科治疗台","泌尿治疗台","工作站","神州转播")
@@ -2406,17 +2345,17 @@ public final class DeviceFragment extends TitleBarFragment<MainActivity> impleme
 //                if (null == jsonBean.getDun() || "".equals(jsonBean.getDun())) {
 //                    insertBean.setDDNSAcount("");
 //                } else {
-//                    insertBean.setDDNSAcount(jsonBean.getDun() + "");
+//                    insertBean.setDDNSAcount(jsonBean.getDun() );
 //                }
 //                if (null == jsonBean.getDpw() || "".equals(jsonBean.getDpw())) {
 //                    insertBean.setDDNSPassword("");
 //                } else {
-//                    insertBean.setDDNSPassword(jsonBean.getDpw() + "");
+//                    insertBean.setDDNSPassword(jsonBean.getDpw() );
 //                }
 //                if (null == jsonBean.getDurl() || "".equals(jsonBean.getDurl())) {
 //                    insertBean.setDDNSURL("");
 //                } else {
-//                    insertBean.setDDNSURL(jsonBean.getDurl() + "");
+//                    insertBean.setDDNSURL(jsonBean.getDurl() );
 //                }
 //
 //                insertBean.setDeviceCode(jsonBean.getId());
@@ -2446,7 +2385,7 @@ public final class DeviceFragment extends TitleBarFragment<MainActivity> impleme
 //                }
 //                insertBean.setPassword(passWord);
 //                insertBean.setTitle(jsonBean.getTi());
-//                insertBean.setAccount(userName + "");
+//                insertBean.setAccount(userName );
 //                //设置版本号
 //                if ("".equals(jsonBean.getV())) {
 //                    apiVersion = Constants.ApiVersion.V1;
@@ -2498,17 +2437,17 @@ public final class DeviceFragment extends TitleBarFragment<MainActivity> impleme
 //                String currentStrLine = "";
 //                if (!("".equals(ln))) {
 //                    if ("0".equals(ln)) {
-//                        currentStrLine = "" + getResources().getString(R.string.device_work_type_01);
+//                        currentStrLine =  getResources().getString(R.string.device_work_type_01);
 //                        insertBean.setChannel(currentStrLine);
 //                    } else if ("1".equals(ln)) {
-//                        currentStrLine = "" + getResources().getString(R.string.device_work_type_02);
+//                        currentStrLine =  getResources().getString(R.string.device_work_type_02);
 //                        insertBean.setChannel(currentStrLine);
 //                    } else if ("2".equals(ln)) {
-//                        currentStrLine = "" + getResources().getString(R.string.device_work_type_03);
+//                        currentStrLine =  getResources().getString(R.string.device_work_type_03);
 //                        insertBean.setChannel(currentStrLine);
 //                    }
 //                } else {
-//                    currentStrLine = "" + getResources().getString(R.string.device_work_type_03);
+//                    currentStrLine =  getResources().getString(R.string.device_work_type_03);
 //                    insertBean.setChannel(currentStrLine);
 //                }
 //
@@ -2653,9 +2592,9 @@ public final class DeviceFragment extends TitleBarFragment<MainActivity> impleme
 //                } else {
 //                    insertBean.setLivePort(jsonBean.getPt());
 //                }
-//                insertBean.setPassword(passWord + "");
+//                insertBean.setPassword(passWord );
 //                insertBean.setTitle(jsonBean.getTi());
-//                insertBean.setAccount(userName + "");
+//                insertBean.setAccount(userName );
 //                //设置版本号
 //                if ("".equals(jsonBean.getV())) {
 //                    apiVersion = Constants.ApiVersion.V1;

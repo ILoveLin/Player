@@ -75,7 +75,7 @@ public final class DeviceAdapter extends AppAdapter<DeviceDBBean> {
         public void onBindView(int position) {
             DeviceDBBean bean = getItem(position);
             if (null != bean) {
-                LogUtils.e("adapter===bean====" + bean.toString());
+//                LogUtils.e("adapter===bean====" + bean.toString());
                 mDeviceName.setText("" + bean.getDeviceName());
                 mLine.setVisibility(View.VISIBLE);
                 if ("".equals(bean.getChannel()) || null == bean.getChannel()) {

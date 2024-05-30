@@ -16,6 +16,10 @@ import androidx.core.app.NotificationCompat;
 
 import com.company.shenzhou.R;
 import com.company.shenzhou.global.Constants;
+import com.company.shenzhou.mineui.activity.IjkPlayerRC200Activity;
+import com.company.shenzhou.mineui.activity.TencentLine3Activity;
+import com.company.shenzhou.mineui.activity.VlcPlayerLine1Activity;
+import com.company.shenzhou.mineui.activity.VlcPlayerLine2Activity;
 import com.company.shenzhou.utlis.LogUtils;
 import com.tencent.mmkv.MMKV;
 
@@ -27,11 +31,9 @@ import com.tencent.mmkv.MMKV;
  */
 public class NotificationService extends Service {
     private static final String TAG = "NotificationService";
-
     //常驻通知Id,唯一标识号。
     private static final int notificationId = 10086;
     private MMKV mmkv;
-
 
     @Override
     public void onCreate() {
@@ -61,7 +63,7 @@ public class NotificationService extends Service {
         // 但它不是立刻执行某个行为，而是满足某些条件或触发某些事件后才执行指定的行为)
 //        PendingIntent pendingIntent = PendingIntent.getActivity(this,0,
         //因为不同模式,此处需要判断播放模式,点击后跳转Activity
-        String mChannel = mmkv.decodeString(Constants.KEY_VLC_PLAYER_CHANNEL, Constants.PLAYER_CHANNEL2);
+        String mChannel = mmkv.decodeString(Constants.KEY_VLC_PLAYER_CHANNEL, Constants.Line2);
         String isRC200 = mmkv.decodeString(Constants.KEY_Device_Type_HexNum, "0");
         //线路1:(常规socket通讯,p2p);线路2:(http模式);频道3:(腾讯云);   //接口和扫码返回的是012，对应的是线路123，app会转换成123存储
         Intent intent = getIntent(mChannel, isRC200);
@@ -114,24 +116,23 @@ public class NotificationService extends Service {
     @Nullable
     private Intent getIntent(String mChannel, String isRC200) {
         Intent intent = null;
-//        if (mChannel != null && mChannel.equals(Constants.PLAYER_CHANNEL2)) {//Channel==1:  p2p Nginx
-//            //RC200默认 22
-//            if ("22".equals(isRC200)) {
-//                intent = new Intent(this, IjkPlayerRC200Activity.class);
-//            } else {
-//                intent = new Intent(this, VlcPlayerLine2Activity.class);
-//            }
-//        } else if (mChannel != null && mChannel.equals(Constants.PLAYER_CHANNEL1)) {//Channel==0:http 转播
-//            //RC200默认 22
-//            if ("22".equals(isRC200)) {
-//                intent = new Intent(this, IjkPlayerRC200Activity.class);
-//            } else {
-//                intent = new Intent(this, VlcPlayerLine1Activity.class);
-//
-//            }
-//        } else if (mChannel != null && mChannel.equals(Constants.PLAYER_CHANNEL3)) {//Channel==2:腾讯云
-//            intent = new Intent(this, TencentLine3SDKActivity.class);
-//        }
+        if (mChannel != null && mChannel.equals(Constants.Line1)) {//Channel==1:  p2p Nginx
+            //RC200默认 22
+            if ("22".equals(isRC200)) {
+                intent = new Intent(this, IjkPlayerRC200Activity.class);
+            } else {
+                intent = new Intent(this, VlcPlayerLine1Activity.class);
+            }
+        } else if (mChannel != null && mChannel.equals(Constants.Line2)) {//Channel==0:http 转播
+            //RC200默认 22
+            if ("22".equals(isRC200)) {
+                intent = new Intent(this, IjkPlayerRC200Activity.class);
+            } else {
+                intent = new Intent(this, VlcPlayerLine2Activity.class);
+            }
+        } else if (mChannel != null && mChannel.equals(Constants.Line3)) {//Channel==2:腾讯云
+            intent = new Intent(this, TencentLine3Activity.class);
+        }
         return intent;
     }
 

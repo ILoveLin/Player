@@ -23,7 +23,6 @@ import com.company.shenzhou.ui.dialog.MessageDialog;
 import com.company.shenzhou.utlis.FileUtil;
 import com.company.shenzhou.utlis.LogUtils;
 import com.company.shenzhou.utlis.SharePreferenceUtil;
-import com.hjq.base.BaseDialog;
 import com.hjq.widget.layout.SettingBar;
 import com.tencent.mmkv.MMKV;
 
@@ -37,7 +36,6 @@ import java.util.Calendar;
  */
 public final class MineFragment extends TitleBarFragment<MainActivity> {
     private static final String TAG = "MineFragment，界面==";
-
     private SettingBar mLoginUse;
     private SettingBar mLoginUseLevel;
     private SettingBar mSpaceSize;
@@ -65,22 +63,21 @@ public final class MineFragment extends TitleBarFragment<MainActivity> {
         setOnClickListener(R.id.bar_mine_about, R.id.bar_mine_power_explain, R.id.bar_mine_how_use, R.id.bar_mine_use,
                 R.id.bar_mine_secret, R.id.bar_mine_mic_name, R.id.bar_mine_change_password, R.id.bar_mine_exit);
 
-
     }
 
     @Override
     protected void initData() {
         mmkv = MMKV.defaultMMKV();
-        String username = (String) SharePreferenceUtil.get(getActivity(), SharePreferenceUtil.Current_Username, "");
+        String username = (String) SharePreferenceUtil.get(getAttachActivity(), SharePreferenceUtil.Current_Username, "");
         //0普通  1权限  2超级用户
-        int userType = (int) SharePreferenceUtil.get(getActivity(), SharePreferenceUtil.Current_UserRole, 2);
+        int mLoginRole = (int) SharePreferenceUtil.get(getAttachActivity(), SharePreferenceUtil.Current_UserRole, 2);
         String romAvailableSize = FileUtil.getROMAvailableSize(getActivity());
         String romTotalSize = FileUtil.getROMTotalSize(getActivity());
-        LogUtils.e(TAG+"总空间==" + romTotalSize);
-        LogUtils.e(TAG+"可用空间==" + romAvailableSize);
+        LogUtils.e(TAG + "总空间==" + romTotalSize);
+        LogUtils.e(TAG + "可用空间==" + romAvailableSize);
         mSpaceSize.setRightText(romAvailableSize);
         mLoginUse.setRightText(username);
-        switch (userType) {
+        switch (mLoginRole) {
             case Constants.GeneralUser:
                 mLoginUseLevel.setRightText(getResources().getString(R.string.mine_nor_user));
                 break;
@@ -98,7 +95,6 @@ public final class MineFragment extends TitleBarFragment<MainActivity> {
     @Override
     public void onResume() {
         super.onResume();
-        LogUtils.e(TAG + "========onResume==");
         initData();
     }
 
@@ -147,75 +143,55 @@ public final class MineFragment extends TitleBarFragment<MainActivity> {
                 .setCancel(getString(R.string.mine_exit_cancel))
                 // 设置点击按钮后不关闭对话框
                 .setCanceledOnTouchOutside(false)
-                .setListener(new MessageDialog.OnListener() {
-
-                    @Override
-                    public void onConfirm(BaseDialog dialog) {
-                        SharePreferenceUtil.put(getAttachActivity(), Constants.Is_Logined, false);
-                        startActivity(new Intent(getActivity(), LoginActivity.class));
-                        String name = (String) SharePreferenceUtil.get(getAttachActivity(), SharePreferenceUtil.Current_Username, "");
-                        String password = (String) SharePreferenceUtil.get(getAttachActivity(), SharePreferenceUtil.Current_Password, "");
-                        MMKV mmkv = MMKV.defaultMMKV();
-                        mmkv.encode(Constants.KEY_Login_Tag, false);
-                        mmkv.encode(Constants.KEY_Exit_Name, name);
-                        LogUtils.e("TAG====退出==username==" + name + "==password==" + password);
-
-                    }
-
-                })
-                .show();
+                .setListener(dialog -> {
+                    SharePreferenceUtil.put(getAttachActivity(), Constants.Is_Logined, false);
+                    startActivity(new Intent(getActivity(), LoginActivity.class));
+                    String name = (String) SharePreferenceUtil.get(getAttachActivity(), SharePreferenceUtil.Current_Username, "");
+                    String password = (String) SharePreferenceUtil.get(getAttachActivity(), SharePreferenceUtil.Current_Password, "");
+                    MMKV mmkv = MMKV.defaultMMKV();
+                    mmkv.encode(Constants.KEY_Login_Tag, false);
+                    mmkv.encode(Constants.KEY_Exit_Name, name);
+                    LogUtils.e("TAG====退出==username==" + name + "==password==" + password);
+                }).show();
 
     }
 
     private void updatePassword() {
         String mCurrentUsername = (String) SharePreferenceUtil.get(getAttachActivity(), SharePreferenceUtil.Current_Username, "");
-        int mCurrenType = (int) SharePreferenceUtil.get(getAttachActivity(), SharePreferenceUtil.Current_UserRole, 0);
+        int mLoginRole = (int) SharePreferenceUtil.get(getAttachActivity(), SharePreferenceUtil.Current_UserRole, 0);
         UserDBBean mBean = UserDBBeanUtils.queryListByMessageToGetPassword(mCurrentUsername);
-        LogUtils.e("TAG==Username==" + mBean.getUsername() + "====password==" + mBean.getPassword() +
-                "====Type==" + mBean.getUserRole() + "====mBean.getId()==" + mBean.getId());
+        LogUtils.e("TAG==Username==" + mBean.getUsername() + "====password==" + mBean.getPassword() + "====Type==" + mBean.getUserRole() + "====mBean.getId()==" + mBean.getId());
         // 输入对话框
         new Input2PasswordDialog.Builder(getActivity())
-                // 标题可以不用填写
                 .setTitle(getResources().getString(R.string.mine_change_password))
-                // 确定按钮文本
                 .setConfirm(getString(R.string.common_confirm))
-                // 设置 null 表示不显示取消按钮
                 .setCancel(getString(R.string.common_cancel))
-                .setListener(new Input2PasswordDialog.OnListener() {
-                    @Override
-                    public void onConfirm(BaseDialog dialog, String oldpassword, String newpassword) {
-                        //对DB做修改或者增加的操作
-                        String dbPassword = mBean.getPassword();
-                        if (oldpassword.equals(dbPassword)) {  //输入的旧密码和DB中密码相同
-                            LogUtils.e("TAG==添加前mCurrentUsername==" + mCurrentUsername + "====添加前oldpassword==" + oldpassword +
-                                    "====mCurrenType==" + mCurrenType + "====mBean.getId()==" + mBean.getId());
-                            SharePreferenceUtil.put(getAttachActivity(), SharePreferenceUtil.Current_Username, mCurrentUsername);
-                            SharePreferenceUtil.put(getAttachActivity(), SharePreferenceUtil.Current_Password, newpassword);
-                            SharePreferenceUtil.put(getAttachActivity(), SharePreferenceUtil.Current_ID, mBean.getId() );
-                            UserDBBean userDBBean = new UserDBBean();
-                            userDBBean.setUsername(mCurrentUsername);
-                            userDBBean.setPassword(newpassword);
-                            userDBBean.setUserRole(mCurrenType);
-                            userDBBean.setId(mBean.getId());
-                            //添加失败
-                            UserDBBeanUtils.updateData(userDBBean);
-                            UserDBBean mBean = UserDBBeanUtils.queryListByMessageToGetPassword(mCurrentUsername);
-                            LogUtils.e("TAG=修改DB后这个用户的=Username==" + mBean.getUsername() + "====password==" + mBean.getPassword()
-                                    + "====Role==" + mBean.getUserRole() + "====mBean.getId()==" + mBean.getId());
-                            toast(getResources().getString(R.string.mine_toast03));
-                        } else {
-                            toast(getResources().getString(R.string.mine_toast04));
-                        }
+                .setListener((dialog, oldpassword, newpassword) -> {
+                    //对DB做修改或者增加的操作
+                    String dbPassword = mBean.getPassword();
+                    if (oldpassword.equals(dbPassword)) {  //输入的旧密码和DB中密码相同
+                        LogUtils.e(TAG + "==添加前的用户名==" + mCurrentUsername + "==添加前密码==" + oldpassword + "==角色等级==" + mLoginRole + "==userId==" + mBean.getId());
+                        SharePreferenceUtil.put(getAttachActivity(), SharePreferenceUtil.Current_Username, mCurrentUsername);
+                        SharePreferenceUtil.put(getAttachActivity(), SharePreferenceUtil.Current_Password, newpassword);
+                        SharePreferenceUtil.put(getAttachActivity(), SharePreferenceUtil.Current_ID, mBean.getId());
+                        UserDBBean userDBBean = new UserDBBean();
+                        userDBBean.setUsername(mCurrentUsername);
+                        userDBBean.setPassword(newpassword);
+                        userDBBean.setUserRole(mLoginRole);
+                        userDBBean.setId(mBean.getId());
+                        UserDBBeanUtils.updateData(userDBBean);
+                        UserDBBean updateBean = UserDBBeanUtils.queryListByMessageToGetPassword(mCurrentUsername);
+                        LogUtils.e(TAG + "==修改后的用户名==" + updateBean.getUsername() + "==修改后密码==" + updateBean.getPassword() + "==修改后的角色等级==" + updateBean.getUserRole() + "==修改后的用户名==" + updateBean.getId());
+                        toast(getResources().getString(R.string.mine_toast03));
+                    } else {
+                        toast(getResources().getString(R.string.mine_toast04));
                     }
-
-                })
-                .show();
+                }).show();
 
     }
 
     private void updateNiceName() {
         String mMicName = mmkv.decodeString(Constants.KEY_MIC_Name, "");
-
         // 输入对话框
         InputDialog.Builder builder = new InputDialog.Builder(getActivity());
         // 标题可以不用填写
@@ -227,26 +203,12 @@ public final class MineFragment extends TitleBarFragment<MainActivity> {
 
         }
         builder.setTitle(getResources().getString(R.string.device_dialog_mic_name_title))
-                // 提示可以不用填写
-                // 确定按钮文本
                 .setConfirm(getString(R.string.common_confirm))
-                // 设置 null 表示不显示取消按钮
                 .setCancel(getString(R.string.common_cancel))
-                // 设置点击按钮后不关闭对话框
-                //.setAutoDismiss(false)
-                .setListener(new InputDialog.OnListener() {
-                    @Override
-                    public void onConfirm(BaseDialog dialog, String content) {
-                        mmkv = MMKV.defaultMMKV();
-                        mmkv.encode(Constants.KEY_MIC_Name, content);
-
-                    }
-
-                    @Override
-                    public void onCancel(BaseDialog dialog) {
-                    }
-                })
-                .show();
+                .setListener((dialog, content) -> {
+                    mmkv = MMKV.defaultMMKV();
+                    mmkv.encode(Constants.KEY_MIC_Name, content);
+                }).show();
 
 
     }
@@ -256,7 +218,6 @@ public final class MineFragment extends TitleBarFragment<MainActivity> {
         String showCopyrightYear = "";
         String versionName = getVersionName();
         int year = Calendar.getInstance().get(Calendar.YEAR);
-
         if ("2020".equals(year + "")) {
             showCopyrightYear = "2020";
         } else {
@@ -271,10 +232,7 @@ public final class MineFragment extends TitleBarFragment<MainActivity> {
                 .setUpdateDate(update + " 2024 " + getResources().getString(R.string.mine_updated_year) + "5" + getResources().getString(R.string.mine_updated_month))
                 .setConfirm(getResources().getString(R.string.common_confirm))
                 .show();
-
-
     }
-
     @Override
     public boolean isStatusBarEnabled() {
         // 使用沉浸式状态栏

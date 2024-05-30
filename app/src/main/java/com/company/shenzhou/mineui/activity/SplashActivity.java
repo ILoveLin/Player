@@ -59,7 +59,6 @@ public final class SplashActivity extends AppActivity {
                 } catch (Exception e) {
                     throw new RuntimeException(e);
                 }
-
             }
 
             @Override
@@ -70,8 +69,6 @@ public final class SplashActivity extends AppActivity {
 
     @Override
     protected void initData() {
-
-
     }
 
     //判断进入那个activity
@@ -89,7 +86,6 @@ public final class SplashActivity extends AppActivity {
                 startActivity(LoginActivity.class);
             } else {   //已经登陆
                 startActivity(MainActivity.class);
-
             }
             finish();
         }

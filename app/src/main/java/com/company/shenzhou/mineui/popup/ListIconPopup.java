@@ -24,10 +24,10 @@ import java.util.Arrays;
 import java.util.List;
 
 /**
- *    author : Android 轮子哥
- *    github : https://github.com/getActivity/AndroidProject
- *    time   : 2019/10/18
- *    desc   : 列表弹窗，带icon
+ * author : Android 轮子哥
+ * github : https://github.com/getActivity/AndroidProject
+ * time   : 2019/10/18
+ * desc   : 列表弹窗，带icon
  */
 public final class ListIconPopup {
 
@@ -44,11 +44,9 @@ public final class ListIconPopup {
 
         public Builder(Context context) {
             super(context);
-
             RecyclerView recyclerView = new RecyclerView(context);
             recyclerView.setLayoutParams(new ViewGroup.LayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.WRAP_CONTENT));
             setContentView(recyclerView);
-
             mAdapter = new MenuAdapter(getContext());
             mAdapter.setOnItemClickListener(this);
             recyclerView.setAdapter(mAdapter);
@@ -56,9 +54,10 @@ public final class ListIconPopup {
             new ArrowDrawable.Builder(context)
                     .setArrowOrientation(Gravity.TOP)
                     .setArrowGravity(Gravity.RIGHT)
-                    .setShadowSize((int) getResources().getDimension(R.dimen.dp_10))
+                    .setShadowSize((int) getResources().getDimension(R.dimen.dp_15))
                     .setBackgroundColor(0xFFFFFFFF)
                     .apply(recyclerView);
+
         }
 
         @Override
@@ -171,7 +170,7 @@ public final class ListIconPopup {
                 mTextView.setScaleX(0.9f);
                 mTextView.setScaleY(0.9f);
                 float dimension = getResources().getDimension(R.dimen.dp_13);
-                mTextView.setCompoundDrawablePadding((int)dimension);
+                mTextView.setCompoundDrawablePadding((int) dimension);
                 mTextView.setTextColor(getResources().getColor(R.color.color_31bdf3));
                 mTextView.setTextSize(TypedValue.COMPLEX_UNIT_DIP, getResources().getDimension(R.dimen.sp_10));
 //

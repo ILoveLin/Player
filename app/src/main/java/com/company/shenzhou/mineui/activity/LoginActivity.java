@@ -57,6 +57,8 @@ public final class LoginActivity extends AppActivity implements KeyboardWatcher.
     private CheckBox mCheckBoxRememberPasswor;
     private View mBlankView;
     private int mPhoneViewWidth;
+    private String username;
+    private String password;
     private final float mLogoScale = 0.8f;   //缩放比例
     private final int mAnimTime = 300;      //动画时间
     private static final int ChooseUser = 100;
@@ -88,8 +90,6 @@ public final class LoginActivity extends AppActivity implements KeyboardWatcher.
             }
         }
     };
-    private String username;
-    private String password;
 
     @Override
     protected int getLayoutId() {
@@ -129,7 +129,8 @@ public final class LoginActivity extends AppActivity implements KeyboardWatcher.
         initCurrentUserData();
         //适配登入界面layout
         switchLoginBtnLayout();
-        setOnClickListener(R.id.et_login_phone, R.id.username_right, R.id.checkbox_privacy, R.id.tv_privacy_desc1, R.id.tv_privacy_desc2, R.id.remember_password_checkbox, R.id.btn_login_commit);
+        setOnClickListener(R.id.et_login_phone, R.id.username_right, R.id.checkbox_privacy, R.id.tv_privacy_desc1,
+                R.id.tv_privacy_desc2, R.id.remember_password_checkbox, R.id.btn_login_commit);
 
     }
 
@@ -232,7 +233,6 @@ public final class LoginActivity extends AppActivity implements KeyboardWatcher.
                         UserDBBeanUtils.updateData(userDBBean);
                     }
                 }
-
                 //进入主界面
                 MainActivity.start(LoginActivity.this);
                 finish();
@@ -252,14 +252,15 @@ public final class LoginActivity extends AppActivity implements KeyboardWatcher.
         ArrayList<String> nameList = CommonUtil.getNameList(list);
         LogUtils.e(TAG + "======Tag==list==" + list.size());
         LogUtils.e(TAG + "======Tag==" + username_right.getTag());
+
         if ("close".equals(username_right.getTag())) {
             username_right.setTag("open");
             username_right.setImageResource(R.drawable.login_icon_up);
-
         } else {
             username_right.setTag("close");
             username_right.setImageResource(R.drawable.login_icon_down);
         }
+
         LoginListPopup.Builder historyBuilder = new LoginListPopup.Builder(LoginActivity.this);
         historyBuilder.setList(nameList)
                 .setGravity(Gravity.CENTER)
@@ -275,16 +276,14 @@ public final class LoginActivity extends AppActivity implements KeyboardWatcher.
                     tempMsg.obj = str;
                     mHandler.sendMessage(tempMsg);
 
-                })
-                .showAsDropDown(mPhoneView);
+                }).showAsDropDown(mPhoneView);
+
         if (historyBuilder.getPopupWindow() != null) {
             historyBuilder.getPopupWindow().addOnDismissListener(popupWindow -> {
                 username_right.setTag("close");
                 username_right.setImageResource(R.drawable.login_icon_down);
             });
         }
-
-
     }
 
 
@@ -318,8 +317,6 @@ public final class LoginActivity extends AppActivity implements KeyboardWatcher.
             //超级用户只能修改一次密码
             SharePreferenceUtil.put(LoginActivity.this, SharePreferenceUtil.Current_Admin_ChangePassword, false);
         }
-
-
     }
 
     /**
@@ -344,7 +341,6 @@ public final class LoginActivity extends AppActivity implements KeyboardWatcher.
         }
         //设置是否勾选用户协议和隐私政策
         mCheckboxRememberPrivacy.setChecked(mBean.rememberPrivacy);
-
     }
 
     /**
@@ -364,7 +360,6 @@ public final class LoginActivity extends AppActivity implements KeyboardWatcher.
             mBodyLayout.setLayoutParams(mParams);
             linear_top.setLayoutParams(mImageParams);
         }
-
     }
 
     /**

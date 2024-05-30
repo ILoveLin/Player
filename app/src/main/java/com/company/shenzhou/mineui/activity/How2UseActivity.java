@@ -11,7 +11,6 @@ import com.joanzapata.pdfview.PDFView;
  * desc   : 操作手册
  */
 public final class How2UseActivity extends AppActivity {
-
     private PDFView mPDFView;
 
     @Override
@@ -31,7 +30,6 @@ public final class How2UseActivity extends AppActivity {
 
     @Override
     protected void initData() {
-
     }
 
     @Override

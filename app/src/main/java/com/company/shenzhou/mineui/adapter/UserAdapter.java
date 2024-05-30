@@ -11,9 +11,7 @@ import com.company.shenzhou.R;
 import com.company.shenzhou.app.AppAdapter;
 import com.company.shenzhou.bean.dbbean.UserDBBean;
 import com.company.shenzhou.global.Constants;
-import com.company.shenzhou.utlis.LogUtils;
 import com.company.shenzhou.utlis.SharePreferenceUtil;
-import com.company.shenzhou.widget.SwipeMenuLayout;
 import com.hjq.widget.view.SwitchButton;
 
 /**
@@ -82,14 +80,16 @@ public final class UserAdapter extends AppAdapter<UserDBBean> {
             //设置是否是权限用户
             //0普通用户、1权限用户、2超级管理员  默认为0==普通用户
             //进来的时候判断当前系统用户权限和当前item权限 然后做相对于的权限判断c操作
-            if (currentUserRole == 2 && bean.getUserRole() == 2) {
-                mSwitchButton.setEnabled(false);  //超级用户对自己不能使用C
-            } else if (currentUserRole == 2 && bean.getUserRole() < 2) {
+            if (currentUserRole == Constants.AdminUser && bean.getUserRole() == Constants.AdminUser) {
+                //超级用户对自己不能使用
+                mSwitchButton.setEnabled(false);
+            } else if (currentUserRole == Constants.AdminUser && bean.getUserRole() < Constants.AdminUser) {
+                //超级用户可以修改任何其他用户
                 mSwitchButton.setEnabled(true);
             } else {
                 mSwitchButton.setEnabled(false);
             }
-            LogUtils.e(TAG + "==adapter==currentUserRole=" + currentUserRole + "==userItemRole==" + bean.getUserRole());
+            //LogUtils.e(TAG + "==adapter==currentUserRole=" + currentUserRole + "==userItemRole==" + bean.getUserRole());
             //设置item 的用户名
             mUserName.setText(getItem(position).getUsername());
 
