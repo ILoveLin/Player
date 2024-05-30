@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:layout_marginVertical="@dimen/dp_10"
+    android:orientation="vertical">
+
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/dp_350"
+        android:background="@drawable/shape_ffffff_15"
+        android:gravity="center_horizontal"
+        android:orientation="vertical">
+
+        <!--输入框的信息-->
+
+        <include layout="@layout/include_layout_input_videomessage01" />
+
+        <TextView
+            android:id="@+id/tv_two_bt_content"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/dp_20"
+            android:layout_marginBottom="@dimen/dp_20"
+            android:gravity="center"
+            android:text="请先对订单进行评价"
+            android:textColor="@color/color_666666"
+            android:textSize="@dimen/sp_14"
+            android:visibility="gone" />
+
+    </LinearLayout>
+
+
+    <!--    </androidx.core.widget.NestedScrollView>-->
+</LinearLayout>

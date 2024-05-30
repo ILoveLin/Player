@@ -158,8 +158,17 @@
         <item name="android:textSize">@dimen/sp_14</item>
         <item name="android:textColor">@color/color_696969</item>
     </style>
+
     <style name="textInputLayoutHint">
         <item name="android:textSize">@dimen/sp_12</item>
         <item name="android:textColor">@color/black40</item>
     </style>
+
+    <style name="nestedscrollview_vertical_style">
+        <item name="android:scrollbarSize">@dimen/dp_2</item>
+        <item name="android:scrollbars">vertical</item>
+        <item name="android:scrollbarThumbVertical">@drawable/recy_vertical_scrollbar</item>
+        <item name="android:scrollbarTrackVertical">@drawable/recy_vertical_scrollbar_bg</item>
+    </style>
+
 </resources>

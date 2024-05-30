@@ -221,10 +221,7 @@ public class Constants {
      * 语音通话 全局-语音昵称-的Key
      */
     public static final String KEY_MIC_Name = "KEY_MIC_Name";      //全局-语音昵称-的Key
-    /**
-     * 耳鼻喉治疗台 测试使用SessionNum-的Key
-     */
-    public static final String KEY_SessionNum = "KEY_SessionNum";      //测试使用Session最后拼接的数字
+
 
     /**
      * 线路几 的标识

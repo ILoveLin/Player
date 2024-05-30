@@ -90,7 +90,7 @@
 
     <Button
         android:id="@+id/delete"
-        android:layout_width="@dimen/dp_80"
+        android:layout_width="@dimen/dp_65"
         android:layout_height="match_parent"
         android:background="@color/red"
         android:text="@string/item_delete_user"

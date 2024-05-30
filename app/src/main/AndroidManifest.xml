@@ -331,6 +331,27 @@
             android:launchMode="singleTop"
             android:screenOrientation="portrait" />
 
+        <!-- 线路1 播放界面 -->
+        <activity
+            android:name=".mineui.activity.VlcPlayerLine1Activity"
+            android:launchMode="singleTop"
+            android:theme="@style/FullScreenTheme" />
+        <!-- 线路2 播放界面 -->
+        <activity
+            android:name=".mineui.activity.VlcPlayerLine2Activity"
+            android:launchMode="singleTop"
+            android:theme="@style/FullScreenTheme" />
+        <!-- 线路3 播放界面 -->
+        <activity
+            android:name=".mineui.activity.TencentLine3Activity"
+            android:launchMode="singleTop"
+            android:theme="@style/FullScreenTheme" />
+        <!-- RC200 播放界面 -->
+        <activity
+            android:name=".mineui.activity.IjkPlayerRC200Activity"
+            android:launchMode="singleTop"
+            android:theme="@style/FullScreenTheme" />
+
     </application>
 
 

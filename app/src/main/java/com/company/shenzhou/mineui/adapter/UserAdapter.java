@@ -32,10 +32,6 @@ public final class UserAdapter extends AppAdapter<UserDBBean> {
         this.mContext = context;
     }
 
-//    public void setListAndNotifyDataSetChanged() {
-//        List currentList = UserDBBeanUtils.queryAll(UserDBRememberBean.class);
-//        setData(currentList);
-//    }
 
     @NonNull
     @Override
