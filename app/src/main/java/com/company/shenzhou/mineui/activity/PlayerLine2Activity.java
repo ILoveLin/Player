@@ -7,14 +7,14 @@ import com.company.shenzhou.app.AppActivity;
  * company: 江西神州医疗设备有限公司
  * author : LoveLin
  * time   : 2024/5/27 11:50
- * desc   : 线路2-http-Nginx
+ * desc   : VLC-线路2-http-Nginx
  */
-public final class VlcPlayerLine2Activity extends AppActivity {
+public final class PlayerLine2Activity extends AppActivity {
     private static final String TAG = "线路2，界面==";
 
     @Override
     protected int getLayoutId() {
-        return R.layout.copy_activity;
+        return R.layout.player_line2_activity;
     }
 
     @Override

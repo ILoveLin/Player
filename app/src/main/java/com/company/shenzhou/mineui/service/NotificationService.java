@@ -17,9 +17,9 @@ import androidx.core.app.NotificationCompat;
 import com.company.shenzhou.R;
 import com.company.shenzhou.global.Constants;
 import com.company.shenzhou.mineui.activity.IjkPlayerRC200Activity;
-import com.company.shenzhou.mineui.activity.TencentLine3Activity;
-import com.company.shenzhou.mineui.activity.VlcPlayerLine1Activity;
-import com.company.shenzhou.mineui.activity.VlcPlayerLine2Activity;
+import com.company.shenzhou.mineui.activity.PlayerLine3Activity;
+import com.company.shenzhou.mineui.activity.PlayerLine1Activity;
+import com.company.shenzhou.mineui.activity.PlayerLine2Activity;
 import com.company.shenzhou.utlis.LogUtils;
 import com.tencent.mmkv.MMKV;
 
@@ -121,17 +121,17 @@ public class NotificationService extends Service {
             if ("22".equals(isRC200)) {
                 intent = new Intent(this, IjkPlayerRC200Activity.class);
             } else {
-                intent = new Intent(this, VlcPlayerLine1Activity.class);
+                intent = new Intent(this, PlayerLine1Activity.class);
             }
         } else if (mChannel != null && mChannel.equals(Constants.Line2)) {//Channel==0:http 转播
             //RC200默认 22
             if ("22".equals(isRC200)) {
                 intent = new Intent(this, IjkPlayerRC200Activity.class);
             } else {
-                intent = new Intent(this, VlcPlayerLine2Activity.class);
+                intent = new Intent(this, PlayerLine2Activity.class);
             }
         } else if (mChannel != null && mChannel.equals(Constants.Line3)) {//Channel==2:腾讯云
-            intent = new Intent(this, TencentLine3Activity.class);
+            intent = new Intent(this, PlayerLine3Activity.class);
         }
         return intent;
     }

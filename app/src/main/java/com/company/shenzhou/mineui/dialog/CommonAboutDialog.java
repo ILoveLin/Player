@@ -25,12 +25,9 @@ public final class CommonAboutDialog {
     @SuppressWarnings("unchecked")
     public static class Builder<B extends Builder<?>>
             extends BaseDialog.Builder<B> {
-
         private boolean mAutoDismiss = true;
-
         private final ViewGroup mContainerLayout;
         private final TextView mTitleView;
-
         private final View mLineView;
         private final TextView mConfirmView;
 

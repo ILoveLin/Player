@@ -196,8 +196,8 @@ public final class LoginActivity extends AppActivity implements KeyboardWatcher.
                 SharePreferenceUtil.put(LoginActivity.this, SharePreferenceUtil.Current_Password, dbPassword);
                 SharePreferenceUtil.put(LoginActivity.this, SharePreferenceUtil.Current_UserRole, dbUsertype);
                 SharePreferenceUtil.put(LoginActivity.this, SharePreferenceUtil.Current_ID, id);
-                SharePreferenceUtil.put(LoginActivity.this, Constants.SP_IS_FIRST_IN, false);   //false 不是第一次登入了
-                SharePreferenceUtil.put(LoginActivity.this, Constants.Is_Logined, true);   //false  登录的标志 true表示登录了
+                SharePreferenceUtil.put(LoginActivity.this, Constants.Is_First_LoginIn, false);   //false 不是第一次登入了
+                SharePreferenceUtil.put(LoginActivity.this, Constants.Is_LoginEd, true);   //false  登录的标志 true表示登录了
                 SharePreferenceUtil.put(LoginActivity.this, SharePreferenceUtil.Current_ToastShow, "Yes");  //为了解决第一次登入toast的bug
                 mmkv.encode(Constants.KEY_Login_Tag, true);//是否登入成功
                 String currentPhone = mPhoneView.getText().toString();

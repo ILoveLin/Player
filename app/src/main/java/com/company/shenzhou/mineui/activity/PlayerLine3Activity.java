@@ -7,14 +7,14 @@ import com.company.shenzhou.app.AppActivity;
  * company: 江西神州医疗设备有限公司
  * author : LoveLin
  * time   : 2024/5/27 11:50
- * desc   : 线路3-WebRTC
+ * desc   : TencentSDK-线路3-WebRTC
  */
-public final class TencentLine3Activity extends AppActivity {
+public final class PlayerLine3Activity extends AppActivity {
     private static final String TAG = "线路3，界面==";
 
     @Override
     protected int getLayoutId() {
-        return R.layout.copy_activity;
+        return R.layout.player_line3_activity;
     }
 
     @Override

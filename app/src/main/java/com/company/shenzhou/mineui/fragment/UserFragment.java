@@ -269,7 +269,7 @@ public final class UserFragment extends TitleBarFragment<MainActivity> implement
                     UserDBBeanUtils.deleteData(bean);
                     List list = UserDBBeanUtils.queryAll(UserDBBean.class);
                     mAdapter.setData(list);
-                    SharePreferenceUtil.put(getActivity(), Constants.Is_Logined, false);
+                    SharePreferenceUtil.put(getActivity(), Constants.Is_LoginEd, false);
                     startActivity(new Intent(getActivity(), LoginActivity.class));
                     String name = (String) SharePreferenceUtil.get(getActivity(), SharePreferenceUtil.Current_Username, "");
                     int type = (int) SharePreferenceUtil.get(getActivity(), SharePreferenceUtil.Current_UserRole, Constants.GeneralUser);

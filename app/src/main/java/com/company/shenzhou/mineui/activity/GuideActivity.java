@@ -68,7 +68,7 @@ public final class GuideActivity extends AppActivity {
         mViewPager.registerOnPageChangeCallback(mCallback);
         mIndicatorView.setViewPager(mViewPager);
         Boolean userAgreementTag = (Boolean) SharePreferenceUtil.get(GuideActivity.this, Constants.Sp_UserAgreement_Tag, false);
-        isLogin = (Boolean) SharePreferenceUtil.get(this, Constants.Is_Logined, false);
+        isLogin = (Boolean) SharePreferenceUtil.get(this, Constants.Is_LoginEd, false);
         LogUtils.e(TAG + "====userAgreementTag==:" + userAgreementTag);
         LogUtils.e(TAG + "====isLogin==:" + isLogin);
         if (Boolean.FALSE.equals(userAgreementTag)) {
@@ -190,12 +190,12 @@ public final class GuideActivity extends AppActivity {
             if (!isLogin) {
                 startActivity(LoginActivity.class);
                 mmkv.encode(Constants.KEY_Login_Tag, false);//是否登入成功
-                SharePreferenceUtil.put(GuideActivity.this, Constants.SP_IS_FIRST_IN, false);
+                SharePreferenceUtil.put(GuideActivity.this, Constants.Is_First_LoginIn, false);
                 SharePreferenceUtil.put(GuideActivity.this, Constants.Sp_UserAgreement_Tag, true);
                 finish();
             } else {
-                SharePreferenceUtil.put(GuideActivity.this, Constants.SP_IS_FIRST_IN, false);   //false 不是第一次登入了
-                SharePreferenceUtil.put(GuideActivity.this, Constants.Is_Logined, false);
+                SharePreferenceUtil.put(GuideActivity.this, Constants.Is_First_LoginIn, false);   //false 不是第一次登入了
+                SharePreferenceUtil.put(GuideActivity.this, Constants.Is_LoginEd, false);
                 MainActivity.start(getContext());
                 //是否登入成功
                 mmkv.encode(Constants.KEY_Login_Tag, true);

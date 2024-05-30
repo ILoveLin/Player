@@ -333,17 +333,17 @@
 
         <!-- 线路1 播放界面 -->
         <activity
-            android:name=".mineui.activity.VlcPlayerLine1Activity"
+            android:name=".mineui.activity.PlayerLine1Activity"
             android:launchMode="singleTop"
             android:theme="@style/FullScreenTheme" />
         <!-- 线路2 播放界面 -->
         <activity
-            android:name=".mineui.activity.VlcPlayerLine2Activity"
+            android:name=".mineui.activity.PlayerLine2Activity"
             android:launchMode="singleTop"
             android:theme="@style/FullScreenTheme" />
         <!-- 线路3 播放界面 -->
         <activity
-            android:name=".mineui.activity.TencentLine3Activity"
+            android:name=".mineui.activity.PlayerLine3Activity"
             android:launchMode="singleTop"
             android:theme="@style/FullScreenTheme" />
         <!-- RC200 播放界面 -->

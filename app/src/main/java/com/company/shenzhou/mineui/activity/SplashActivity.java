@@ -25,7 +25,7 @@ import com.gyf.immersionbar.ImmersionBar;
  * desc   : 闪屏界面
  */
 public final class SplashActivity extends AppActivity {
-    private Boolean isFirstIn;
+    private Boolean isFirstLogin;
     private Boolean isLogin;
 
     @Override
@@ -40,9 +40,9 @@ public final class SplashActivity extends AppActivity {
         TextView tv_company = findViewById(R.id.tv_company);
         tv_company.setText("Copyright©" + getResources().getString(R.string.mine_company));
         //是否第一次进入app
-        isFirstIn = (Boolean) SharePreferenceUtil.get(this, Constants.SP_IS_FIRST_IN, true);
+        isFirstLogin = (Boolean) SharePreferenceUtil.get(this, Constants.Is_First_LoginIn, true);
         //是否登入
-        isLogin = (Boolean) SharePreferenceUtil.get(this, Constants.Is_Logined, false);
+        isLogin = (Boolean) SharePreferenceUtil.get(this, Constants.Is_LoginEd, false);
         // 从浅到深,从百分之10到百分之百
         AlphaAnimation aa = new AlphaAnimation(0.3f, 1.0f);
         aa.setDuration(1500);// 设置动画时间
@@ -74,9 +74,9 @@ public final class SplashActivity extends AppActivity {
     //判断进入那个activity
     private void switchGoing() {
         LogUtils.e("login==isLogin==" + isLogin);
-        LogUtils.e("login==isFirstIn==" + isFirstIn);
-        if (isFirstIn) {
-            SharePreferenceUtil.put(SplashActivity.this, Constants.SP_IS_FIRST_IN, true);
+        LogUtils.e("login==isFirstIn==" + isFirstLogin);
+        if (isFirstLogin) {
+            SharePreferenceUtil.put(SplashActivity.this, Constants.Is_First_LoginIn, true);
             Intent intent = new Intent();
             intent.setClass(SplashActivity.this, GuideActivity.class);
             startActivity(intent);

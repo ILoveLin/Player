@@ -18,11 +18,11 @@ public class Constants {
     public static final int AdminUser = 2;                 //超级管理员
 
     //引导页
-    public static final String SP_IS_FIRST_IN = "sp_is_first_in";  //是否第一次登入
-    public static final String Sp_UserAgreement_Tag = "sp_useragreement_tag";  //用户是否同意了----用户协议的标识,默认flase
+    public static final String Is_First_LoginIn = "Is_First_LoginIn";  //是否第一次登入
+    public static final String Sp_UserAgreement_Tag = "Sp_UserAgreement_Tag";  //用户是否同意了----用户协议的标识,默认flase
     public static final String Sp_Record_Tag = "Sp_Record_Tag";  //初次安装的时候,录像的时候,第一次申请权限,出现录像成功bug
     public static final String Sp_Shot_Tag = "Sp_Shot_Tag";         //初次安装的时候,录像的时候,第一次申请权限,出现截图成功bug
-    public static final String Is_Logined = "is_logined";          //是否已经登入   false  未登录
+    public static final String Is_LoginEd = "Is_LoginEd";          //是否已经登入   false  未登录
 
     //系统和请求头
     public static final String Token = "token";

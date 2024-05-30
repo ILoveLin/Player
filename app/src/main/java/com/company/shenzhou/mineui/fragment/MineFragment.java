@@ -144,7 +144,7 @@ public final class MineFragment extends TitleBarFragment<MainActivity> {
                 // 设置点击按钮后不关闭对话框
                 .setCanceledOnTouchOutside(false)
                 .setListener(dialog -> {
-                    SharePreferenceUtil.put(getAttachActivity(), Constants.Is_Logined, false);
+                    SharePreferenceUtil.put(getAttachActivity(), Constants.Is_LoginEd, false);
                     startActivity(new Intent(getActivity(), LoginActivity.class));
                     String name = (String) SharePreferenceUtil.get(getAttachActivity(), SharePreferenceUtil.Current_Username, "");
                     String password = (String) SharePreferenceUtil.get(getAttachActivity(), SharePreferenceUtil.Current_Password, "");

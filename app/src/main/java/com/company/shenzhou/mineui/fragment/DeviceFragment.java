@@ -25,9 +25,9 @@ import com.company.shenzhou.global.Constants;
 import com.company.shenzhou.mineui.MainActivity;
 import com.company.shenzhou.mineui.activity.IjkPlayerRC200Activity;
 import com.company.shenzhou.mineui.activity.SearchDeviceActivity;
-import com.company.shenzhou.mineui.activity.TencentLine3Activity;
-import com.company.shenzhou.mineui.activity.VlcPlayerLine1Activity;
-import com.company.shenzhou.mineui.activity.VlcPlayerLine2Activity;
+import com.company.shenzhou.mineui.activity.PlayerLine3Activity;
+import com.company.shenzhou.mineui.activity.PlayerLine1Activity;
+import com.company.shenzhou.mineui.activity.PlayerLine2Activity;
 import com.company.shenzhou.mineui.adapter.DeviceAdapter;
 import com.company.shenzhou.mineui.dialog.AddDeviceDialog;
 import com.company.shenzhou.mineui.dialog.Input2SteamDialog;
@@ -371,7 +371,7 @@ public final class DeviceFragment extends TitleBarFragment<MainActivity> impleme
         mItemDDNSAddress = bean.getDDNSURL();
         String currentUrl01 = "";
         String currentUrl02 = "";
-        Intent intent = new Intent(getActivity(), VlcPlayerLine1Activity.class);
+        Intent intent = new Intent(getActivity(), PlayerLine1Activity.class);
         mmkv.encode(Constants.KEY_VLC_PLAYER_CHANNEL, Constants.Line1);
         //存入当前选中设备的  socketPort
         mmkv.encode(Constants.KEY_Device_SocketPort, bean.getSocketPort());
@@ -614,7 +614,7 @@ public final class DeviceFragment extends TitleBarFragment<MainActivity> impleme
 
         String currentUrl01 = "";
         String currentUrl02 = "";
-        Intent intent = new Intent(getActivity(), VlcPlayerLine2Activity.class);
+        Intent intent = new Intent(getActivity(), PlayerLine2Activity.class);
         mmkv.encode(Constants.KEY_VLC_PLAYER_CHANNEL, Constants.Line2);
         //存入当前选中设备的  socketPort
         mmkv.encode(Constants.KEY_Device_SocketPort, bean.getSocketPort());
@@ -862,7 +862,7 @@ public final class DeviceFragment extends TitleBarFragment<MainActivity> impleme
         mItemClickLivePort = bean.getLivePort();
         String currentUrl01 = "";
         String currentUrl02 = "";
-        Intent intent = new Intent(getActivity(), TencentLine3Activity.class);
+        Intent intent = new Intent(getActivity(), PlayerLine3Activity.class);
         mmkv.encode(Constants.KEY_VLC_PLAYER_CHANNEL, Constants.Line3);
         //存入当前选中设备的  socketPort
         mmkv.encode(Constants.KEY_Device_SocketPort, bean.getSocketPort());

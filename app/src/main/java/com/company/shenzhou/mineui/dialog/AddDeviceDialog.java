@@ -44,7 +44,7 @@ public final class AddDeviceDialog {
         private ClearEditText cet_cme_ddns_url;
         private ClearEditText cet_cme_line_type;
         private TextView makeSure;
-        private TextView makeCancle;
+        private TextView makeCancel;
         public Context mContext;
         private LinearLayout linear_pop_change;
 
