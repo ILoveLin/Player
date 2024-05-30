@@ -173,9 +173,7 @@ public final class LoginActivity extends AppActivity implements KeyboardWatcher.
             toast(getResources().getString(R.string.login_chose_agreement));
             return;
         }
-
         checkDBDataToChangeCurrentUserMsg();
-
     }
 
     /**

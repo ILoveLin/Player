@@ -24,10 +24,10 @@ import com.company.shenzhou.bean.line.line23CheckSteamBean;
 import com.company.shenzhou.global.Constants;
 import com.company.shenzhou.mineui.MainActivity;
 import com.company.shenzhou.mineui.activity.IjkPlayerRC200Activity;
-import com.company.shenzhou.mineui.activity.SearchDeviceActivity;
-import com.company.shenzhou.mineui.activity.PlayerLine3Activity;
 import com.company.shenzhou.mineui.activity.PlayerLine1Activity;
 import com.company.shenzhou.mineui.activity.PlayerLine2Activity;
+import com.company.shenzhou.mineui.activity.PlayerLine3Activity;
+import com.company.shenzhou.mineui.activity.SearchDeviceActivity;
 import com.company.shenzhou.mineui.adapter.DeviceAdapter;
 import com.company.shenzhou.mineui.dialog.AddDeviceDialog;
 import com.company.shenzhou.mineui.dialog.Input2SteamDialog;
@@ -146,7 +146,7 @@ public final class DeviceFragment extends TitleBarFragment<MainActivity> impleme
                 case Refresh_DeviceDialogInfo:         //刷新,设备对话框的数据
                     refreshDeviceDialogInfo();
                     break;
-                case Refresh_Recycleview:               //刷新界面列表数据
+                case Refresh_Recycleview:              //刷新界面列表数据
                     showComplete();
                     mAdapter.setData(mDataList);
                     if (mDataList.isEmpty()) {
@@ -239,7 +239,7 @@ public final class DeviceFragment extends TitleBarFragment<MainActivity> impleme
         if (viewId == R.id.linear_item) {
             toast("onItemClick");
             //默认:0==线路1(常规socket通讯),1==线路2(http模式),2==线路3(腾讯云转播)
-            getChannelDialog(bean);
+            getLineDialog(bean);
             //删除设备
         } else if (viewId == R.id.delete_device) {
             swipeMenuLay.quickClose();
@@ -258,8 +258,8 @@ public final class DeviceFragment extends TitleBarFragment<MainActivity> impleme
 
     // ** * * * * * * * * * * * * * * ** ** ** * 点击事件* * * * * * * * * * * ** * * * * * * * * * *
     //** * * * * * * * * * * * * * * * * * *  开始-开始-开始* * * * * * * * * * * * * * * * * * * * *
-    //选择通道
-    private void getChannelDialog(DeviceDBBean bean) {
+    //选择线路
+    private void getLineDialog(DeviceDBBean bean) {
         //扫码出来呢channel的数字也是0-1-2；
         //后台接口存的数字是：0-1-2:分别表示线路1；线路2；线路3；
         // App里面显示的是线路1-p2p，2-Nginx，3-WebRTC
@@ -267,7 +267,7 @@ public final class DeviceFragment extends TitleBarFragment<MainActivity> impleme
         LogUtils.e(TAG + "选择通道==bean.getChannel()==" + bean.getChannel());
         if (getResources().getString(R.string.device_work_type_01).equals(bean.getChannel())) {
             LogUtils.e(TAG + "选择通道==线路1");
-            choseChannel1VLCActivity(bean);
+            chosePlayerLine1Activity(bean);
         } else {
             LogUtils.e(TAG + "选择通道==线路2，3");
             checkLine23Info(bean);
@@ -320,21 +320,20 @@ public final class DeviceFragment extends TitleBarFragment<MainActivity> impleme
                                         toast(getResources().getString(R.string.device_check_fail));
                                         return;
                                     }
-                                    choseChannel2VLCActivity(bean);
+                                    chosePlayerLine2Activity(bean);
                                 } else if (getResources().getString(R.string.device_work_type_03).equals(bean.getChannel())) {
                                     LogUtils.e(TAG + "选择通道==线路3");
                                     if (!("2".equals(queryBean.getResult().getCurrentLine()))) {
                                         toast(getResources().getString(R.string.device_check_fail));
                                         return;
                                     }
-                                    choseChannel3VLCActivity(bean);
+                                    chosePlayerLine3Activity(bean);
                                 }
                             } else {
                                 toast(getResources().getString(R.string.device_check_error));
                             }
                         }
                     });
-
                 } catch (Exception e) {
                     e.printStackTrace();
                 }
@@ -350,7 +349,7 @@ public final class DeviceFragment extends TitleBarFragment<MainActivity> impleme
      *
      * @param bean 当前item的数据Bean
      */
-    private void choseChannel1VLCActivity(DeviceDBBean bean) {
+    private void chosePlayerLine1Activity(DeviceDBBean bean) {
         LogUtils.e(TAG + "OnItemClic==k" + "username=:" + bean.getAccount() + ",  password=:" + bean.getPassword() + ",  ip:" + bean.getIp() + ",  备注:" + bean.getMsgMark() + ",  端口:"
                 + bean.getLivePort() + ",  类型:" + bean.getDeviceTypeDesc());
         LogUtils.e(TAG + "OnItemClick==" + "DDNSAccount=:" + bean.getDDNSAcount() + ",  DDNSPassword=:" + bean.getDDNSPassword() + ",  getDDNSURL:" + bean.getDDNSURL());
@@ -595,7 +594,7 @@ public final class DeviceFragment extends TitleBarFragment<MainActivity> impleme
      *
      * @param bean 当前item的数据Bean
      */
-    private void choseChannel2VLCActivity(DeviceDBBean bean) {
+    private void chosePlayerLine2Activity(DeviceDBBean bean) {
         LogUtils.e(TAG + "跳转播放界面" + "username=:" + bean.getAccount() + ",  password=:" + bean.getPassword() + ",  ip:" + bean.getIp() + ",  备注:" + bean.getMsgMark() + ",  端口:"
                 + bean.getLivePort() + ",  类型:" + bean.getDeviceTypeDesc());
         LogUtils.e(TAG + "跳转播放界面" + "DDNSAcount=:" + bean.getDDNSAcount() + ",  DDNSPassword=:" + bean.getDDNSPassword() + ",  getDDNSURL:" + bean.getDDNSURL());
@@ -844,7 +843,7 @@ public final class DeviceFragment extends TitleBarFragment<MainActivity> impleme
      *
      * @param bean 当前item的数据Bean
      */
-    private void choseChannel3VLCActivity(DeviceDBBean bean) {
+    private void chosePlayerLine3Activity(DeviceDBBean bean) {
         LogUtils.e(TAG + "跳转播放界面" + "username=:" + bean.getAccount() + ",  password=:" + bean.getPassword() + ",  ip:" + bean.getIp() + ",  备注:" + bean.getMsgMark() + ",  端口:"
                 + bean.getLivePort() + ",  类型:" + bean.getDeviceTypeDesc());
         LogUtils.e(TAG + "跳转播放界面" + "DDNSAcount=:" + bean.getDDNSAcount() + ",  DDNSPassword=:" + bean.getDDNSPassword() + ",  getDDNSURL:" + bean.getDDNSURL());
