@@ -36,9 +36,9 @@ import java.util.Calendar;
  */
 public final class MineFragment extends TitleBarFragment<MainActivity> {
     private static final String TAG = "MineFragment，界面==";
-    private SettingBar mLoginUse;
-    private SettingBar mLoginUseLevel;
-    private SettingBar mSpaceSize;
+    private SettingBar mLoginUseView;
+    private SettingBar mLoginUseLevelView;
+    private SettingBar mSpaceSizeView;
     private MMKV mmkv;
 
     public static MineFragment newInstance() {
@@ -54,11 +54,11 @@ public final class MineFragment extends TitleBarFragment<MainActivity> {
     @Override
     protected void initView() {
         //登录的用户
-        mLoginUse = findViewById(R.id.bar_mine_username);
+        mLoginUseView = findViewById(R.id.bar_mine_username);
         //用户权限等级
-        mLoginUseLevel = findViewById(R.id.bar_mine_power_level);
+        mLoginUseLevelView = findViewById(R.id.bar_mine_power_level);
         //可用空间
-        mSpaceSize = findViewById(R.id.bar_mine_use_pace);
+        mSpaceSizeView = findViewById(R.id.bar_mine_use_pace);
         //关于
         setOnClickListener(R.id.bar_mine_about, R.id.bar_mine_power_explain, R.id.bar_mine_how_use, R.id.bar_mine_use,
                 R.id.bar_mine_secret, R.id.bar_mine_mic_name, R.id.bar_mine_change_password, R.id.bar_mine_exit);
@@ -75,17 +75,17 @@ public final class MineFragment extends TitleBarFragment<MainActivity> {
         String romTotalSize = FileUtil.getROMTotalSize(getActivity());
         LogUtils.e(TAG + "总空间==" + romTotalSize);
         LogUtils.e(TAG + "可用空间==" + romAvailableSize);
-        mSpaceSize.setRightText(romAvailableSize);
-        mLoginUse.setRightText(username);
+        mSpaceSizeView.setRightText(romAvailableSize);
+        mLoginUseView.setRightText(username);
         switch (mLoginRole) {
             case Constants.GeneralUser:
-                mLoginUseLevel.setRightText(getResources().getString(R.string.mine_nor_user));
+                mLoginUseLevelView.setRightText(getResources().getString(R.string.mine_nor_user));
                 break;
             case Constants.PermissionUser:
-                mLoginUseLevel.setRightText(getResources().getString(R.string.mine_permissions));
+                mLoginUseLevelView.setRightText(getResources().getString(R.string.mine_permissions));
                 break;
             case Constants.AdminUser:
-                mLoginUseLevel.setRightText(getResources().getString(R.string.mine_super_user));
+                mLoginUseLevelView.setRightText(getResources().getString(R.string.mine_super_user));
                 break;
         }
 

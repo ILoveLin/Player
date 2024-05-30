@@ -28,7 +28,7 @@ public final class AddDeviceDialog {
             implements BaseDialog.OnShowListener {
 
         private OnListener mListener;
-        //        private final EditText mInputView;
+        //private final EditText mInputView;
         private ClearEditText cet_cme_account, cet_cme_device_name, cet_cme_device_code;
         private ClearEditText cet_cme_password;
         private ClearEditText cet_cme_socket_port;

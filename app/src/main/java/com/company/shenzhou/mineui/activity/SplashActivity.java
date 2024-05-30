@@ -26,7 +26,8 @@ import com.gyf.immersionbar.ImmersionBar;
  */
 public final class SplashActivity extends AppActivity {
     private Boolean isFirstLogin;
-    private Boolean isLogin;
+    //是否已经登入   false=未登录
+    private Boolean isLoginEd;
 
     @Override
     protected int getLayoutId() {
@@ -37,12 +38,12 @@ public final class SplashActivity extends AppActivity {
     @Override
     protected void initView() {
         ImageView ivSplash = findViewById(R.id.iv_splash);
-        TextView tv_company = findViewById(R.id.tv_company);
-        tv_company.setText("Copyright©" + getResources().getString(R.string.mine_company));
+        TextView mCompanyView = findViewById(R.id.tv_company);
+        mCompanyView.setText("Copyright©" + getResources().getString(R.string.mine_company));
         //是否第一次进入app
         isFirstLogin = (Boolean) SharePreferenceUtil.get(this, Constants.Is_First_LoginIn, true);
         //是否登入
-        isLogin = (Boolean) SharePreferenceUtil.get(this, Constants.Is_LoginEd, false);
+        isLoginEd = (Boolean) SharePreferenceUtil.get(this, Constants.Is_LoginEd, false);
         // 从浅到深,从百分之10到百分之百
         AlphaAnimation aa = new AlphaAnimation(0.3f, 1.0f);
         aa.setDuration(1500);// 设置动画时间
@@ -73,7 +74,7 @@ public final class SplashActivity extends AppActivity {
 
     //判断进入那个activity
     private void switchGoing() {
-        LogUtils.e("login==isLogin==" + isLogin);
+        LogUtils.e("login==isLogin==" + isLoginEd);
         LogUtils.e("login==isFirstIn==" + isFirstLogin);
         if (isFirstLogin) {
             SharePreferenceUtil.put(SplashActivity.this, Constants.Is_First_LoginIn, true);
@@ -82,7 +83,7 @@ public final class SplashActivity extends AppActivity {
             startActivity(intent);
             finish();
         } else {  //不是第一次进App,判断是否登陆过
-            if (!isLogin) {  //登入成功 ,false==未登录
+            if (!isLoginEd) {  //登入成功 ,false==未登录
                 startActivity(LoginActivity.class);
             } else {   //已经登陆
                 startActivity(MainActivity.class);

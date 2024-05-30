@@ -1,12 +1,15 @@
 package com.company.shenzhou.mineui;
 
+import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
+import android.os.Build;
 import android.os.Bundle;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.annotation.RequiresApi;
 import androidx.core.content.ContextCompat;
 import androidx.recyclerview.widget.RecyclerView;
 import androidx.viewpager.widget.ViewPager;
@@ -32,17 +35,13 @@ import com.hjq.base.FragmentPagerAdapter;
 public final class MainActivity extends AppActivity
         implements NavigationAdapter.OnNavigationListener {
     private static final String TAG = "MainActivity，界面==";
-
-
     private static final String INTENT_KEY_IN_FRAGMENT_INDEX = "fragmentIndex";
     private static final String INTENT_KEY_IN_FRAGMENT_CLASS = "fragmentClass";
-
     private ViewPager mViewPager;
     private RecyclerView mNavigationView;
-
     private NavigationAdapter mNavigationAdapter;
     private FragmentPagerAdapter<AppFragment<?>> mPagerAdapter;
-    private DeviceFragment deviceFragment;
+    private DeviceFragment mDeviceFragment;
 
     public static void start(Context context) {
         start(context, UserFragment.class);
@@ -69,13 +68,10 @@ public final class MainActivity extends AppActivity
         mNavigationAdapter = new NavigationAdapter(this);
         mNavigationAdapter.addItem(new NavigationAdapter.MenuItem(getString(R.string.main_nav_user),
                 ContextCompat.getDrawable(this, R.drawable.main_user_selector)));
-//                ContextCompat.getDrawable(this, R.drawable.home_home_selector)));
         mNavigationAdapter.addItem(new NavigationAdapter.MenuItem(getString(R.string.main_nav_device),
                 ContextCompat.getDrawable(this, R.drawable.main_device_selector)));
-//                ContextCompat.getDrawable(this, R.drawable.home_found_selector)));
         mNavigationAdapter.addItem(new NavigationAdapter.MenuItem(getString(R.string.main_nav_mine),
                 ContextCompat.getDrawable(this, R.drawable.main_mine_selector)));
-//                ContextCompat.getDrawable(this, R.drawable.home_message_selector)));
         mNavigationAdapter.setOnNavigationListener(this);
         mNavigationView.setAdapter(mNavigationAdapter);
     }
@@ -84,8 +80,8 @@ public final class MainActivity extends AppActivity
     protected void initData() {
         mPagerAdapter = new FragmentPagerAdapter<>(this);
         mPagerAdapter.addFragment(UserFragment.newInstance());
-        deviceFragment = DeviceFragment.newInstance();
-        mPagerAdapter.addFragment(deviceFragment);
+        mDeviceFragment = DeviceFragment.newInstance();
+        mPagerAdapter.addFragment(mDeviceFragment);
         mPagerAdapter.addFragment(MineFragment.newInstance());
         mViewPager.setAdapter(mPagerAdapter);
         onNewIntent(getIntent());
@@ -115,7 +111,6 @@ public final class MainActivity extends AppActivity
         if (fragmentIndex == -1) {
             return;
         }
-
         switch (fragmentIndex) {
             case 0:
             case 1:
@@ -131,7 +126,6 @@ public final class MainActivity extends AppActivity
     /**
      * {@link NavigationAdapter.OnNavigationListener}
      */
-
     @Override
     public boolean onNavigationItemSelected(int position) {
         switch (position) {
@@ -146,13 +140,15 @@ public final class MainActivity extends AppActivity
     }
 
     //华为扫码，查看图库的时候需要权限申请
+    @SuppressLint("NewApi")
     @Override
     protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
-        if (null!=deviceFragment) {
-            deviceFragment.onActivityResult(requestCode, resultCode, data);
+        if (null != mDeviceFragment) {
+            mDeviceFragment.onActivityResult(requestCode, resultCode, data);
         }
     }
+
     @NonNull
     @Override
     protected ImmersionBar createStatusBarConfig() {
@@ -167,7 +163,6 @@ public final class MainActivity extends AppActivity
             toast(R.string.home_exit_hint);
             return;
         }
-
         // 移动到上一个任务栈，避免侧滑引起的不良反应
         moveTaskToBack(false);
         postDelayed(() -> {

@@ -94,7 +94,7 @@ public final class DeviceFragment extends TitleBarFragment<MainActivity> impleme
     private static final String TAG = "DeviceFragment，界面==";
     private TextView mCameraDescView;
     private TextView mReadDescView;
-    private StatusLayout mStatusLayout;
+    private StatusLayout mStatusView;
     private RecyclerView mRecyclerView;
     private TitleBar mTitleBar;
     private MMKV mmkv;
@@ -177,7 +177,7 @@ public final class DeviceFragment extends TitleBarFragment<MainActivity> impleme
     protected void initView() {
         EventBus.getDefault().register(this);
         mTitleBar = findViewById(R.id.title_bar);
-        mStatusLayout = findViewById(R.id.status_layout);
+        mStatusView = findViewById(R.id.status_layout);
         mCameraDescView = findViewById(R.id.tv_01_camera);
         mReadDescView = findViewById(R.id.tv_02_read);
         mRecyclerView = findViewById(R.id.device_recycleview);
@@ -2181,7 +2181,7 @@ public final class DeviceFragment extends TitleBarFragment<MainActivity> impleme
 
     @Override
     public StatusLayout getStatusLayout() {
-        return mStatusLayout;
+        return mStatusView;
     }
 
     @Override

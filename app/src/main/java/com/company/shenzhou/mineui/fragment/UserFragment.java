@@ -43,7 +43,7 @@ public final class UserFragment extends TitleBarFragment<MainActivity> implement
     private int mLoginUserRole;
     private String mLoginUsername;
     private ArrayList<UserDBBean> mDataList = new ArrayList<>();
-    private TextView mViewLoginUsername;
+    private TextView mUsernameView;
     private TitleBar mTitleBar;
 
     public static UserFragment newInstance() {
@@ -59,7 +59,7 @@ public final class UserFragment extends TitleBarFragment<MainActivity> implement
     protected void initView() {
         mRecyclerView = findViewById(R.id.rv_status_list);
         mTitleBar = findViewById(R.id.title_bar);
-        mViewLoginUsername = findViewById(R.id.tv_username);
+        mUsernameView = findViewById(R.id.tv_username);
         mAdapter = new UserAdapter(getAttachActivity());
         mAdapter.setOnChildClickListener(R.id.linear_item, this);
         mAdapter.setOnChildClickListener(R.id.slide_switch, this);
@@ -74,7 +74,7 @@ public final class UserFragment extends TitleBarFragment<MainActivity> implement
         mLoginUsername = (String) SharePreferenceUtil.get(getAttachActivity(), SharePreferenceUtil.Current_Username, "");
         LogUtils.e(TAG + "==当前登入用户权限等级：0=普通用户，1=权限用户，2=超级管理员==" + mLoginUserRole);
         LogUtils.e(TAG + "==当前登入用户名：==" + mLoginUsername);
-        mViewLoginUsername.setText(mLoginUsername);
+        mUsernameView.setText(mLoginUsername);
         mDataList = (ArrayList) UserDBBeanUtils.queryAll(UserDBBean.class);
         mAdapter.setData(mDataList);
         mTitleBar.setOnTitleBarListener(new OnTitleBarListener() {
