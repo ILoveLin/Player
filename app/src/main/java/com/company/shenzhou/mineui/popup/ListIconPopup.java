@@ -153,27 +153,6 @@ public final class ListIconPopup {
 //                        (int) getResources().getDimension(R.dimen.dp_12),
 //                        (int) getResources().getDimension(R.dimen.dp_10));
 
-                if (position == 0) {
-                    Drawable record_start = getResources().getDrawable(R.drawable.icon_bg_device_search);
-                    mTextView.setCompoundDrawablesWithIntrinsicBounds(record_start, null, null, null);
-                } else if (position == 1) {
-                    Drawable record_start = getResources().getDrawable(R.drawable.icon_video_code);
-                    mTextView.setCompoundDrawablesWithIntrinsicBounds(record_start, null, null, null);
-                } else if (position == 2) {
-                    Drawable record_start = getResources().getDrawable(R.drawable.icon_video_writ);
-                    mTextView.setCompoundDrawablesWithIntrinsicBounds(record_start, null, null, null);
-                }
-                mTextView.setPaddingRelative((int) TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, 10, getResources().getDisplayMetrics()),
-                        (int) TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, 10, getResources().getDisplayMetrics()),
-                        (int) TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, 10, getResources().getDisplayMetrics()),
-                        (int) TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, 10, getResources().getDisplayMetrics()));
-                mTextView.setScaleX(0.9f);
-                mTextView.setScaleY(0.9f);
-                float dimension = getResources().getDimension(R.dimen.dp_13);
-                mTextView.setCompoundDrawablePadding((int) dimension);
-                mTextView.setTextColor(getResources().getColor(R.color.color_31bdf3));
-                mTextView.setTextSize(TypedValue.COMPLEX_UNIT_DIP, getResources().getDimension(R.dimen.sp_10));
-//
 //                if (position == 0) {
 //                    Drawable record_start = getResources().getDrawable(R.drawable.icon_bg_device_search);
 //                    mTextView.setCompoundDrawablesWithIntrinsicBounds(record_start, null, null, null);
@@ -190,9 +169,30 @@ public final class ListIconPopup {
 //                        (int) TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, 10, getResources().getDisplayMetrics()));
 //                mTextView.setScaleX(0.9f);
 //                mTextView.setScaleY(0.9f);
-//                mTextView.setCompoundDrawablePadding(22);
+//                float dimension = getResources().getDimension(R.dimen.dp_13);
+//                mTextView.setCompoundDrawablePadding((int) dimension);
 //                mTextView.setTextColor(getResources().getColor(R.color.color_31bdf3));
-//                mTextView.setTextSize(16);
+//                mTextView.setTextSize(TypedValue.COMPLEX_UNIT_DIP, getResources().getDimension(R.dimen.sp_10));
+//
+                if (position == 0) {
+                    Drawable record_start = getResources().getDrawable(R.drawable.icon_bg_device_search);
+                    mTextView.setCompoundDrawablesWithIntrinsicBounds(record_start, null, null, null);
+                } else if (position == 1) {
+                    Drawable record_start = getResources().getDrawable(R.drawable.icon_video_code);
+                    mTextView.setCompoundDrawablesWithIntrinsicBounds(record_start, null, null, null);
+                } else if (position == 2) {
+                    Drawable record_start = getResources().getDrawable(R.drawable.icon_video_writ);
+                    mTextView.setCompoundDrawablesWithIntrinsicBounds(record_start, null, null, null);
+                }
+                mTextView.setPaddingRelative((int) TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, 10, getResources().getDisplayMetrics()),
+                        (int) TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, 10, getResources().getDisplayMetrics()),
+                        (int) TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, 10, getResources().getDisplayMetrics()),
+                        (int) TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, 10, getResources().getDisplayMetrics()));
+                mTextView.setScaleX(0.9f);
+                mTextView.setScaleY(0.9f);
+                mTextView.setCompoundDrawablePadding(22);
+                mTextView.setTextColor(getResources().getColor(R.color.color_31bdf3));
+                mTextView.setTextSize(16);
 
 
             }

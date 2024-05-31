@@ -38,7 +38,7 @@ public class NotificationService extends Service {
     @Override
     public void onCreate() {
         super.onCreate();
-        LogUtils.e(TAG + "NotificationService===onCreate");
+        LogUtils.e(TAG + "NotificationService==onCreate");
         mmkv = MMKV.defaultMMKV();
         mNotificationManager = (NotificationManager) getSystemService(NOTIFICATION_SERVICE);
         showNotification();
@@ -140,7 +140,7 @@ public class NotificationService extends Service {
     @Override
     public void onDestroy() {
         super.onDestroy();
-        LogUtils.e("NotificationService===onDestroy");
+        LogUtils.e("NotificationService==onDestroy");
         if (null != mNotificationManager) {
             mNotificationManager.cancel(notificationId);
         }

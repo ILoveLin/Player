@@ -33,7 +33,6 @@ import io.reactivex.disposables.Disposable;
  */
 
 public class ReceiveSocketService extends AbsWorkService {
-
     //是否 任务完成, 不再需要服务运行?
     public static boolean sShouldStopService;
     public static boolean isFirstIn = false;
@@ -388,26 +387,26 @@ public class ReceiveSocketService extends AbsWorkService {
      * @param
      */
     public void initFirstThread() {
-        LogUtils.e("App-server-initLiveService--初始化监听服务--initFirstThread开启了");
+        LogUtils.e(TAG + "initLiveService--初始化监听服务--initFirstThread开启了");
 
         MMKV kv = MMKV.defaultMMKV();
         int mLocalReceivePort = kv.decodeInt(Constants.KEY_LOCAL_RECEIVE_PORT);//默认8005
         //手机设备码
         String mPhoneDeviceCode = kv.decodeString(Constants.KEY_PhoneDeviceCode, CalculateUtils.getPhoneDeviceCode());
-        LogUtils.e("App-server-initFirstThread(接收线程里面初始化了),获取手机唯一标识码mPhoneDeviceCode:" + mPhoneDeviceCode);
+        LogUtils.e(TAG + "initFirstThread(接收线程里面初始化了),获取手机唯一标识码mPhoneDeviceCode:" + mPhoneDeviceCode);
         //是否开启过接收线程,开启过为true,避免初始化的时候创建三个接受线程
         boolean b = kv.decodeBool(Constants.KEY_SOCKET_RECEIVE_FIRST_IN);
         if (!b) {
-            LogUtils.e("App-server-initLiveService--初始化监听服务--initFirstThread开启了====避免初始化的时候创建三个接受线程");
+            LogUtils.e(TAG + "initLiveService--初始化监听服务--initFirstThread开启了====避免初始化的时候创建三个接受线程");
             LogUtils.e(TAG + "server-第一次初始化监听服务,:" + "本地监听的port=" + mLocalReceivePort);
             kv.encode(Constants.KEY_LOCAL_RECEIVE_PORT, mLocalReceivePort); //当前设置的,本地广播监听端口
             kv.encode(Constants.KEY_SOCKET_RECEIVE_FIRST_IN, true);
             receiveThread = new ReceiveThread(mLocalReceivePort, getApplicationContext(), mPhoneDeviceCode);
             receiveThread.start();
-            LogUtils.e(TAG + "App-server-第一次初始化监听服务,receiveThread.getName():" + receiveThread.getName());
+            LogUtils.e(TAG + "第一次初始化监听服务,receiveThread.getName():" + receiveThread.getName());
 
         } else {
-            LogUtils.e(TAG + "App-server-initLiveService--服务已存在,不开启-当前接受线程名::" + receiveThread.getName());
+            LogUtils.e(TAG + "initLiveService--服务已存在,不开启-当前接受线程名::" + receiveThread.getName());
 
         }
 

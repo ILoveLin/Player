@@ -247,7 +247,7 @@ public final class DeviceFragment extends TitleBarFragment<MainActivity> impleme
             //修改设备信息
         } else if (viewId == R.id.update_device) {
             swipeMenuLay.quickClose();
-            showReInputDialog(bean);
+            showUpdateDialog(bean);
             //备用方案
         } else if (viewId == R.id.play_mode) {
             swipeMenuLay.quickClose();
@@ -1108,7 +1108,7 @@ public final class DeviceFragment extends TitleBarFragment<MainActivity> impleme
      * bean=>当前被修改的item数据bean
      * bean=>当前被修改的item数据bean
      */
-    private void showReInputDialog(DeviceDBBean bean) {
+    private void showUpdateDialog(DeviceDBBean bean) {
         isDeviceDialogInfoInputOrUpdateComplete = false;
         updateBuilder = new UpdateDeviceDialog.Builder(getActivity(), bean);
         LogUtils.e(TAG + "修改对话框--对话框的数据:" + bean.toString());
@@ -1125,7 +1125,6 @@ public final class DeviceFragment extends TitleBarFragment<MainActivity> impleme
             public void onConfirm(BaseDialog dialog, HashMap<String, String> mMap) {
 //                对DB做修改或者增加的操作
                 getMsgDialogData2Bean(mMap, bean);
-
                 LogUtils.e(TAG + "修改对话框===数据输入完毕===" + isDeviceDialogInfoInputOrUpdateComplete);
                 LogUtils.e(TAG + "修改对话框===修改之后,Map数据===" + mMap.toString());
 //                {makeMessage=一体机, password=root, port=7788, ip=192.168.1.200, title=一体机的标题, type=一体机, account=root}
@@ -1374,9 +1373,12 @@ public final class DeviceFragment extends TitleBarFragment<MainActivity> impleme
                     LogUtils.e(TAG + "新增设备对话框==修改之后,id==singleIndex==" + singleIndex);
                     //判断需要新增的设备，数据库，是否存在
                     List<DeviceDBBean> queryBeanByTag = DeviceDBUtils.getQueryBeanByTag(getActivity(), singleIndex);
-                    if (queryBeanByTag != null && queryBeanByTag.isEmpty()) {
+                    if (queryBeanByTag != null && !queryBeanByTag.isEmpty()) {
                         //新增设备的时候，数据库存在singleIndex的数据，说明设备已存在
                         toast(getResources().getString(R.string.device_add_fail));
+                    }else {
+                        DeviceDBUtils.insertOrReplaceInTx(getActivity(), mDeviceDBBean);
+                        toast(getResources().getString(R.string.device_toast05));
                     }
                     startThreadNotifyDataSetChanged();
                     addBuilder.dismissDialog();

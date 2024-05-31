@@ -149,7 +149,7 @@ public final class LoginListPopup {
                 super(new TextView(getContext()));
                 mTextView = (TextView) getItemView();
                 mTextView.setTextColor(getColor(R.color.black50));
-                mTextView.setTextSize(TypedValue.COMPLEX_UNIT_PX, getResources().getDimension(R.dimen.sp_16));
+                mTextView.setTextSize(TypedValue.COMPLEX_UNIT_PX, getResources().getDimension(R.dimen.sp_14));
             }
 
             @Override

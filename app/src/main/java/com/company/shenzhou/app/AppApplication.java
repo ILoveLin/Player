@@ -74,7 +74,7 @@ import xyz.doikki.videoplayer.player.VideoViewManager;
  * desc   : 应用入口
  */
 public final class AppApplication extends Application {
-
+    private static final String TAG = "App,主程序==";
     private static MMKV mmkv;
     private static AppApplication mApplication;
 
@@ -96,7 +96,7 @@ public final class AppApplication extends Application {
     @Override
     public void onCreate() {
         super.onCreate();
-        initSdk(application);
+        initSdk();
     }
 
     @Override
@@ -122,9 +122,9 @@ public final class AppApplication extends Application {
     /**
      * 初始化一些第三方框架
      */
-    public void initSdk(AppApplication application) {
+    public void initSdk() {
         //初始化Didi调试日志框架
-        new DoKit.Builder(application)
+        new DoKit.Builder(this)
                 .build();
 
         //初始化DK播放器框架
@@ -133,7 +133,7 @@ public final class AppApplication extends Application {
                 .setPlayerFactory(IjkPlayerFactory.create())
                 .build());
         //初始化MMKV存储框架
-        MMKV.initialize(application);
+        MMKV.initialize(this);
         mmkv = MMKV.defaultMMKV();
         //设置第一次启动App的时候,是否第一次初始化过,接收线程
         mmkv.encode(Constants.KEY_SOCKET_RECEIVE_FIRST_IN, false);
@@ -152,9 +152,9 @@ public final class AppApplication extends Application {
         MultiLanguages.init(this);
 
         Boolean mCanUse = (Boolean) SharePreferenceUtil.get(application, SharePreferenceUtil.Bugly_CanUse, false);
-        LogUtils.e("App-initLiveService--Bugly_CanUse====" + mCanUse);
+        LogUtils.e(TAG+"Bugly_CanUse====" + mCanUse);
         boolean b = mmkv.decodeBool(Constants.KEY_SOCKET_RECEIVE_FIRST_IN);
-        LogUtils.e("App-initLiveService--避免初始化的时候开启多次线程-标识====" + b);
+        LogUtils.e(TAG+"避免初始化的时候开启多次线程-标识====" + b);
 
         if (mCanUse) {
             initLiveService(application);
@@ -291,7 +291,7 @@ public final class AppApplication extends Application {
         TXLiveBase.setListener(new TXLiveBaseListener() {
             @Override
             public void onLicenceLoaded(int result, String reason) {
-                LogUtils.e("App==腾讯直播初始化" + "onLicenceLoaded: result:" + result + ", reason:" + reason);
+                LogUtils.e(TAG+"==腾讯直播初始化" + "onLicenceLoaded: result:" + result + ", reason:" + reason);
             }
         });
 
@@ -307,6 +307,7 @@ public final class AppApplication extends Application {
         mSession = daoMaster.newSession(IdentityScopeType.None);
 
     }
+
     public static DaoSession mSession;
 
 
@@ -315,7 +316,7 @@ public final class AppApplication extends Application {
     }
 
     public void intBugly() {
-        LogUtils.e("intSDK--初始化SDK");
+        LogUtils.e(TAG+"intSDK--初始化SDK");
         /**
          * 为了保证运营数据的准确性，建议不要在异步线程初始化Bugly。
          * 第三个参数为SDK调试模式开关，调试模式的行为特性如下：
@@ -336,7 +337,7 @@ public final class AppApplication extends Application {
         String model = DeviceUtils.getModel();
         strategy.setDeviceModel(manufacturer + "_" + model);
         initLiveService(application);
-        LogUtils.e("intSDK--初始化SDK方法执行完毕!");
+        LogUtils.e(TAG+"intSDK初始化SDK方法执行完毕!");
     }
 
     /**
@@ -344,8 +345,8 @@ public final class AppApplication extends Application {
      */
     private void initLiveService(AppApplication application) {
         String string = mmkv.decodeString(Constants.KEY_PhoneDeviceCode, "ec3fdc8a06d4fe08c93437560c4ce460");
-        LogUtils.e("App-initLiveService--初始化监听服务-开始?");
-        LogUtils.e("App-initLiveService(初始化监听服务),获取手机唯一标识码:" + string);
+        LogUtils.e(TAG+"initLiveService==初始化监听服务-开始?");
+        LogUtils.e(TAG+"initLiveService(初始化监听服务),获取手机唯一标识码:" + string);
         //初始化
         WeakReference<Context> appWeakReference = new WeakReference<>(application);
         DaemonEnv.initialize(appWeakReference.get(), ReceiveSocketService.class, DaemonEnv.DEFAULT_WAKE_UP_INTERVAL);
@@ -353,7 +354,7 @@ public final class AppApplication extends Application {
         ReceiveSocketService.sShouldStopService = false;
         //开启服务
         DaemonEnv.startServiceMayBind(ReceiveSocketService.class);
-        LogUtils.e("App-initLiveService--初始化监听服务-结束");
+        LogUtils.e(TAG+"initLiveService==初始化监听服务-结束");
 
 
     }

@@ -16,7 +16,6 @@
         android:layout_gravity="center"
         android:gravity="center_horizontal"
         android:orientation="vertical"
-        android:paddingHorizontal="@dimen/dp_25"
         android:paddingTop="@dimen/dp_5">
 
         <androidx.appcompat.widget.AppCompatImageView

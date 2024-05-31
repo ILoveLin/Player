@@ -69,8 +69,8 @@ public final class GuideActivity extends AppActivity {
         mIndicatorView.setViewPager(mViewPager);
         Boolean userAgreementTag = (Boolean) SharePreferenceUtil.get(GuideActivity.this, Constants.Sp_UserAgreement_Tag, false);
         isLogin = (Boolean) SharePreferenceUtil.get(this, Constants.Is_LoginEd, false);
-        LogUtils.e(TAG + "====userAgreementTag==:" + userAgreementTag);
-        LogUtils.e(TAG + "====isLogin==:" + isLogin);
+        LogUtils.e(TAG + "userAgreementTag==:" + userAgreementTag);
+        LogUtils.e(TAG + "isLogin==:" + isLogin);
         if (Boolean.FALSE.equals(userAgreementTag)) {
             showUserAgreementDialog();
         }
@@ -125,15 +125,15 @@ public final class GuideActivity extends AppActivity {
                     String deviceId = DeviceUtils.getUniqueDeviceId();
 //                        String deviceId = FileUtils.getSDDeviceTxt();
                     String mSend_IDBy32 = MD5ChangeUtil.Md5_32(deviceId);
-                    LogUtils.e(TAG+"====deviceId:" + deviceId);
-                    LogUtils.e(TAG+"====mSend_IDBy32:" + mSend_IDBy32);
+                    LogUtils.e(TAG + "deviceId:" + deviceId);
+                    LogUtils.e(TAG + "mSend_IDBy32:" + mSend_IDBy32);
 
                     if (mSend_IDBy32.isEmpty()) {
-                        LogUtils.e(TAG+"====获取手机唯一标识码失败");
+                        LogUtils.e(TAG + "获取手机唯一标识码失败");
                     } else {
                         mmkv.encode(Constants.KEY_PhoneDeviceCode, mSend_IDBy32);
-                        LogUtils.e(TAG+"====获取手机唯一标识码成功:" + mSend_IDBy32);
-                        LogUtils.e(TAG+"====获取手机唯一标识码成功:已存入mmkv:" + mSend_IDBy32);
+                        LogUtils.e(TAG + "获取手机唯一标识码成功:" + mSend_IDBy32);
+                        LogUtils.e(TAG + "获取手机唯一标识码成功:已存入mmkv:" + mSend_IDBy32);
                     }
                     dialog.dismiss();
                     setCurrentUserMsg();
@@ -172,15 +172,15 @@ public final class GuideActivity extends AppActivity {
         userDBBean.setId(ID);
         UserDBBeanUtils.insertOrReplaceData(userDBBean);
         boolean isExist = UserDBBeanUtils.queryListIsExist("admin");
-        LogUtils.e(TAG + "=====isExist==" + isExist);
+        LogUtils.e(TAG + "isExist==" + isExist);
         String str = "admin";
         List<UserDBBean> userDBBeans = UserDBBeanUtils.queryListByMessage(str);
         for (int i = 0; i < userDBBeans.size(); i++) {
             String username = userDBBeans.get(i).getUsername();
             String password = userDBBeans.get(i).getPassword();
-            LogUtils.e("=====username==" + username + "==password==" + password);
+            LogUtils.e("username==" + username + "==password==" + password);
         }
-        LogUtils.e("=====isExist==" + isExist);
+        LogUtils.e("isExist==" + isExist);
     }
 
     @SingleClick
@@ -229,6 +229,7 @@ public final class GuideActivity extends AppActivity {
             mCompleteView.setVisibility(View.INVISIBLE);
             mCompleteView.clearAnimation();
         }
+
         @Override
         public void onPageScrollStateChanged(int state) {
             if (state != ViewPager2.SCROLL_STATE_IDLE) {
