@@ -125,19 +125,20 @@ public final class GuideActivity extends AppActivity {
                     String deviceId = DeviceUtils.getUniqueDeviceId();
 //                        String deviceId = FileUtils.getSDDeviceTxt();
                     String mSend_IDBy32 = MD5ChangeUtil.Md5_32(deviceId);
-                    LogUtils.e("App--GuideActivity,==02==deviceId:" + deviceId);
-                    LogUtils.e("App--GuideActivity,==02==mSend_IDBy32:" + mSend_IDBy32);
+                    LogUtils.e(TAG+"====deviceId:" + deviceId);
+                    LogUtils.e(TAG+"====mSend_IDBy32:" + mSend_IDBy32);
 
                     if (mSend_IDBy32.isEmpty()) {
-                        LogUtils.e("App--GuideActivity,==02==获取手机唯一标识码失败");
+                        LogUtils.e(TAG+"====获取手机唯一标识码失败");
                     } else {
                         mmkv.encode(Constants.KEY_PhoneDeviceCode, mSend_IDBy32);
-                        LogUtils.e("App--GuideActivity,==02==获取手机唯一标识码成功:" + mSend_IDBy32);
-                        LogUtils.e("App--GuideActivity,==02==获取手机唯一标识码成功:已存入mmkv:" + mSend_IDBy32);
+                        LogUtils.e(TAG+"====获取手机唯一标识码成功:" + mSend_IDBy32);
+                        LogUtils.e(TAG+"====获取手机唯一标识码成功:已存入mmkv:" + mSend_IDBy32);
                     }
                     dialog.dismiss();
                     setCurrentUserMsg();
                 }).setOnClickListener(R.id.btn_dialog_custom_cancle, (dialog, view) -> {
+                    SharePreferenceUtil.put(GuideActivity.this, SharePreferenceUtil.Bugly_CanUse, false);
                     dialog.dismiss();
                     finish();
                 }).show();

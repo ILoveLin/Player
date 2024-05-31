@@ -77,22 +77,26 @@ public final class AppApplication extends Application {
 
     private static MMKV mmkv;
     private static AppApplication mApplication;
+
+
+    private static AppApplication application;
+
     public AppApplication() {
-        mApplication = this;
+        application = this;
     }
 
     public static synchronized AppApplication getInstance() {
-        if (mApplication == null) {
-            mApplication = new AppApplication();
+        if (application == null) {
+            application = new AppApplication();
         }
-        return mApplication;
+        return application;
     }
 
     @Log("启动耗时")
     @Override
     public void onCreate() {
         super.onCreate();
-        initSdk();
+        initSdk(application);
     }
 
     @Override
@@ -118,9 +122,9 @@ public final class AppApplication extends Application {
     /**
      * 初始化一些第三方框架
      */
-    public void initSdk() {
+    public void initSdk(AppApplication application) {
         //初始化Didi调试日志框架
-        new DoKit.Builder(this)
+        new DoKit.Builder(application)
                 .build();
 
         //初始化DK播放器框架
@@ -129,7 +133,7 @@ public final class AppApplication extends Application {
                 .setPlayerFactory(IjkPlayerFactory.create())
                 .build());
         //初始化MMKV存储框架
-        MMKV.initialize(this);
+        MMKV.initialize(application);
         mmkv = MMKV.defaultMMKV();
         //设置第一次启动App的时候,是否第一次初始化过,接收线程
         mmkv.encode(Constants.KEY_SOCKET_RECEIVE_FIRST_IN, false);
@@ -147,13 +151,13 @@ public final class AppApplication extends Application {
         //初始化国际化
         MultiLanguages.init(this);
 
-        Boolean mCanUse = (Boolean) SharePreferenceUtil.get(this, SharePreferenceUtil.Bugly_CanUse, false);
+        Boolean mCanUse = (Boolean) SharePreferenceUtil.get(application, SharePreferenceUtil.Bugly_CanUse, false);
         LogUtils.e("App-initLiveService--Bugly_CanUse====" + mCanUse);
         boolean b = mmkv.decodeBool(Constants.KEY_SOCKET_RECEIVE_FIRST_IN);
         LogUtils.e("App-initLiveService--避免初始化的时候开启多次线程-标识====" + b);
 
         if (mCanUse) {
-            initLiveService(this);
+            initLiveService(application);
         }
         //初始化腾讯快直播SDK
         initTencentLive();
@@ -331,14 +335,14 @@ public final class AppApplication extends Application {
         String manufacturer = DeviceUtils.getManufacturer();
         String model = DeviceUtils.getModel();
         strategy.setDeviceModel(manufacturer + "_" + model);
-        initLiveService(mApplication);
+        initLiveService(application);
         LogUtils.e("intSDK--初始化SDK方法执行完毕!");
     }
 
     /**
      * 保活服务
      */
-    private static void initLiveService(Application application) {
+    private void initLiveService(AppApplication application) {
         String string = mmkv.decodeString(Constants.KEY_PhoneDeviceCode, "ec3fdc8a06d4fe08c93437560c4ce460");
         LogUtils.e("App-initLiveService--初始化监听服务-开始?");
         LogUtils.e("App-initLiveService(初始化监听服务),获取手机唯一标识码:" + string);
@@ -350,6 +354,8 @@ public final class AppApplication extends Application {
         //开启服务
         DaemonEnv.startServiceMayBind(ReceiveSocketService.class);
         LogUtils.e("App-initLiveService--初始化监听服务-结束");
+
+
     }
 
 

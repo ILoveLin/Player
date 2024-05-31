@@ -7,10 +7,10 @@ import com.company.shenzhou.app.AppActivity;
  * company: 江西神州医疗设备有限公司
  * author : LoveLin
  * time   : 2024/5/27 11:50
- * desc   : 可进行拷贝的副本
+ * desc   : ijkPlayer  RC200
  */
-public final class IjkPlayerRC200Activity extends AppActivity {
-    private static final String TAG = "IjkPlayerRC200Activity，界面==";
+public final class PlayerRC200Activity extends AppActivity {
+    private static final String TAG = "PlayerRC200Activity，界面==";
 
     @Override
     protected int getLayoutId() {

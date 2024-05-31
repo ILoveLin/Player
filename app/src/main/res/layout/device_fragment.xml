@@ -13,7 +13,36 @@
         app:leftIcon="@null"
         app:rightIcon="@drawable/selector_add_something"
         app:title="@string/main_nav_device" />
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@color/white"
+        android:orientation="vertical">
 
+        <TextView
+            android:id="@+id/tv_01_camera"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="@color/black20"
+            android:padding="@dimen/dp_10"
+            android:text="@string/permission_camera_description"
+            android:textColor="@color/white"
+            android:textSize="@dimen/sp_14"
+            android:visibility="gone"
+            />
+
+        <TextView
+            android:id="@+id/tv_02_read"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="@color/black20"
+            android:padding="@dimen/dp_10"
+            android:text="@string/gallery_camera_description"
+            android:textColor="@color/white"
+            android:textSize="@dimen/sp_14"
+            android:visibility="gone" />
+
+    </LinearLayout>
     <com.scwang.smart.refresh.layout.SmartRefreshLayout
         android:id="@+id/rl_status_refresh"
         android:layout_width="match_parent"
@@ -33,35 +62,7 @@
                 android:layout_height="wrap_content"
                 android:orientation="vertical">
 
-                <LinearLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:background="@color/white"
-                    android:orientation="vertical">
 
-                    <TextView
-                        android:id="@+id/tv_01_camera"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:background="@color/black20"
-                        android:padding="@dimen/dp_10"
-                        android:text="@string/permission_camera_description"
-                        android:textColor="@color/white"
-                        android:textSize="@dimen/sp_14"
-                        android:visibility="gone" />
-
-                    <TextView
-                        android:id="@+id/tv_02_read"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:background="@color/black20"
-                        android:padding="@dimen/dp_10"
-                        android:text="@string/gallery_camera_description"
-                        android:textColor="@color/white"
-                        android:textSize="@dimen/sp_14"
-                        android:visibility="gone" />
-
-                </LinearLayout>
 
                 <androidx.recyclerview.widget.RecyclerView
                     android:id="@+id/device_recycleview"

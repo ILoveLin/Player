@@ -2,6 +2,7 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     package="com.company.shenzhou">
+
     <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
     <uses-permission android:name="android.permission.FOREGROUND_SERVICE" />
     <uses-permission android:name="android.permission.INTERNET" />
@@ -45,8 +46,6 @@
 
     <!-- 硬件加速对X5视频播放非常重要，建议开启 -->
     <uses-permission android:name="android.permission.GET_TASKS" />
-
-
 
 
     <!-- 网络相关 -->
@@ -286,12 +285,8 @@
         <!-- CMEPlayer 主动添加的界面 -->
         <!-- CMEPlayer 主动添加的界面 -->
         <!-- 永久保活Socket服务 -->
-        <service
-            android:name=".ui.service.ReceiveSocketService"
-            tools:ignore="MissingClass" />
-        <service
-            android:name=".ui.service.NotificationService"
-            tools:ignore="MissingClass" />
+        <service android:name=".mineui.service.ReceiveSocketService" />
+        <service android:name=".mineui.service.NotificationService" />
         <!-- 主界面 -->
         <activity
             android:name=".mineui.MainActivity"
@@ -348,7 +343,7 @@
             android:theme="@style/FullScreenTheme" />
         <!-- RC200 播放界面 -->
         <activity
-            android:name=".mineui.activity.IjkPlayerRC200Activity"
+            android:name=".mineui.activity.PlayerRC200Activity"
             android:launchMode="singleTop"
             android:theme="@style/FullScreenTheme" />
 

@@ -17,14 +17,21 @@ import androidx.viewpager.widget.ViewPager;
 import com.company.shenzhou.R;
 import com.company.shenzhou.app.AppActivity;
 import com.company.shenzhou.app.AppFragment;
+import com.company.shenzhou.global.Constants;
 import com.company.shenzhou.manager.ActivityManager;
 import com.company.shenzhou.mineui.fragment.DeviceFragment;
 import com.company.shenzhou.mineui.fragment.MineFragment;
 import com.company.shenzhou.mineui.fragment.UserFragment;
+import com.company.shenzhou.mineui.service.ReceiveSocketService;
 import com.company.shenzhou.other.DoubleClickHelper;
 import com.company.shenzhou.ui.adapter.NavigationAdapter;
+import com.company.shenzhou.utlis.LogUtils;
 import com.gyf.immersionbar.ImmersionBar;
 import com.hjq.base.FragmentPagerAdapter;
+import com.tencent.mmkv.MMKV;
+import com.xdandroid.hellodaemon.DaemonEnv;
+
+import java.lang.ref.WeakReference;
 
 /**
  * company: 江西神州医疗设备有限公司
@@ -57,6 +64,12 @@ public final class MainActivity extends AppActivity
     }
 
     @Override
+    protected void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+
+    }
+
+    @Override
     protected int getLayoutId() {
         return R.layout.main_activity;
     }
@@ -86,6 +99,9 @@ public final class MainActivity extends AppActivity
         mViewPager.setAdapter(mPagerAdapter);
         onNewIntent(getIntent());
     }
+    /**
+     * 保活服务
+     */
 
     @Override
     protected void onNewIntent(Intent intent) {

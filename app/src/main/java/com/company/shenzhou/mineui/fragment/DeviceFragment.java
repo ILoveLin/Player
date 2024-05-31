@@ -23,7 +23,7 @@ import com.company.shenzhou.bean.dbbean.DownBindNameListBean;
 import com.company.shenzhou.bean.line.line23CheckSteamBean;
 import com.company.shenzhou.global.Constants;
 import com.company.shenzhou.mineui.MainActivity;
-import com.company.shenzhou.mineui.activity.IjkPlayerRC200Activity;
+import com.company.shenzhou.mineui.activity.PlayerRC200Activity;
 import com.company.shenzhou.mineui.activity.PlayerLine1Activity;
 import com.company.shenzhou.mineui.activity.PlayerLine2Activity;
 import com.company.shenzhou.mineui.activity.PlayerLine3Activity;
@@ -1085,7 +1085,7 @@ public final class DeviceFragment extends TitleBarFragment<MainActivity> impleme
     }
 
     private void startRC200Activity(DeviceDBBean bean) {
-        Intent intent = new Intent(getActivity(), IjkPlayerRC200Activity.class);
+        Intent intent = new Intent(getActivity(), PlayerRC200Activity.class);
         // http://192.168.67.200:3333/api/stream/video?session=1234567      直播拼接
         //http://192.168.1.10/api/begin                                     获取session地址
 //        String url = "http://192.168.67.200:3333/api/begin";

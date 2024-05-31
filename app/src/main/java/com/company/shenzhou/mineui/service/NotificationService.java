@@ -16,7 +16,7 @@ import androidx.core.app.NotificationCompat;
 
 import com.company.shenzhou.R;
 import com.company.shenzhou.global.Constants;
-import com.company.shenzhou.mineui.activity.IjkPlayerRC200Activity;
+import com.company.shenzhou.mineui.activity.PlayerRC200Activity;
 import com.company.shenzhou.mineui.activity.PlayerLine3Activity;
 import com.company.shenzhou.mineui.activity.PlayerLine1Activity;
 import com.company.shenzhou.mineui.activity.PlayerLine2Activity;
@@ -119,14 +119,14 @@ public class NotificationService extends Service {
         if (mChannel != null && mChannel.equals(Constants.Line1)) {//Channel==1:  p2p Nginx
             //RC200默认 22
             if ("22".equals(isRC200)) {
-                intent = new Intent(this, IjkPlayerRC200Activity.class);
+                intent = new Intent(this, PlayerRC200Activity.class);
             } else {
                 intent = new Intent(this, PlayerLine1Activity.class);
             }
         } else if (mChannel != null && mChannel.equals(Constants.Line2)) {//Channel==0:http 转播
             //RC200默认 22
             if ("22".equals(isRC200)) {
-                intent = new Intent(this, IjkPlayerRC200Activity.class);
+                intent = new Intent(this, PlayerRC200Activity.class);
             } else {
                 intent = new Intent(this, PlayerLine2Activity.class);
             }

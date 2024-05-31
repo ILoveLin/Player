@@ -27,9 +27,6 @@ import io.reactivex.disposables.Disposable;
 
 
 /**
- * company: 江西神州医疗设备有限公司
- * author : LoveLin
- * time   : 2024/5/27 11:50
  * 保活的Service通讯服务
  * <p>
  * 一直开启这监听线程,监听Socket
@@ -70,13 +67,29 @@ public class ReceiveSocketService extends AbsWorkService {
     /**
      * ***************************************************************************通讯模块**************************************************************************
      */
-    private volatile static boolean isRunning = true;
+    private volatile static boolean isRuning = true;
 //    private String mAppIP;
 
 
     @Override
     public void startWork(Intent intent, int flags, int startId) {
 
+//        sDisposable = Observable
+//                .interval(3, TimeUnit.SECONDS)//定时器操作符，这里三秒打印一个log
+//                //取消任务时取消定时唤醒
+//                .doOnDispose(() -> {
+//                    LogUtils.e("ReceiveSocketService--数据监听服务--接收线程--doOnDispose");
+//                    cancelJobAlarmSub();
+//                })
+//                .subscribe(count -> {
+//                    LogUtils.e("ReceiveSocketService--数据监听服务--接收线程--每 3 秒采集一次数据... count = " + count);
+//                    if (count > 0 && count % 18 == 0)
+//                        LogUtils.e("ReceiveSocketService--数据监听服务--接收线程--保存数据到磁盘。 saveCount = " + (count / 18 - 1));
+//                });
+
+        /**
+         * App启动的时候初始化第一次默认端口线程
+         */
         initFirstThread();
 
     }
@@ -86,17 +99,21 @@ public class ReceiveSocketService extends AbsWorkService {
      */
     @Subscribe(threadMode = ThreadMode.MAIN)
     public void SocketRefreshEvent(SocketRefreshEvent event) {
-        if (event.getUdpCmd().equals(Constants.UDP_CUSTOM_RESTART)) {//重启监听线程
-            //此处重启监听线程
-            MMKV mmkv = MMKV.defaultMMKV();
-            boolean b = mmkv.decodeBool(Constants.KEY_Login_Tag);
-            String mSocketPort = mmkv.decodeString(Constants.KEY_Device_SocketPort);
-            ReceiveSocketService receiveSocketService = new ReceiveSocketService();
-            if (b) {//如果是登录状态,重启登入时候的监听
-                receiveSocketService.setSettingReceiveThread(Integer.parseInt(mSocketPort), getApplicationContext());
-            } else {//不是登录状态,重启广播搜索监听
-                receiveSocketService.initFirstThread();
-            }
+        switch (event.getUdpCmd()) {
+            case Constants.UDP_CUSTOM_RESTART://重启监听线程
+
+                //此处重启监听线程
+                MMKV mmkv = MMKV.defaultMMKV();
+                boolean b = mmkv.decodeBool(Constants.KEY_Login_Tag);
+                String mSocketPort = mmkv.decodeString(Constants.KEY_Device_SocketPort);
+                if (b) {//如果是登录状态,重启登入时候的监听
+                    ReceiveSocketService receiveSocketService = new ReceiveSocketService();
+                    receiveSocketService.setSettingReceiveThread(Integer.parseInt(mSocketPort), getApplicationContext());
+                } else {//不是登录状态,重启广播搜索监听
+                    ReceiveSocketService receiveSocketService = new ReceiveSocketService();
+                    receiveSocketService.initFirstThread();
+                }
+                break;
         }
 
     }
@@ -112,16 +129,18 @@ public class ReceiveSocketService extends AbsWorkService {
      * port 本地监听的端口
      */
     public class ReceiveThread extends Thread {
-        private final int mLocalReceivePort;
-        private final WeakReference<Context> appWeakReference;
-        private final MMKV mmkv;
-        private final String mPhoneDeviceCode;
+        private int mLocalReceivePort;
+        private int count = 0;
+        private WeakReference<Context> appWeakReference;
+        private MMKV mmkv;
+        private String mPhoneDeviceCode;
 
         DatagramSocket mSettingDataSocket = null;
         DatagramPacket mSettingDataPacket = null;
 
         /**
          * @param port             开启线程监听,传入的port端口
+         * @param context
          * @param mPhoneDeviceCode 手机唯一标识码
          */
         public ReceiveThread(int port, Context context, String mPhoneDeviceCode) {
@@ -143,13 +162,14 @@ public class ReceiveSocketService extends AbsWorkService {
                     mSettingDataSocket.bind(new InetSocketAddress(mLocalReceivePort));
                 }
             } catch (Exception e) {
+                e.printStackTrace();
                 SocketRefreshEvent event1 = new SocketRefreshEvent();
                 event1.setUdpCmd(Constants.UDP_CUSTOM_RESTART);
                 EventBus.getDefault().post(event1);
-                LogUtils.e(TAG + "Exception==e==" + e);
+
             }
             while (true) {
-                if (isRunning) {
+                if (isRuning) {
                     try {
                         LogUtils.e(TAG + "轮询中:------>接收,上位机数据");
                         LogUtils.e(TAG + "轮询中:------>接收,上位机数据");
@@ -178,9 +198,11 @@ public class ReceiveSocketService extends AbsWorkService {
 //                        LogUtils.e("TAG==current系统用户==aa=" + aa);
 
 
-//此处做处理，实时获取当前本地设置的监听端口和服务器端口是否一致,不一致关闭多余线程,优化性能
-
-//                      if (stringInt == mSettingDataPacket.getPort()) {
+                        /**
+                         * 此处做处理
+                         * 实时获取当前本地设置的监听端口和服务器端口是否一致,不一致关闭多余线程,优化性能
+                         */
+//                      if (stringint == mSettingDataPacket.getPort()) {
 //                      此处把byte数组转成十六进制字符串来接受
                         String rec = CalculateUtils.byteArrayToHexString(mSettingDataPacket.getData()).trim();
 
@@ -283,7 +305,7 @@ public class ReceiveSocketService extends AbsWorkService {
                                             LogUtils.e("语音通话:" + "UDP_41==str==" + str);
                                             LogUtils.e(TAG + "回调形式:--->语音接入:" + str);
                                             MicSocketResponseBean micSocketResponseBean = mGson.fromJson(str, MicSocketResponseBean.class);
-                                            mmkv.encode(Constants.KET_MIC_VOICE_ID_FOR_ME, micSocketResponseBean.getVoiceID());
+                                            mmkv.encode(Constants.KET_MIC_VOICE_ID_FOR_ME, micSocketResponseBean.getVoiceID() + "");
                                             event.setTga(true);
                                             event.setErrCode(micSocketResponseBean.getErrCode());
                                             event.setData(micSocketResponseBean.getUrl());
@@ -296,7 +318,7 @@ public class ReceiveSocketService extends AbsWorkService {
                                         }
 
                                         break;
-                                    case Constants.UDP_42://语音接入,语音广播通知命令,监听到重新获取voiceID
+                                    case Constants.UDP_42://语音接入,语音广播通知命令,监听到重新获取vioceID
                                         LogUtils.e("语音通话:" + "UDP_42==str==" + str);
                                         try {
                                             LogUtils.e(TAG + "回调形式:--->语音接入,语音广播通知命令:" + str);
@@ -339,7 +361,18 @@ public class ReceiveSocketService extends AbsWorkService {
                         }
 
                     } catch (Exception e) {
-
+//                        SocketRefreshEvent event1 = new SocketRefreshEvent();
+//                        event1.setUdpCmd(Constants.UDP_CUSTOM_RESTART);
+//                        EventBus.getDefault().post(event1);
+//                        SocketRefreshEvent event = new SocketRefreshEvent();
+//                        event.setUdpCmd(Constants.UDP_CUSTOM_TOAST);
+//                        event.setData("");
+//                        //java.lang.NullPointerException:
+//                        // Attempt to invoke virtual method 'boolean java.lang.String.equals(java.lang.Object)' on a null object reference
+//                        event.setData("code=1,循环监听异常,错误,退出监听线程!!");
+//                        LogUtils.e(TAG + "code=1,循环监听异常,错误,退出监听线程!!");
+//                        EventBus.getDefault().post(event);
+                        e.printStackTrace();
                         LogUtils.e(TAG + "异常-->code=1,循环监听解析,异常:");
                     }
                 }
@@ -351,6 +384,8 @@ public class ReceiveSocketService extends AbsWorkService {
 
     /**
      * App启动的时候初始化第一次默认端口线程
+     *
+     * @param
      */
     public void initFirstThread() {
         LogUtils.e("App-server-initLiveService--初始化监听服务--initFirstThread开启了");
@@ -428,12 +463,19 @@ public class ReceiveSocketService extends AbsWorkService {
     public void onServiceKilled(Intent rootIntent) {
     }
 
+    /**
+     * 将获取到的int型ip转成string类型
+     */
+    private static String getIpString(int i) {
+        return (i & 0xFF) + "." + ((i >> 8) & 0xFF) + "."
+                + ((i >> 16) & 0xFF) + "." + (i >> 24 & 0xFF);
+    }
 
     @Override
     public void onCreate() {
         super.onCreate();
         EventBus.getDefault().register(this);
-        isRunning = true;
+        isRuning = true;
     }
 
     @Override
