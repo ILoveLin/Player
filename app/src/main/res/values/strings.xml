@@ -1,5 +1,18 @@
 <resources>
     <string name="app_name">CME Player</string>
+    <string name="common_step_next">下一步</string>
+    <string name="common_step_complete">完成</string>
+    <string name="common_step_commit">提交</string>
+    <!-- 状态布局 -->
+    <string name="status_layout_no_data">空空如也</string>
+    <string name="status_layout_error_request">请求出错，请重试</string>
+    <string name="status_layout_error_network">网络错误，请重试</string>
+    <string name="status_layout_retry">重试</string>
+    <!-- 注册 -->
+    <string name="register_title">注册</string>
+    <string name="register_hint">手机号仅用于登录和保护账号安全</string>
+    <string name="register_password_hint1">设置6&#8211;18位登录密码</string>
+    <string name="register_password_hint2">请再次输入一次密码</string>
     <!-- 通用的 -->
     <string name="common_unknown_error">未知错误</string>
 
@@ -26,9 +39,7 @@
     <string name="common_code_send_hint">验证码已发送，请注意查收</string>
     <string name="common_code_error_hint">验证码错误，请检查输入</string>
 
-    <string name="common_step_next">下一步</string>
-    <string name="common_step_complete">完成</string>
-    <string name="common_step_commit">提交</string>
+
 
     <string name="common_permission_alert">授权提醒</string>
     <string name="common_permission_fail_1">授权失败，请正确授予权限</string>
@@ -82,11 +93,7 @@
     <string name="http_server_error">服务器连接异常，请稍后再试</string>
     <string name="http_request_cancel">请求被中断，请重试</string>
 
-    <!-- 状态布局 -->
-    <string name="status_layout_no_data">空空如也</string>
-    <string name="status_layout_error_request">请求出错，请重试</string>
-    <string name="status_layout_error_network">网络错误，请重试</string>
-    <string name="status_layout_retry">重试</string>
+
 
     <!-- 地区对话框 -->
     <string name="address_title">请选择地区</string>
@@ -152,12 +159,6 @@
     <string name="login_text">登录</string>
 
     <string name="login_other">其他登录方式</string>
-
-    <!-- 注册 -->
-    <string name="register_title">注册</string>
-    <string name="register_hint">手机号仅用于登录和保护账号安全</string>
-    <string name="register_password_hint1">设置6&#8211;18位登录密码</string>
-    <string name="register_password_hint2">请再次输入一次密码</string>
 
     <!-- 设置 -->
     <string name="setting_title">设置</string>

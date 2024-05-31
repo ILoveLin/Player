@@ -1384,7 +1384,6 @@ public final class DeviceFragment extends TitleBarFragment<MainActivity> impleme
                     addBuilder.dismissDialog();
                     isDeviceDialogExist = false;
                 }
-
                 //确认新增设备的时候,选择了了工作模式,之后再添加设备会出现保存上一次工作模式类型,这里手动清除解决bug
                 addBuilder.getChannelView().setText("");
             }
