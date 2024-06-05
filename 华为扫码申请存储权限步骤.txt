@@ -1,0 +1,79 @@
+
+================================================================================================================================================================
+==============================================================================华为扫码说明==============================================================================
+华为扫码   点击图片申请存储权限步骤
+
+步骤一：创建HmsScanAnalyzerOptions对象时添加.setErrorCheck（true）
+
+HmsScanAnalyzerOptions options = new HmsScanAnalyzerOptions.Creator().setHmsScanTypes(HmsScan.QRCODE_SCAN_TYPE, HmsScan.DATAMATRIX_SCAN_TYPE).setViewType(1).setErrorCheck(true).create();
+
+步骤二：
+然后再点击图库会直接反会到上一个界面
+ /**
+     * 华为扫码相关
+     *
+     * @param requestCode
+     * @param resultCode
+     * @param data
+     */
+    @Override
+    public void onActivityResult(int requestCode, int resultCode, Intent data) {
+     LogUtils.e(TAG + "扫码结果:resultCode==" + resultCode);
+             LogUtils.e(TAG + "扫码结果:requestCode==" + requestCode);
+             if (requestCode != 1) {
+                 LogUtils.e(TAG + "扫码结果:=扫描失败!=" );
+                 toast("扫描失败!");
+                 return;
+             }
+             int errorCode = 100;
+             try {
+                 errorCode = data.getIntExtra(ScanUtil.RESULT_CODE, ScanUtil.SUCCESS);
+             } catch (Exception e) {
+                 LogUtils.e(TAG + "扫码结果:Exception=e=" + e);
+                 return;
+             }
+             //Default View
+             if (requestCode == REQUEST_CODE_SCAN_ONE) {
+                 //暂无存储权限
+                 if (errorCode == ScanUtil.ERROR_NO_READ_PERMISSION) {
+                     getPermissionRead2StartHWScanKit();
+                 } else {
+                     HmsScan hmsScan = data.getParcelableExtra(ScanUtil.RESULT);
+                     if (hmsScan == null) {
+                         LogUtils.e(TAG + "扫码结果:解析错误");
+                         toast("解析错误!");
+                     } else {
+                         try {
+
+                             String result = hmsScan.getOriginalValue();
+                             LogUtils.e(TAG + "扫码结果:" + result);
+                             if (!"".equals(result)) {
+                                 if (isGoodJson(result)) {  //是json数据 HD3  或者一体机的格式
+                                     LogUtils.e(TAG + "扫码结果：" + "result==二维码数据=" + result);
+                                     new Thread() {
+                                         @Override
+                                         public void run() {
+                                             super.run();
+                                             getJsonData(result);
+                                         }
+                                     }.start();
+                                 } else {//暂时认定为自定义url链接
+                                     new Thread() {
+                                         @Override
+                                         public void run() {
+                                             super.run();
+                                             getCustomUrl(result);
+                                         }
+                                     }.start();
+                                 }
+                             }
+                         } catch (Exception e) {
+                             toast("扫码异常!");
+                         }
+                     }
+                 }
+
+
+             }
+
+    }
