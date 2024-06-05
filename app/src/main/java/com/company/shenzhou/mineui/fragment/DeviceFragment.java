@@ -156,6 +156,7 @@ public final class DeviceFragment extends TitleBarFragment<MainActivity> impleme
             }
         }
     };
+    private ClearEditText mLinelView;
 
     @Override
     public void onResume() {
@@ -265,7 +266,7 @@ public final class DeviceFragment extends TitleBarFragment<MainActivity> impleme
         // App里面显示的是线路1-p2p，2-Nginx，3-WebRTC
         LogUtils.e(TAG + "选择通道==之前选择的currentPosition=bean=" + bean.toString());
         LogUtils.e(TAG + "选择通道==bean.getChannel()==" + bean.getChannel());
-        if (getResources().getString(R.string.device_work_type_01).equals(bean.getChannel())) {
+        if (getResources().getString(R.string.device_line_01).equals(bean.getChannel())) {
             LogUtils.e(TAG + "选择通道==线路1");
             chosePlayerLine1Activity(bean);
         } else {
@@ -314,14 +315,14 @@ public final class DeviceFragment extends TitleBarFragment<MainActivity> impleme
                                     return;
                                 }
                                 //接口和扫码，线路是012，对应线路123
-                                if (getResources().getString(R.string.device_work_type_02).equals(bean.getChannel())) {
+                                if (getResources().getString(R.string.device_line_02).equals(bean.getChannel())) {
                                     LogUtils.e(TAG + "选择通道==线路2");
                                     if (!("1".equals(queryBean.getResult().getCurrentLine()))) {
                                         toast(getResources().getString(R.string.device_check_fail));
                                         return;
                                     }
                                     chosePlayerLine2Activity(bean);
-                                } else if (getResources().getString(R.string.device_work_type_03).equals(bean.getChannel())) {
+                                } else if (getResources().getString(R.string.device_line_03).equals(bean.getChannel())) {
                                     LogUtils.e(TAG + "选择通道==线路3");
                                     if (!("2".equals(queryBean.getResult().getCurrentLine()))) {
                                         toast(getResources().getString(R.string.device_check_fail));
@@ -1251,7 +1252,7 @@ public final class DeviceFragment extends TitleBarFragment<MainActivity> impleme
      * 是否开启：备用方案
      */
     private void showSparePlanDialog(DeviceDBBean bean) {
-        if (getResources().getString(R.string.device_work_type_01).equals(bean.getChannel())) {
+        if (getResources().getString(R.string.device_line_01).equals(bean.getChannel())) {
             toast(getResources().getString(R.string.device_line_one_not_supported));
             return;
         }
@@ -1327,7 +1328,8 @@ public final class DeviceFragment extends TitleBarFragment<MainActivity> impleme
         mLivePortView = addBuilder.getLivePortView();
         mApiVersionView = addBuilder.getApiVersionView();
         mDeviceTypeView = addBuilder.getDeviceTypeView();
-
+        mLinelView = addBuilder.getChannelView();
+        mLinelView.setText(getResources().getString(R.string.device_line_01));
         mDeviceNameView.setText(deviceName);
         mDeviceCodeView.setText(deviceCode);
         mMessageView.setText(makeMessageMark);
@@ -1534,9 +1536,9 @@ public final class DeviceFragment extends TitleBarFragment<MainActivity> impleme
     private void showChannelDialog(ClearEditText mModeTypeView) {
         // 单选对话框
         new SelectDialog.Builder(getActivity())
-                .setTitle(getResources().getString(R.string.device_work_type_title))
-                .setList(getResources().getString(R.string.device_work_type_01),
-                        getResources().getString(R.string.device_work_type_02), getResources().getString(R.string.device_work_type_03))
+                .setTitle(getResources().getString(R.string.device_line))
+                .setList(getResources().getString(R.string.device_line_01),
+                        getResources().getString(R.string.device_line_02), getResources().getString(R.string.device_line_03))
                 .setSingleSelect()
                 .setSelect(2)
                 .setCanceledOnTouchOutside(false)
@@ -1546,11 +1548,11 @@ public final class DeviceFragment extends TitleBarFragment<MainActivity> impleme
                     LogUtils.e(TAG + "选择通道==Position==" + mPosition);
                     //默认:0==线路1(常规socket通讯),1==线路2(http模式),2==线路3(WebRTC)
                     if ("0".equals(mPosition)) {
-                        mModeTypeView.setText(getResources().getString(R.string.device_work_type_01));
+                        mModeTypeView.setText(getResources().getString(R.string.device_line_01));
                     } else if ("1".equals(mPosition)) {
-                        mModeTypeView.setText(getResources().getString(R.string.device_work_type_02));
+                        mModeTypeView.setText(getResources().getString(R.string.device_line_02));
                     } else if ("2".equals(mPosition)) {
-                        mModeTypeView.setText(getResources().getString(R.string.device_work_type_03));
+                        mModeTypeView.setText(getResources().getString(R.string.device_line_03));
                     }
                 })
                 .setBackgroundDimEnabled(true)

@@ -195,7 +195,7 @@
                     android:layout_height="@dimen/dp_35"
                     android:background="@color/transparent"
                     android:focusableInTouchMode="false"
-                    android:hint="@string/device_work_type_title"
+                    android:hint="@string/device_line"
                     android:lines="1"
                     android:paddingLeft="@dimen/dp_10"
                     android:singleLine="true"

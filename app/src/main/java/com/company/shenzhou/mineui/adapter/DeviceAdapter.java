@@ -83,11 +83,11 @@ public final class DeviceAdapter extends AppAdapter<DeviceDBBean> {
                 } else {
                     String str = bean.getChannel();
                     if (str.contains("1") || str.contains("一") || str.contains("one") || str.contains("ONE")) {
-                        mLine.setText("" + mContext.getResources().getString(R.string.device_work_type_01));
+                        mLine.setText("" + mContext.getResources().getString(R.string.device_line_01));
                     } else if (str.contains("2") || str.contains("二") || str.contains("tow") || str.contains("TOW")) {
-                        mLine.setText("" + mContext.getResources().getString(R.string.device_work_type_02));
+                        mLine.setText("" + mContext.getResources().getString(R.string.device_line_02));
                     } else if (str.contains("3") || str.contains("三") || str.contains("three") || str.contains("THREE")) {
-                        mLine.setText("" + mContext.getResources().getString(R.string.device_work_type_03));
+                        mLine.setText("" + mContext.getResources().getString(R.string.device_line_03));
                     }
 
                 }

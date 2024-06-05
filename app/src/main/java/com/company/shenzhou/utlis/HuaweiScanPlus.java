@@ -46,7 +46,7 @@ public class HuaweiScanPlus {
                 String passWord = AesUtils.encrypt(jsonBean.getPw());
                 String userName = AesUtils.encrypt(jsonBean.getUn());
                 //设置线路
-                String currentStrLine = "" + mContext.getResources().getString(R.string.device_work_type_01);
+                String currentStrLine = "" + mContext.getResources().getString(R.string.device_line_01);
                 insertBean.setChannel(currentStrLine);
 
                 //("HD3", "HD3-4K", "一代一体机","耳鼻喉治疗台","妇科治疗台","泌尿治疗台","工作站","神州转播")
@@ -249,10 +249,10 @@ public class HuaweiScanPlus {
                 //设置线路
                 String currentStrLine = "";
                 if ("1".equals(jsonBean.getLn())) {
-                    currentStrLine = "" + mContext.getResources().getString(R.string.device_work_type_02);
+                    currentStrLine = "" + mContext.getResources().getString(R.string.device_line_02);
                     insertBean.setChannel(currentStrLine);
                 } else if ("2".equals(jsonBean.getLn())) {
-                    currentStrLine = "" + mContext.getResources().getString(R.string.device_work_type_03);
+                    currentStrLine = "" + mContext.getResources().getString(R.string.device_line_03);
                     insertBean.setChannel(currentStrLine);
                 }
 

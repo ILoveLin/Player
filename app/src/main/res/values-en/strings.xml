@@ -443,10 +443,10 @@
     <string name="device_MiNiaoTable">泌尿治疗台</string>
     <string name="device_Work_Station">工作站</string>
     <string name="device_Custom_Url">神州转播</string>
-    <string name="device_work_type_title">working line</string>
-    <string name="device_work_type_01">line one</string>
-    <string name="device_work_type_02">line two</string>
-    <string name="device_work_type_03">line three</string>
+    <string name="device_line">working line</string>
+    <string name="device_line_01">line one</string>
+    <string name="device_line_02">line two</string>
+    <string name="device_line_03">line three</string>
     <string name="add_device">add device</string>
     <string name="change_device">change device</string>
     <string name="device_name">device name</string>
