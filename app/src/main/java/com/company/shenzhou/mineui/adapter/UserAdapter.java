@@ -39,7 +39,7 @@ public final class UserAdapter extends AppAdapter<UserDBBean> {
 
     private final class ViewHolder extends AppAdapter<?>.ViewHolder {
 
-        private final TextView mUserrRole, mUpdatePassword;
+        private final TextView mUserRole, mUpdatePassword;
         private final TextView mUserName;
         private final SwitchButton mSwitchButton;
 
@@ -47,7 +47,7 @@ public final class UserAdapter extends AppAdapter<UserDBBean> {
             super(R.layout.item_swipemenulayout_user);
             mUserName = findViewById(R.id.tv_text);
             mUpdatePassword = findViewById(R.id.update_password);
-            mUserrRole = findViewById(R.id.tv_text_type);
+            mUserRole = findViewById(R.id.tv_text_type);
             mSwitchButton = findViewById(R.id.slide_switch);
         }
 
@@ -59,19 +59,19 @@ public final class UserAdapter extends AppAdapter<UserDBBean> {
             //0普通  1权限  2超级用户
             switch (bean.getUserRole()) {
                 case Constants.GeneralUser:
-                    mUserrRole.setText(mContext.getResources().getString(R.string.level_01));
+                    mUserRole.setText(mContext.getResources().getString(R.string.level_01));
                     mSwitchButton.setChecked(false);
                     mSwitchButton.setVisibility(View.VISIBLE);
                     mUpdatePassword.setVisibility(View.VISIBLE);
                     break;
                 case Constants.PermissionUser:
-                    mUserrRole.setText(mContext.getResources().getString(R.string.level_02));
+                    mUserRole.setText(mContext.getResources().getString(R.string.level_02));
                     mSwitchButton.setChecked(true);
                     mSwitchButton.setVisibility(View.VISIBLE);
                     mUpdatePassword.setVisibility(View.VISIBLE);
                     break;
                 case Constants.AdminUser:
-                    mUserrRole.setText(mContext.getResources().getString(R.string.level_03));
+                    mUserRole.setText(mContext.getResources().getString(R.string.level_03));
                     mSwitchButton.setVisibility(View.GONE);
                     mUpdatePassword.setVisibility(View.GONE);
                     break;

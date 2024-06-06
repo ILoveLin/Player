@@ -223,7 +223,6 @@ public final class UpdateDeviceDialog {
         public void onClick(View v) {
             switch (v.getId()) {
                 case R.id.tv_ui_confirm:
-                    autoDismiss();
                     if (mListener != null) {
                         String deviceName = cet_cme_device_name.getText().toString().trim();
                         String deviceCode = cet_cme_device_code.getText().toString().trim();

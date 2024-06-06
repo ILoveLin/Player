@@ -1,23 +1,10 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
-    android:layout_height="match_parent"
+    android:layout_height="@dimen/dp_400"
+    android:background="@drawable/shape_ffffff_15"
     android:orientation="vertical">
-    <LinearLayout
-        android:background="@drawable/shape_ffffff_15"
-        android:layout_width="match_parent"
-        android:layout_height="@dimen/dp_400"
-        android:gravity="center_horizontal"
-        android:orientation="vertical">
-        <!--输入框的信息-->
+    <!--输入框的信息-->
+    <include layout="@layout/include_layout_input_device_dialog" />
 
-        <include
-            layout="@layout/include_layout_input_videomessage01" />
-
-
-    </LinearLayout>
-
-
-
-    <!--    </androidx.core.widget.NestedScrollView>-->
 </LinearLayout>

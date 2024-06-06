@@ -36,7 +36,7 @@
                 android:paddingBottom="@dimen/dp_4"
                 android:text="@string/current_user"
                 android:textColor="@color/color_999999"
-                android:textSize="@dimen/sp_14" />
+                android:textSize="@dimen/sp_13" />
 
 
             <LinearLayout
@@ -58,7 +58,7 @@
                     android:gravity="center_vertical"
                     android:text="admin"
                     android:textColor="@color/black333333"
-                    android:textSize="@dimen/sp_14" />
+                    android:textSize="@dimen/sp_13" />
 
                 <View
                     android:layout_width="@dimen/dp_0_5"
@@ -92,7 +92,7 @@
                 android:paddingBottom="@dimen/dp_4"
                 android:text="@string/else_user"
                 android:textColor="@color/color_999999"
-                android:textSize="@dimen/sp_14" />
+                android:textSize="@dimen/sp_13" />
 
 
             <com.hjq.widget.layout.WrapRecyclerView

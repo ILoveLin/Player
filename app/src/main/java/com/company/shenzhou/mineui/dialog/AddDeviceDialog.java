@@ -19,7 +19,7 @@ import java.util.HashMap;
  * github : https://github.com/getActivity/AndroidProject
  * time   : 2019/02/27
  * desc   : 填一填
- *          新增设备对话框
+ * 新增设备对话框
  */
 public final class AddDeviceDialog {
     public static final class Builder
@@ -186,7 +186,7 @@ public final class AddDeviceDialog {
         public void onClick(View v) {
             switch (v.getId()) {
                 case R.id.tv_ui_confirm:
-                    autoDismiss();
+                    //autoDismiss();
                     if (mListener != null) {
                         String deviceName = cet_cme_device_name.getText().toString().trim();
                         String deviceCode = cet_cme_device_code.getText().toString().trim();
@@ -214,9 +214,9 @@ public final class AddDeviceDialog {
                         mMap.put("deviceCode", deviceCode);
                         mMap.put("msgMark", msgMark);
                         mMap.put("liveIp", liveIp);
-                        if (null==liveIpPublic){
+                        if (null == liveIpPublic) {
                             mMap.put("liveIpPublic", "");
-                        }else{
+                        } else {
                             mMap.put("liveIpPublic", liveIpPublic);
                         }
                         mMap.put("ddnsAccount", ddnsAccount);

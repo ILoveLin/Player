@@ -15,7 +15,6 @@ import com.company.shenzhou.R;
 import com.company.shenzhou.app.AppAdapter;
 import com.company.shenzhou.bean.dbbean.DeviceDBBean;
 import com.company.shenzhou.global.Constants;
-import com.company.shenzhou.utlis.LogUtils;
 import com.company.shenzhou.widget.SwipeMenuLayout;
 
 /**
@@ -42,7 +41,6 @@ public final class DeviceAdapter extends AppAdapter<DeviceDBBean> {
     }
 
     private final class ViewHolder extends AppAdapter<?>.ViewHolder {
-
         public SwipeMenuLayout swipeMenuLay;
         public RelativeLayout linear_item;
         public TextView mDeviceName, mLine;
@@ -54,10 +52,8 @@ public final class DeviceAdapter extends AppAdapter<DeviceDBBean> {
         public Button play_mode;
         public ImageView mImageChose;
 
-
         private ViewHolder() {
             super(R.layout.item_swipemenulayout_device);
-            LogUtils.e(TAG + "==adapter====");
             mImageChose = findViewById(R.id.iv_current_chose_image);
             mDeviceName = findViewById(R.id.tv_video_title);
             mDeviceMark = findViewById(R.id.tv_video_make);
@@ -77,34 +73,29 @@ public final class DeviceAdapter extends AppAdapter<DeviceDBBean> {
         public void onBindView(int position) {
             DeviceDBBean bean = getItem(position);
             if (null != bean) {
-//                LogUtils.e("adapter===bean====" + bean.toString());
-                mDeviceName.setText("" + bean.getDeviceName());
+                mDeviceName.setText(bean.getDeviceName());
                 mLine.setVisibility(View.VISIBLE);
                 if ("".equals(bean.getChannel()) || null == bean.getChannel()) {
                     mLine.setText("未选择");
                 } else {
                     String str = bean.getChannel();
                     if (str.contains("1") || str.contains("一") || str.contains("one") || str.contains("ONE")) {
-                        mLine.setText("" + mContext.getResources().getString(R.string.device_line_01));
+                        mLine.setText(mContext.getResources().getString(R.string.device_line_01));
                     } else if (str.contains("2") || str.contains("二") || str.contains("tow") || str.contains("TOW")) {
-                        mLine.setText("" + mContext.getResources().getString(R.string.device_line_02));
+                        mLine.setText(mContext.getResources().getString(R.string.device_line_02));
                     } else if (str.contains("3") || str.contains("三") || str.contains("three") || str.contains("THREE")) {
-                        mLine.setText("" + mContext.getResources().getString(R.string.device_line_03));
+                        mLine.setText(mContext.getResources().getString(R.string.device_line_03));
                     }
-
                 }
                 mDeviceMark.setText(mContext.getResources().getString(R.string.device_mark) + ":" + bean.getMsgMark());
                 if (null == bean.getIp() || "".equals(bean.getIp())) {
                     //ip 为空的时候，显示DDNSAddress
                     mDeviceIpOrDDNSURL.setText("DDNS:" + bean.getDDNSURL());
-
                 } else {
                     mDeviceIpOrDDNSURL.setText("IP:" + bean.getIp());
                 }
-
                 if (null == bean.getDeviceCode() || "".equals(bean.getDeviceCode())) {
                     mDeviceCode.setText("ID:" + mContext.getResources().getString(R.string.device_kong));
-
                 } else {
                     mDeviceCode.setText("ID:" + bean.getDeviceCode());
                 }
@@ -142,7 +133,6 @@ public final class DeviceAdapter extends AppAdapter<DeviceDBBean> {
                         mImageChose.setImageResource(R.drawable.ic_cme_bg_shenzhou_zhuanbo);
                         break;
                 }
-
             } else {
                 mDeviceMark.setText("null啦~~~~");
 
