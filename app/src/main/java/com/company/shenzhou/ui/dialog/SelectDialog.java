@@ -13,6 +13,7 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.company.shenzhou.mineui.dialog.CommonDeviceTypeDialog;
 import com.hjq.base.BaseAdapter;
 import com.hjq.base.BaseDialog;
 import com.company.shenzhou.R;
@@ -34,7 +35,7 @@ import java.util.List;
 public final class SelectDialog {
 
     public static final class Builder
-            extends CommonDialog.Builder<Builder>
+            extends CommonDeviceTypeDialog.Builder<Builder>
             implements View.OnLayoutChangeListener, Runnable {
 
         @SuppressWarnings("rawtypes")

@@ -123,10 +123,7 @@ public final class DeviceFragment extends TitleBarFragment<MainActivity> impleme
     //防止点击设备类别  弹出多个DeviceDialog的Bug,默认不存在=false
     private boolean isDeviceDialogExist = false;
     private DeviceDBBean mDeviceDBBean;
-    //添加，设备信息对话框:addDeviceDialogBuilder
-    private AddDeviceDialog.Builder addBuilder;
-    //修改，设备信息对话框：updateDeviceDialogBuilder
-    private UpdateDeviceDialog.Builder updateBuilder;
+
     private static final int REQUEST_CODE_SCAN_ONE = 0X01;
     //刷新界面列表数据
     private static final int Refresh_Recycleview = 0x10;
@@ -134,6 +131,10 @@ public final class DeviceFragment extends TitleBarFragment<MainActivity> impleme
     private static final int Refresh_DeviceDialogInfo = 0x11;
     //设置某个设备详细信息对话框的数据--->说明是第一次创建某个设备详细信息对话框,此处设置默认数据
     private static final int Set_DeviceDialogInfo = 0x12;
+    //添加，设备信息对话框:addDeviceDialogBuilder
+    private AddDeviceDialog.Builder addBuilder;
+    //修改，设备信息对话框：updateDeviceDialogBuilder
+    private UpdateDeviceDialog.Builder updateBuilder;
     @SuppressLint("HandlerLeak")
     private final Handler mHandler = new Handler() {
         @Override

@@ -15,7 +15,6 @@ import android.widget.TextView;
 
 import com.company.shenzhou.R;
 import com.company.shenzhou.bean.dbbean.DeviceDBBean;
-import com.company.shenzhou.ui.dialog.CommonDialog;
 import com.company.shenzhou.utlis.CommonUtil;
 import com.company.shenzhou.utlis.LogUtils;
 import com.hjq.base.BaseDialog;
@@ -32,7 +31,7 @@ import java.util.HashMap;
 public final class UpdateDeviceDialog {
 
     public static final class Builder
-            extends CommonDialog.Builder<Builder>
+            extends CommonAddUpdateDeviceDialog.Builder<Builder>
             implements BaseDialog.OnShowListener {
         private OnListener mListener;
         private TextView makeSure;

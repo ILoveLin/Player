@@ -8,7 +8,6 @@ import android.widget.EditText;
 import androidx.annotation.StringRes;
 
 import com.company.shenzhou.R;
-import com.company.shenzhou.ui.dialog.CommonDialog;
 import com.hjq.base.BaseDialog;
 
 
@@ -21,7 +20,7 @@ import com.hjq.base.BaseDialog;
 public final class Input2PasswordDialog {
 
     public static final class Builder
-            extends CommonDialog.Builder<Builder>
+            extends CommonMyDialog.Builder<Builder>
             implements BaseDialog.OnShowListener {
 
         private OnListener mListener;

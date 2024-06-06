@@ -22,7 +22,7 @@ import com.hjq.base.BaseDialog;
 public final class Input2SteamDialog {
 
     public static final class Builder
-            extends CommonDialog.Builder<Builder>
+            extends CommonMyDialog.Builder<Builder>
             implements BaseDialog.OnShowListener {
 
         private OnListener mListener;

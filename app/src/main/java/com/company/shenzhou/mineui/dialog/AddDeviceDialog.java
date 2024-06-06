@@ -6,7 +6,6 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.company.shenzhou.R;
-import com.company.shenzhou.ui.dialog.CommonDialog;
 import com.company.shenzhou.utlis.CommonUtil;
 import com.company.shenzhou.utlis.LogUtils;
 import com.hjq.base.BaseDialog;
@@ -24,7 +23,7 @@ import java.util.HashMap;
  */
 public final class AddDeviceDialog {
     public static final class Builder
-            extends CommonDialog.Builder<Builder>
+            extends CommonAddUpdateDeviceDialog.Builder<Builder>
             implements BaseDialog.OnShowListener {
 
         private OnListener mListener;
@@ -95,7 +94,6 @@ public final class AddDeviceDialog {
             cet_cme_ddns_account = (ClearEditText) findViewById(R.id.cet_cme_ddns_account);
             cet_cme_ddns_password = (ClearEditText) findViewById(R.id.cet_cme_ddns_password);
             cet_cme_ddns_url = (ClearEditText) findViewById(R.id.cet_cme_ddns_url);
-
 
             addOnShowListener(this);
         }
