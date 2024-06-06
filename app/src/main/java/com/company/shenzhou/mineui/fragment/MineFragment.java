@@ -229,7 +229,7 @@ public final class MineFragment extends TitleBarFragment<MainActivity> {
         new MessageAboutDialog.Builder(getActivity())
                 .setVersion(version + versionName)
                 .setCopyright(copyright + showCopyrightYear)
-                .setUpdateDate(update + " 2024 " + getResources().getString(R.string.mine_updated_year) + "5" + getResources().getString(R.string.mine_updated_month))
+                .setUpdateDate(update + " 2024 " + getResources().getString(R.string.mine_updated_year) + "8" + getResources().getString(R.string.mine_updated_month))
                 .setConfirm(getResources().getString(R.string.common_confirm))
                 .show();
     }
