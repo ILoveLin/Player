@@ -74,7 +74,7 @@
                 android:paddingLeft="@dimen/dp_5"
                 android:text="(超级用户)"
                 android:textColor="@color/color_999999"
-                android:textSize="@dimen/sp_12" />
+                android:textSize="@dimen/sp_13" />
 
             <View
                 android:layout_width="match_parent"
@@ -95,6 +95,6 @@
         android:background="@color/red"
         android:text="@string/item_delete_user"
         android:textColor="@color/white"
-        android:textSize="@dimen/dp_14" />
+        android:textSize="@dimen/sp_14" />
 
 </com.company.shenzhou.widget.SwipeMenuLayout>
