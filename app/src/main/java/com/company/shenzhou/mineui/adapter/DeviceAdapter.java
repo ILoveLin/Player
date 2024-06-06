@@ -1,5 +1,6 @@
 package com.company.shenzhou.mineui.adapter;
 
+import android.annotation.SuppressLint;
 import android.content.Context;
 import android.view.View;
 import android.view.ViewGroup;
@@ -71,6 +72,7 @@ public final class DeviceAdapter extends AppAdapter<DeviceDBBean> {
             play_mode = findViewById(R.id.play_mode);
         }
 
+        @SuppressLint("SetTextI18n")
         @Override
         public void onBindView(int position) {
             DeviceDBBean bean = getItem(position);

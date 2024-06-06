@@ -25,6 +25,8 @@ import com.gyf.immersionbar.ImmersionBar;
  * desc   : 闪屏界面
  */
 public final class SplashActivity extends AppActivity {
+    private static final String TAG = "SplashActivity，界面==";
+
     private Boolean isFirstLogin;
     //是否已经登入   false=未登录
     private Boolean isLoginEd;
@@ -74,8 +76,8 @@ public final class SplashActivity extends AppActivity {
 
     //判断进入那个activity
     private void switchGoing() {
-        LogUtils.e("login==isLogin==" + isLoginEd);
-        LogUtils.e("login==isFirstIn==" + isFirstLogin);
+        LogUtils.e(TAG+"==isLogin==" + isLoginEd);
+        LogUtils.e(TAG+"==isFirstIn==" + isFirstLogin);
         if (isFirstLogin) {
             SharePreferenceUtil.put(SplashActivity.this, Constants.Is_First_LoginIn, true);
             Intent intent = new Intent();

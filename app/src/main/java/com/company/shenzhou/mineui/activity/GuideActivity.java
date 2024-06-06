@@ -178,9 +178,9 @@ public final class GuideActivity extends AppActivity {
         for (int i = 0; i < userDBBeans.size(); i++) {
             String username = userDBBeans.get(i).getUsername();
             String password = userDBBeans.get(i).getPassword();
-            LogUtils.e("username==" + username + "==password==" + password);
+            LogUtils.e(TAG+"username==" + username + "==password==" + password);
         }
-        LogUtils.e("isExist==" + isExist);
+        LogUtils.e(TAG+"isExist==" + isExist);
     }
 
     @SingleClick
