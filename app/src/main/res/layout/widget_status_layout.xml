@@ -35,7 +35,7 @@
         android:id="@+id/iv_status_retry"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="@dimen/dp_20"
+        android:layout_marginTop="@dimen/dp_10"
         android:paddingHorizontal="@dimen/dp_15"
         android:paddingVertical="@dimen/dp_8"
         android:text="@string/status_layout_retry"
@@ -51,6 +51,6 @@
     <View
         android:layout_width="wrap_content"
         android:layout_height="0px"
-        android:layout_weight="1.5" />
+        android:layout_weight="1" />
 
 </com.hjq.widget.layout.NestedLinearLayout>

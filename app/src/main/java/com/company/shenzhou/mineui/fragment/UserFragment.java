@@ -1,12 +1,18 @@
 package com.company.shenzhou.mineui.fragment;
 
+import android.annotation.SuppressLint;
 import android.content.Intent;
+import android.os.Handler;
+import android.os.Message;
 import android.view.View;
 import android.widget.TextView;
 
+import androidx.annotation.NonNull;
+import androidx.core.content.ContextCompat;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.company.shenzhou.R;
+import com.company.shenzhou.action.StatusAction;
 import com.company.shenzhou.app.TitleBarFragment;
 import com.company.shenzhou.bean.dbbean.UserDBBean;
 import com.company.shenzhou.global.Constants;
@@ -19,6 +25,7 @@ import com.company.shenzhou.ui.dialog.InputDialog;
 import com.company.shenzhou.ui.dialog.MessageDialog;
 import com.company.shenzhou.utlis.LogUtils;
 import com.company.shenzhou.utlis.SharePreferenceUtil;
+import com.company.shenzhou.widget.StatusLayout;
 import com.company.shenzhou.widget.SwipeMenuLayout;
 import com.hjq.bar.OnTitleBarListener;
 import com.hjq.bar.TitleBar;
@@ -27,7 +34,6 @@ import com.hjq.widget.layout.WrapRecyclerView;
 import com.hjq.widget.view.SwitchButton;
 
 import java.util.ArrayList;
-import java.util.List;
 import java.util.Objects;
 
 /**
@@ -36,15 +42,30 @@ import java.util.Objects;
  * time   : 2024/5/27 11:50
  * desc   : 用户界面
  */
-public final class UserFragment extends TitleBarFragment<MainActivity> implements BaseAdapter.OnChildClickListener {
+public final class UserFragment extends TitleBarFragment<MainActivity> implements StatusAction, BaseAdapter.OnChildClickListener {
     private static final String TAG = "UserFragment，界面==";
     private WrapRecyclerView mRecyclerView;
+    private StatusLayout mStatusView;
     private UserAdapter mAdapter;
     private int mLoginUserRole;
     private String mLoginUsername;
     private ArrayList<UserDBBean> mDataList = new ArrayList<>();
     private TextView mUsernameView;
     private TitleBar mTitleBar;
+    //刷新界面列表数据
+    @SuppressLint("HandlerLeak")
+    private final Handler mHandler = new Handler() {
+        @Override
+        public void handleMessage(@NonNull Message msg) {
+            super.handleMessage(msg);
+            showComplete();
+            mAdapter.setData(mDataList);
+            if (mDataList.isEmpty()) {
+                showEmpty();
+
+            }
+        }
+    };
 
     public static UserFragment newInstance() {
         return new UserFragment();
@@ -58,6 +79,7 @@ public final class UserFragment extends TitleBarFragment<MainActivity> implement
     @Override
     protected void initView() {
         mRecyclerView = findViewById(R.id.rv_status_list);
+        mStatusView = findViewById(R.id.status_layout);
         mTitleBar = findViewById(R.id.title_bar);
         mUsernameView = findViewById(R.id.tv_username);
         mAdapter = new UserAdapter(getAttachActivity());
@@ -75,8 +97,7 @@ public final class UserFragment extends TitleBarFragment<MainActivity> implement
         LogUtils.e(TAG + "==当前登入用户权限等级：0=普通用户，1=权限用户，2=超级管理员==" + mLoginUserRole);
         LogUtils.e(TAG + "==当前登入用户名：==" + mLoginUsername);
         mUsernameView.setText(mLoginUsername);
-        mDataList = (ArrayList) UserDBBeanUtils.queryAll(UserDBBean.class);
-        mAdapter.setData(mDataList);
+        startThreadSetRecycleViewData();
         mTitleBar.setOnTitleBarListener(new OnTitleBarListener() {
             @Override
             public void onLeftClick(View view) {
@@ -161,15 +182,15 @@ public final class UserFragment extends TitleBarFragment<MainActivity> implement
                     for (int i = 0; i < mDataList.size(); i++) {
                         UserDBBean a = mDataList.get(i);
                         LogUtils.e(TAG + "==bean.toString====" + a.toString());
+                        mAdapter.setItem(position, a);
                     }
-                    mAdapter.setData(mDataList);
                 }
             });
             //修改密码
         } else if (viewId == R.id.update_password) {
             switch (mLoginUserRole) {  //当前用户权限 ---->只有超级用户才可以修改，其他用户去我的里面修改
-                case Constants.GeneralUser:  //普通用户
-                    toast(getResources().getString(R.string.toast_01));
+                case Constants.AdminUser:  //超级用户
+                    showChangePasswordDialog(bean, position, Constants.AdminUser + "");
                     break;
                 case Constants.PermissionUser:  //权限用户
                     if (itemRole == Constants.AdminUser) {
@@ -178,11 +199,11 @@ public final class UserFragment extends TitleBarFragment<MainActivity> implement
                     } else if (itemRole == Constants.PermissionUser) {
                         toast(getResources().getString(R.string.toast_01));
                     } else {
-                        showChangePasswordDialog(bean, Constants.GeneralUser + "");
+                        showChangePasswordDialog(bean, position, Constants.GeneralUser + "");
                     }
                     break;
-                case Constants.AdminUser:  //超级用户
-                    showChangePasswordDialog(bean, Constants.AdminUser + "");
+                case Constants.GeneralUser:  //普通用户
+                    toast(getResources().getString(R.string.toast_01));
                     break;
             }
             //删除用户
@@ -194,9 +215,9 @@ public final class UserFragment extends TitleBarFragment<MainActivity> implement
             }
             //当前用户权限
             switch (mLoginUserRole) {
-                //普通用户
-                case Constants.GeneralUser:
-                    toast(getResources().getString(R.string.toast_03));
+                //超级用户
+                case Constants.AdminUser:
+                    showDeleteDialog(bean, Constants.PermissionUser, position);
                     break;
                 //权限用户
                 case Constants.PermissionUser:
@@ -206,7 +227,7 @@ public final class UserFragment extends TitleBarFragment<MainActivity> implement
                     } else if (mLoginUserRole == itemRole) {
                         String currentUsername = (String) SharePreferenceUtil.get(getActivity(), SharePreferenceUtil.Current_Username, "");
                         if (currentUsername.equals(bean.getUsername())) {
-                            showDeleteMineDialog(bean);
+                            showDeleteMineDialog(bean, position);
                         } else {
                             toast(getResources().getString(R.string.toast_04));
                         }
@@ -214,15 +235,10 @@ public final class UserFragment extends TitleBarFragment<MainActivity> implement
                         toast(getResources().getString(R.string.toast_05));
                     }
                     break;
-                //超级用户
-                case Constants.AdminUser:
-                    if ("admin".equals(bean.getUsername())) {  //超级用户不能删除自己
-                        toast(getResources().getString(R.string.toast_06));
-                    } else {
-                        showDeleteDialog(bean, Constants.PermissionUser, position);
-                    }
+                //普通用户
+                case Constants.GeneralUser:
+                    toast(getResources().getString(R.string.toast_03));
                     break;
-
             }
         }
 
@@ -235,7 +251,7 @@ public final class UserFragment extends TitleBarFragment<MainActivity> implement
      * @param bean
      * @param type 当前被修改用户的    权限等级，因为超级用户只能被修改一次密码的机会，所以如果是admin 需要添加sp 标识
      */
-    private void showChangePasswordDialog(UserDBBean bean, String type) {
+    private void showChangePasswordDialog(UserDBBean bean, int position, String type) {
         new InputDialog.Builder(getActivity()).setTitle(getResources().getString(R.string.item_change_password))
                 .setConfirm(getString(R.string.common_confirm))
                 .setHint(getResources().getString(R.string.mine_new_password))
@@ -244,8 +260,7 @@ public final class UserFragment extends TitleBarFragment<MainActivity> implement
                     //对DB做修改或者增加的操作
                     bean.setPassword(newPassword);
                     UserDBBeanUtils.updateData(bean);
-                    List list = UserDBBeanUtils.queryAll(UserDBBean.class);
-                    mAdapter.setData(list);
+                    mAdapter.setItem(position, bean);
                     //超级用户只能被修改一次密码的机会   的标识
                     if (type.equals(Constants.AdminUser + "")) {
                         SharePreferenceUtil.put(getActivity(), SharePreferenceUtil.Current_Admin_ChangePassword, true);
@@ -259,7 +274,7 @@ public final class UserFragment extends TitleBarFragment<MainActivity> implement
      *
      * @param bean
      */
-    private void showDeleteMineDialog(UserDBBean bean) {
+    private void showDeleteMineDialog(UserDBBean bean, int position) {
         new MessageDialog.Builder(getActivity()).setTitle(getResources().getString(R.string.mine_exit_title))
                 .setMessage(getResources().getString(R.string.make_sure_deleted_myself))
                 .setConfirm(getResources().getString(R.string.common_confirm))
@@ -267,8 +282,7 @@ public final class UserFragment extends TitleBarFragment<MainActivity> implement
                 .setCanceledOnTouchOutside(false)
                 .setListener(dialog -> {
                     UserDBBeanUtils.deleteData(bean);
-                    List list = UserDBBeanUtils.queryAll(UserDBBean.class);
-                    mAdapter.setData(list);
+                    mAdapter.setItem(position, bean);
                     SharePreferenceUtil.put(getActivity(), Constants.Is_LoginEd, false);
                     startActivity(new Intent(getActivity(), LoginActivity.class));
                     String name = (String) SharePreferenceUtil.get(getActivity(), SharePreferenceUtil.Current_Username, "");
@@ -294,10 +308,7 @@ public final class UserFragment extends TitleBarFragment<MainActivity> implement
                 .setCanceledOnTouchOutside(false)
                 .setListener(dialog -> {
                     UserDBBeanUtils.deleteData(bean);
-                    mAdapter.removeItem(position);
-                    mAdapter.notifyItemRemoved(position);
-                    mAdapter.notifyItemRangeChanged(0, mDataList.size());
-
+                    startThreadSetRecycleViewData();
                 }).show();
 
     }
@@ -328,15 +339,28 @@ public final class UserFragment extends TitleBarFragment<MainActivity> implement
                         bean.setRememberPrivacy(true);
                         bean.setUserRole(Constants.GeneralUser);
                         UserDBBeanUtils.insertOrReplaceData(bean);
-                        mDataList = (ArrayList) UserDBBeanUtils.queryAll(UserDBBean.class);
-                        LogUtils.e(TAG + "存储的数据" + mDataList.size());
-                        for (int i = 0; i < mDataList.size(); i++) {
-                            UserDBBean a = mDataList.get(i);
-                            LogUtils.e(TAG + "==bean.toString====" + a.toString());
-                        }
-                        mAdapter.setData(mDataList);
+                        startThreadSetRecycleViewData();
                     }
                 }).show();
 
     }
+
+    @Override
+    public StatusLayout getStatusLayout() {
+        return mStatusView;
+    }
+
+    private void startThreadSetRecycleViewData() {
+        new Thread(() -> {
+            mDataList = (ArrayList) UserDBBeanUtils.queryList();
+            LogUtils.e(TAG + "存储的数据" + mDataList.size());
+            for (int i = 0; i < mDataList.size(); i++) {
+                UserDBBean a = mDataList.get(i);
+                LogUtils.e(TAG + "==bean.toString====" + a.toString());
+            }
+            mHandler.sendEmptyMessage(1);
+        }).start();
+
+    }
+
 }

@@ -104,6 +104,15 @@ public final class StatusLayout extends FrameLayout {
         }
         mLottieView.setImageDrawable(drawable);
     }
+    public void setIconEmpty(Drawable drawable) {
+        if (mLottieView == null) {
+            return;
+        }
+        if (mLottieView.isAnimating()) {
+            mLottieView.cancelAnimation();
+        }
+        mLottieView.setVisibility(GONE);
+    }
 
     /**
      * 设置提示动画

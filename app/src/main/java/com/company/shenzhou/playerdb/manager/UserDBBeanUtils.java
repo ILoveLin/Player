@@ -5,6 +5,8 @@ import android.util.Log;
 import com.company.shenzhou.app.AppApplication;
 import com.company.shenzhou.bean.dbbean.UserDBBean;
 import com.company.shenzhou.playerdb.DaoSession;
+import com.company.shenzhou.playerdb.DeviceDBBeanDao;
+import com.company.shenzhou.playerdb.UserDBBeanDao;
 
 import org.greenrobot.greendao.query.QueryBuilder;
 
@@ -76,6 +78,13 @@ public class UserDBBeanUtils {
         return list;
     }
 
+
+    public static List<UserDBBean> queryList() {
+        QueryBuilder<UserDBBean> queryBuilder =  AppApplication.getDaoSession().getUserDBBeanDao().queryBuilder();
+        queryBuilder.where(UserDBBeanDao.Properties.Id.notEq(1));
+        List<UserDBBean> results = queryBuilder.build().list();
+        return results;
+    }
     public static List queryRaw(Long id) {
 
         List<UserDBBean> beanLis = (List<UserDBBean>)//" where username = ?", name
@@ -106,6 +115,12 @@ public class UserDBBeanUtils {
         return new UserDBBean();
 
     }
+    /**
+     * 根据单个条件查询
+     *
+     * @param name
+     * @return
+     */
 
     /**
      * 根据单个条件查询

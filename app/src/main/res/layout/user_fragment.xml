@@ -96,14 +96,20 @@
                 android:textColor="@color/color_999999"
                 android:textSize="@dimen/sp_13" />
 
-
-            <com.hjq.widget.layout.WrapRecyclerView
-                android:id="@+id/rv_status_list"
+            <com.company.shenzhou.widget.StatusLayout
+                android:id="@+id/status_layout"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                android:background="@color/white"
-                tools:listCount="10"
-                tools:listitem="@layout/picker_item" />
+                app:srlAccentColor="@color/gray">
+                <com.hjq.widget.layout.WrapRecyclerView
+                    android:id="@+id/rv_status_list"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:background="@color/white"
+                    tools:listCount="10"
+                    tools:listitem="@layout/picker_item" />
+            </com.company.shenzhou.widget.StatusLayout>
+
 
         </LinearLayout>
 

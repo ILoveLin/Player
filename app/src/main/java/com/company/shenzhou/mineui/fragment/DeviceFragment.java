@@ -7,9 +7,11 @@ import android.os.Handler;
 import android.os.Message;
 import android.view.View;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.RequiresApi;
+import androidx.core.content.ContextCompat;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.company.shenzhou.R;
@@ -128,7 +130,7 @@ public final class DeviceFragment extends TitleBarFragment<MainActivity> impleme
 
     private static final int REQUEST_CODE_SCAN_ONE = 0X01;
     //刷新界面列表数据
-    private static final int Refresh_Recycleview = 0x10;
+    private static final int Refresh_RecycleView = 0x10;
     //只刷新某个设备详细信息对话框的数据
     private static final int Refresh_DeviceDialogInfo = 0x11;
     //设置某个设备详细信息对话框的数据--->说明是第一次创建某个设备详细信息对话框,此处设置默认数据
@@ -149,7 +151,7 @@ public final class DeviceFragment extends TitleBarFragment<MainActivity> impleme
                 case Refresh_DeviceDialogInfo:         //刷新,设备对话框的数据
                     refreshDeviceDialogInfo();
                     break;
-                case Refresh_Recycleview:              //刷新界面列表数据
+                case Refresh_RecycleView:              //刷新界面列表数据
                     showComplete();
                     mAdapter.setData(mDataList);
                     if (mDataList.isEmpty()) {
@@ -164,7 +166,7 @@ public final class DeviceFragment extends TitleBarFragment<MainActivity> impleme
     public void onResume() {
         super.onResume();
         LogUtils.e(TAG + "==onResume=====当前用户下,绑定的设备==currentUsername==" + mLoginUsername);
-        startThreadNotifyDataSetChanged();
+        startThreadSetRecycleViewData();
     }
 
     public static DeviceFragment newInstance() {
@@ -1166,7 +1168,7 @@ public final class DeviceFragment extends TitleBarFragment<MainActivity> impleme
                     }
                     updateBuilder.dismiss();
                     //此处查询所有数据库所有设备,再根据name,筛选出当前用户名绑定的设备
-                    startThreadNotifyDataSetChanged();
+                    startThreadSetRecycleViewData();
                 }
             }
 
@@ -1225,7 +1227,7 @@ public final class DeviceFragment extends TitleBarFragment<MainActivity> impleme
                 .setCancel(getString(R.string.common_cancel))
                 .setListener(dialog -> {
                     DeviceDBUtils.deleteData(getActivity(), bean);
-                    startThreadNotifyDataSetChanged();
+                    startThreadSetRecycleViewData();
                 }).show();
     }
 
@@ -1360,7 +1362,7 @@ public final class DeviceFragment extends TitleBarFragment<MainActivity> impleme
                         DeviceDBUtils.insertOrReplaceInTx(getActivity(), mDeviceDBBean);
                         toast(getResources().getString(R.string.device_toast05));
                     }
-                    startThreadNotifyDataSetChanged();
+                    startThreadSetRecycleViewData();
                     addBuilder.dismissDialog();
                     isDeviceDialogExist = false;
 
@@ -2090,7 +2092,7 @@ public final class DeviceFragment extends TitleBarFragment<MainActivity> impleme
     //** * * * * * * * * * * * * * * * * * * * * 结束-结束-结束* * * * * * * * * * * * * * * * * * * *
 
     //开启线程，读取数据库数据，然后刷新界面
-    private void startThreadNotifyDataSetChanged() {
+    private void startThreadSetRecycleViewData() {
         new Thread(() -> {
             mLoginUsername = (String) SharePreferenceUtil.get(Objects.requireNonNull(getAttachActivity()), SharePreferenceUtil.Current_Username, "");
             indexBean = new DownBindNameListBean();
@@ -2113,14 +2115,14 @@ public final class DeviceFragment extends TitleBarFragment<MainActivity> impleme
             } else {
                 LogUtils.e(TAG + "设备表总数==0");
             }
-            mHandler.sendEmptyMessage(Refresh_Recycleview);
+            mHandler.sendEmptyMessage(Refresh_RecycleView);
         }).start();
     }
 
     @Subscribe(threadMode = ThreadMode.MAIN)
     public void onRefreshEvent(RefreshEvent event) {
         //刷新列表数据
-        startThreadNotifyDataSetChanged();
+        startThreadSetRecycleViewData();
         //显示toast
         toast(event.getToastStr());
     }
