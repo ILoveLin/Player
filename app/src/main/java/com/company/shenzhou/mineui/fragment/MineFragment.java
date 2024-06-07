@@ -16,6 +16,7 @@ import com.company.shenzhou.mineui.activity.BrowserActivity;
 import com.company.shenzhou.mineui.activity.How2UseActivity;
 import com.company.shenzhou.mineui.activity.LoginActivity;
 import com.company.shenzhou.mineui.activity.PowerExplainActivity;
+import com.company.shenzhou.mineui.activity.TestActivity;
 import com.company.shenzhou.mineui.dialog.Input2PasswordDialog;
 import com.company.shenzhou.mineui.dialog.MessageAboutDialog;
 import com.company.shenzhou.playerdb.manager.UserDBBeanUtils;
@@ -109,6 +110,7 @@ public final class MineFragment extends TitleBarFragment<MainActivity> {
         //关于
         if (viewId == R.id.bar_mine_about) {
             showAboutDialog();
+            startActivity(new Intent(getActivity(), TestActivity.class));
             //权限说明
         } else if (viewId == R.id.bar_mine_power_explain) {
             startActivity(PowerExplainActivity.class);
@@ -144,8 +146,7 @@ public final class MineFragment extends TitleBarFragment<MainActivity> {
                 .setConfirm(getString(R.string.common_confirm))
                 .setCancel(getString(R.string.common_cancel))
                 .setListener((dialog, content) -> {
-                    if ("szcme".equals("szcme")) {
-//                    if ("szcme".equals(content)) {
+                    if ("szcme".equals(content)) {
                         startActivity(new Intent(getActivity(), BackstageManagerActivity.class));
                     } else {
                         toast(getResources().getString(R.string.device_search_toast02));

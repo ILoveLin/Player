@@ -9,7 +9,6 @@
     <com.hjq.bar.TitleBar
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        app:leftIcon="@null"
         app:title="@string/back_debug_Manager" />
 
     <com.scwang.smart.refresh.layout.SmartRefreshLayout

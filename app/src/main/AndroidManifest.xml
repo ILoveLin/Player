@@ -356,6 +356,11 @@
             android:name=".mineui.activity.PingActivity"
             android:launchMode="singleTop"
             android:theme="@style/FullScreenTheme" />
+        <!-- 测试专业界面 -->
+        <activity
+            android:name=".mineui.activity.TestActivity"
+            android:launchMode="singleTop"
+            android:theme="@style/FullScreenTheme" />
 
     </application>
 
