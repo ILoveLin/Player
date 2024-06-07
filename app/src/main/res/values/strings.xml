@@ -5,6 +5,8 @@
     <string name="common_step_commit">提交</string>
     <!-- 状态布局 -->
     <string name="status_layout_no_data">空空如也</string>
+    <string name="status_layout_no_user_data"> 暂无其他用户</string>
+    <string name="status_layout_no_device_data"> 暂无设备</string>
     <string name="status_layout_error_request">请求出错，请重试</string>
     <string name="status_layout_error_network">网络错误，请重试</string>
     <string name="status_layout_retry">重试</string>

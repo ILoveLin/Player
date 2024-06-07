@@ -155,7 +155,7 @@ public final class DeviceFragment extends TitleBarFragment<MainActivity> impleme
                     showComplete();
                     mAdapter.setData(mDataList);
                     if (mDataList.isEmpty()) {
-                        showEmpty();
+                        showDeviceEmpty();
                     }
                     break;
             }

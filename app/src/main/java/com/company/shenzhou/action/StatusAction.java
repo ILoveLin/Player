@@ -58,6 +58,14 @@ public interface StatusAction {
     default void showEmpty() {
         showLayout(R.drawable.status_empty_ic, R.string.status_layout_no_data, null);
     }
+    default void showUserEmpty() {
+        showLayout(R.drawable.status_empty_ic, R.string.status_layout_no_user_data, null);
+    }
+    default void showDeviceEmpty() {
+        showLayout(R.drawable.status_empty_ic, R.string.status_layout_no_device_data, null);
+    }
+
+
 
     /**
      * 显示错误提示

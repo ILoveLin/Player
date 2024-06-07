@@ -61,8 +61,7 @@ public final class UserFragment extends TitleBarFragment<MainActivity> implement
             showComplete();
             mAdapter.setData(mDataList);
             if (mDataList.isEmpty()) {
-                showEmpty();
-
+                showUserEmpty();
             }
         }
     };

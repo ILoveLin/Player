@@ -243,6 +243,8 @@
 
 
     <string name="status_layout_no_data">空空如也</string>
+    <string name="status_layout_no_user_data"> 暫無其他用戶</string>
+    <string name="status_layout_no_device_data"> 暫無設備</string>
     <string name="status_layout_no_report">暫無報告可預覽</string>
     <string name="status_layout_error_request">請求出錯，請重試</string>
     <string name="status_layout_error_network">網絡錯誤，請重試</string>
