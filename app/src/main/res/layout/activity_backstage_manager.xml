@@ -1,0 +1,70 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:id="@+id/linear_all_mine"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical">
+
+    <com.hjq.bar.TitleBar
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        app:leftIcon="@null"
+        app:title="@string/back_debug_Manager" />
+
+    <com.scwang.smart.refresh.layout.SmartRefreshLayout
+        android:id="@+id/smartRefresh"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        app:srlAccentColor="@color/gray"
+        app:srlEnablePureScrollMode="true">
+
+        <androidx.core.widget.NestedScrollView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical">
+
+                <com.hjq.widget.layout.SettingBar
+                    android:id="@+id/bar_debug_api"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:background="@drawable/selector_item_ffffff"
+                    app:bar_leftColor="@color/black333333"
+                    app:bar_leftDrawable="@mipmap/icon_mine_what"
+                    app:bar_leftText="@string/back_debug_api"
+                    app:bar_leftTextSize="@dimen/sp_14"
+                    app:bar_rightTextSize="@dimen/sp_13"
+                    app:bar_lineColor="@color/color_DDDDDD"
+                    app:bar_lineMargin="@dimen/dp_15"
+                    app:bar_lineSize="@dimen/dp_0_5"
+                    app:bar_rightDrawable="@drawable/arrows_right_ic"
+                    app:bar_rightText="" />
+
+                <com.hjq.widget.layout.SettingBar
+                    android:id="@+id/bar_debug_ping"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:background="@drawable/selector_item_ffffff"
+                    app:bar_leftColor="@color/black333333"
+                    app:bar_leftDrawable="@mipmap/icon_mine_what"
+                    app:bar_leftText="@string/back_debug_ping_tool"
+                    app:bar_leftTextSize="@dimen/sp_14"
+                    app:bar_lineColor="@color/color_DDDDDD"
+                    app:bar_lineMargin="@dimen/dp_15"
+                    app:bar_lineSize="@dimen/dp_0_5"
+                    app:bar_rightDrawable="@drawable/arrows_right_ic"
+                    app:bar_rightText="" />
+
+
+            </LinearLayout>
+
+        </androidx.core.widget.NestedScrollView>
+
+    </com.scwang.smart.refresh.layout.SmartRefreshLayout>
+
+
+</LinearLayout>

@@ -100,10 +100,19 @@ public class Constants {
     public static final String Line2 = "1";                                   //线路2:(socket通讯);线路2:(Nginx);线路3:(WebRTC);
     public static final String Line3 = "2";                                   //线路3:(socket通讯);线路2:(Nginx);线路3:(WebRTC);
     //正式服务器  https://111.77.154.44
-    //public static final String BaseUrl = "http://www.cmejx.com:50002/api";
-    public static final String BaseUrl = "https://www.cmejx.com:60002/api";
+    //public static final String ReleaseBaseUrl = "http://www.cmejx.com:50002/api";
+    public static final String ReleaseBaseUrl = "https://www.cmejx.com:60002/api";
     //测试服务器
-    //public static final String BaseUrl = "https://www.cmejx.com:55000/api";
+    public static final String TestBaseUrl = "https://www.cmejx.com:55000/api";
+    public static String BaseUrl = Constants.ReleaseBaseUrl;
+
+    public static void setHttpReleaseMode(boolean isRelease) {
+        if (isRelease) {
+            BaseUrl = Constants.ReleaseBaseUrl;
+        } else {
+            BaseUrl = Constants.TestBaseUrl;
+        }
+    }
     /**
      *
      * 线路 2 的接口

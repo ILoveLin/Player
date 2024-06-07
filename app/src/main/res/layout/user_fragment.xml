@@ -1,13 +1,22 @@
 <?xml version="1.0" encoding="utf-8"?>
-<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     tools:context="com.company.shenzhou.ui.fragment.StatusFragment">
 
+    <com.hjq.bar.TitleBar
+        android:id="@+id/title_bar"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        app:leftIcon="@null"
+        app:rightIcon="@drawable/selector_add_something"
+        app:title="@string/main_nav_user" />
+
     <com.scwang.smart.refresh.layout.SmartRefreshLayout
         android:id="@+id/rl_status_refresh"
+        android:layout_below="@+id/title_bar"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         app:srlAccentColor="@color/gray"
@@ -18,13 +27,6 @@
             android:layout_height="match_parent"
             android:orientation="vertical">
 
-            <com.hjq.bar.TitleBar
-                android:id="@+id/title_bar"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                app:leftIcon="@null"
-                app:rightIcon="@drawable/selector_add_something"
-                app:title="@string/main_nav_user" />
 
             <TextView
                 android:layout_width="match_parent"
@@ -54,8 +56,8 @@
                     android:background="@color/white"
                     android:drawableLeft="@mipmap/icon_add_user"
                     android:drawablePadding="@dimen/dp_16"
-                    android:paddingLeft="@dimen/dp_5"
                     android:gravity="center_vertical"
+                    android:paddingLeft="@dimen/dp_5"
                     android:text="admin"
                     android:textColor="@color/black333333"
                     android:textSize="@dimen/sp_13" />
@@ -108,4 +110,4 @@
 
     </com.scwang.smart.refresh.layout.SmartRefreshLayout>
 
-</FrameLayout>
+</RelativeLayout>

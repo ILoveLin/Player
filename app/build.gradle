@@ -279,6 +279,8 @@ dependencies {
     implementation 'com.joanzapata.pdfview:android-pdfview:1.0.4@aar'
     //华为扫码
     implementation 'com.huawei.hms:scanplus:2.10.0.301'
+    //Ping 工具
+    implementation 'com.github.stealthcopter:AndroidNetworkTools:0.4.5.3'
 
 
 

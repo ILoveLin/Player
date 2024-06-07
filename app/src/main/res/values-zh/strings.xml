@@ -371,7 +371,25 @@
 
     <string name="guide_start_experiencing">开始体验</string>
 
+    <!--后台管理-->
+    <string name="back_debug_Manager">后台管理</string>
+    <string name="back_debug_api">接口环境</string>
+    <string name="back_debug_api_release">正式接口</string>
+    <string name="back_debug_api_test">测试接口</string>
+    <string name="back_debug_ping_tool">Ping工具</string>
 
+    <!--Ping工具-->
+    <string name="ping_result">Ping 结果</string>
+    <string name="ping_ip_address">ip地址：</string>
+    <string name="ping_no_pings">次数：</string>
+    <string name="ping_packet_lost">包裹丢失：</string>
+    <string name="ping_average_time_taken">平均时间：</string>
+    <string name="ping_min_time_taken">最小时间：</string>
+    <string name="ping_max_time_taken">最大时间：</string>
+    <string name="ping_testing">测试中</string>
+    <string name="ping_start">开始</string>
+    <string name="ping_look_details">查看详细信息</string>
+    <string name="ping_please_input_address">请输入地址</string>
 
 
 </resources>

@@ -11,6 +11,7 @@ import com.company.shenzhou.app.TitleBarFragment;
 import com.company.shenzhou.bean.dbbean.UserDBBean;
 import com.company.shenzhou.global.Constants;
 import com.company.shenzhou.mineui.MainActivity;
+import com.company.shenzhou.mineui.activity.BackstageManagerActivity;
 import com.company.shenzhou.mineui.activity.BrowserActivity;
 import com.company.shenzhou.mineui.activity.How2UseActivity;
 import com.company.shenzhou.mineui.activity.LoginActivity;
@@ -36,10 +37,9 @@ import java.util.Calendar;
  */
 public final class MineFragment extends TitleBarFragment<MainActivity> {
     private static final String TAG = "MineFragment，界面==";
-    private SettingBar mLoginUseView;
-    private SettingBar mLoginUseLevelView;
-    private SettingBar mSpaceSizeView;
+    private SettingBar mLoginUseView, mLoginUseLevelView, mSpaceSizeView, mMicNameView;
     private MMKV mmkv;
+    private String mLoginUserMicName;
 
     public static MineFragment newInstance() {
         return new MineFragment();
@@ -59,15 +59,18 @@ public final class MineFragment extends TitleBarFragment<MainActivity> {
         mLoginUseLevelView = findViewById(R.id.bar_mine_power_level);
         //可用空间
         mSpaceSizeView = findViewById(R.id.bar_mine_use_pace);
+        //语音昵称
+        mMicNameView = findViewById(R.id.bar_mine_mic_name);
         //关于
         setOnClickListener(R.id.bar_mine_about, R.id.bar_mine_power_explain, R.id.bar_mine_how_use, R.id.bar_mine_use,
-                R.id.bar_mine_secret, R.id.bar_mine_mic_name, R.id.bar_mine_change_password, R.id.bar_mine_exit);
+                R.id.bar_mine_secret, R.id.bar_mine_mic_name, R.id.bar_backstage_manager, R.id.bar_mine_change_password, R.id.bar_mine_exit);
 
     }
 
     @Override
     protected void initData() {
         mmkv = MMKV.defaultMMKV();
+        mLoginUserMicName = mmkv.decodeString(Constants.KEY_MIC_Name, "");
         String username = (String) SharePreferenceUtil.get(getAttachActivity(), SharePreferenceUtil.Current_Username, "");
         //0普通  1权限  2超级用户
         int mLoginRole = (int) SharePreferenceUtil.get(getAttachActivity(), SharePreferenceUtil.Current_UserRole, 2);
@@ -77,6 +80,7 @@ public final class MineFragment extends TitleBarFragment<MainActivity> {
         LogUtils.e(TAG + "可用空间==" + romAvailableSize);
         mSpaceSizeView.setRightText(romAvailableSize);
         mLoginUseView.setRightText(username);
+        mMicNameView.setRightText(mLoginUserMicName);
         switch (mLoginRole) {
             case Constants.GeneralUser:
                 mLoginUseLevelView.setRightText(getResources().getString(R.string.mine_nor_user));
@@ -121,6 +125,9 @@ public final class MineFragment extends TitleBarFragment<MainActivity> {
             //修改昵称
         } else if (viewId == R.id.bar_mine_mic_name) {
             updateNiceName();
+            //后台管理
+        } else if (viewId == R.id.bar_backstage_manager) {
+            BackstageManagerDialog();
             //修改密码
         } else if (viewId == R.id.bar_mine_change_password) {
             updatePassword();
@@ -129,6 +136,22 @@ public final class MineFragment extends TitleBarFragment<MainActivity> {
             ExitAppDialog();
 
         }
+    }
+
+    private void BackstageManagerDialog() {
+        new InputDialog.Builder(getActivity()).setTitle(getResources().getString(R.string.back_debug_Manager))
+                .setHint(getResources().getString(R.string.common_password_input_error))
+                .setConfirm(getString(R.string.common_confirm))
+                .setCancel(getString(R.string.common_cancel))
+                .setListener((dialog, content) -> {
+                    if ("szcme".equals("szcme")) {
+//                    if ("szcme".equals(content)) {
+                        startActivity(new Intent(getActivity(), BackstageManagerActivity.class));
+                    } else {
+                        toast(getResources().getString(R.string.device_search_toast02));
+                    }
+                })
+                .show();
     }
 
     private void ExitAppDialog() {
@@ -191,15 +214,14 @@ public final class MineFragment extends TitleBarFragment<MainActivity> {
     }
 
     private void updateNiceName() {
-        String mMicName = mmkv.decodeString(Constants.KEY_MIC_Name, "");
         // 输入对话框
         InputDialog.Builder builder = new InputDialog.Builder(getActivity());
         // 标题可以不用填写
-        if ("".equals(mMicName)) {
+        if ("".equals(mLoginUserMicName)) {
             builder.setHint(getResources().getString(R.string.device_dialog_mic_name_hint));
 
         } else {
-            builder.setHint(getResources().getString(R.string.mine_current_nickname) + mMicName);
+            builder.setHint(getResources().getString(R.string.mine_current_nickname) + mLoginUserMicName);
 
         }
         builder.setTitle(getResources().getString(R.string.device_dialog_mic_name_title))
@@ -208,6 +230,7 @@ public final class MineFragment extends TitleBarFragment<MainActivity> {
                 .setListener((dialog, content) -> {
                     mmkv = MMKV.defaultMMKV();
                     mmkv.encode(Constants.KEY_MIC_Name, content);
+                    mMicNameView.setRightText(content);
                 }).show();
 
 
@@ -233,6 +256,7 @@ public final class MineFragment extends TitleBarFragment<MainActivity> {
                 .setConfirm(getResources().getString(R.string.common_confirm))
                 .show();
     }
+
     @Override
     public boolean isStatusBarEnabled() {
         // 使用沉浸式状态栏

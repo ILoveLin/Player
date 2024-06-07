@@ -1352,8 +1352,8 @@ public final class DeviceFragment extends TitleBarFragment<MainActivity> impleme
                     String singleIndex = deviceCode + deviceTypeDesc + mDeviceDBBean.getChannel();
                     LogUtils.e(TAG + "新增设备对话框==修改之后,id==singleIndex==" + singleIndex);
                     //判断需要新增的设备，数据库，是否存在
-                    List<DeviceDBBean> queryBeanByTag = DeviceDBUtils.getQueryBeanByTag(getActivity(), singleIndex);
-                    if (queryBeanByTag != null && !queryBeanByTag.isEmpty()) {
+                    List<DeviceDBBean> singleIndexTag = DeviceDBUtils.getQueryBeanByTag(getActivity(), singleIndex);
+                    if (singleIndexTag != null && !singleIndexTag.isEmpty()) {
                         //新增设备的时候，数据库存在singleIndex的数据，说明设备已存在
                         toast(getResources().getString(R.string.device_add_fail));
                     } else {

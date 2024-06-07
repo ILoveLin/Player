@@ -684,5 +684,25 @@
     <string name = "gallery_camera_description" > App now applies for album read and write permission like you, which is used to access the album in the App scan code function, select the QR code from the album, and identify the picture scan code. If you refuse this permission, then the scan code function will not be able to access the album to obtain the picture scan code! </string >
     <string name = "guide_start_experiencing" > Start the experience </string >
 
+    <!--后台管理-->
+    <string name="back_debug_Manager">manager</string>
+    <string name="back_debug_api">interface environment</string>
+    <string name="back_debug_api_release">Release interface</string>
+    <string name="back_debug_api_test">Test interface</string>
+    <string name="back_debug_ping_tool">Ping Tool</string>
+
+    <!--Ping工具-->
+    <string name="ping_ip_address">ip address：</string>
+    <string name="ping_no_pings">noPings：</string>
+    <string name="ping_packet_lost">packetsLost：</string>
+    <string name="ping_average_time_taken">averageTimeTaken：</string>
+    <string name="ping_min_time_taken">minTimeTaken：</string>
+    <string name="ping_max_time_taken">maxTimeTaken：</string>
+    <string name="ping_testing">testing</string>
+    <string name="ping_start">start</string>
+    <string name="ping_result">Ping result</string>
+    <string name="ping_look_details">look details</string>
+    <string name="ping_please_input_address">please enter the address</string>
+
 
 </resources>

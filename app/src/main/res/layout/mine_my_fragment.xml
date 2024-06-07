@@ -178,6 +178,22 @@
                     app:bar_rightTextSize="@dimen/sp_13" />
 
                 <com.hjq.widget.layout.SettingBar
+                    android:id="@+id/bar_backstage_manager"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:background="@drawable/selector_item_ffffff"
+                    app:bar_leftColor="@color/black333333"
+                    app:bar_leftDrawable="@mipmap/icon_mine_what"
+                    app:bar_leftText="@string/back_debug_Manager"
+                    app:bar_leftTextSize="@dimen/sp_13"
+                    app:bar_lineColor="@color/color_DDDDDD"
+                    app:bar_lineMargin="@dimen/dp_15"
+                    app:bar_lineSize="@dimen/dp_0_5"
+                    app:bar_rightDrawable="@drawable/arrows_right_ic"
+                    app:bar_rightText="" />
+
+
+                <com.hjq.widget.layout.SettingBar
                     android:id="@+id/sb_session_num"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
