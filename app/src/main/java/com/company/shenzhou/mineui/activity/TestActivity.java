@@ -93,14 +93,17 @@ public final class TestActivity extends AppActivity {
         LogUtils.e(TAG + "mHeng7Height==" + mHeng7Height); //1008
         LogUtils.e(TAG + "mHalfHengIndex==" + mHalfHengYIndex); //504
         LogUtils.e(TAG + "===================");
-        deviceView2TopLayout();
         setOnClickListener(R.id.player_tencent, R.id.player_tencent2, R.id.one, R.id.tow, R.id.quanping);
+        deviceView2TopLayout();
+
     }
 
     @Override
     protected void initData() {
 
     }
+
+
 
     @Override
     public void onClick(View v) {
@@ -144,45 +147,6 @@ public final class TestActivity extends AppActivity {
 
     }
 
-    private boolean hengAnimFinish = true;
-    private boolean ShuAnimFinish = true;
-
-    /**
-     * 横屏
-     * 术野View，在最左边，最大（占比百分之70，设备的View占比百分之30）
-     * 黄色的上（大）redHengYellow2Top
-     */
-    private void elseView2BigLayout() {
-        LogUtils.e(TAG + "redHengYellow2Top=m7Width=");
-        LogUtils.e(TAG + "mScreenWidth==" + mScreenWidth);
-        LogUtils.e(TAG + "mScreenHeight==" + mScreenHeight);
-        LogUtils.e(TAG + "=mHeng7Width=" + mHeng7Width);
-        LogUtils.e(TAG + "=mHeng3Width=" + mHeng3Width);
-        RelativeLayout.LayoutParams mRelativeParams1 = new RelativeLayout.LayoutParams(
-                ViewGroup.LayoutParams.WRAP_CONTENT,
-                ViewGroup.LayoutParams.MATCH_PARENT);
-        mRelativeParams1.width = mHeng7Width;
-        mRelativeParams1.height = mHeng7Height;
-        RelativeLayout.LayoutParams mRelativeParams2 = new RelativeLayout.LayoutParams(
-                ViewGroup.LayoutParams.WRAP_CONTENT,
-                ViewGroup.LayoutParams.MATCH_PARENT);
-        mRelativeParams2.width = mHeng3Width;
-        mRelativeParams2.height = mHeng3Height;
-        mDeviceView.setLayoutParams(mRelativeParams1);
-        mElseView.setLayoutParams(mRelativeParams2);
-//        mRedPlayederView1.setX(mHeng7Width);
-//        mRedPlayederView1.setY(0);
-//        mYellowPlayerView2.setX(0);
-//        mYellowPlayerView2.setY(0);
-        mElseView.setTranslationX(mHeng7Width);
-        mElseView.setTranslationY(mHalfHengYIndex);
-        mDeviceView.setTranslationX(0);
-        mDeviceView.setTranslationY(mHalfHengYIndex);
-
-        //大块的做缩放和移动的动画
-
-
-    }
 
     /**
      * 设置播放器:全屏/半屏,显示
@@ -245,6 +209,46 @@ public final class TestActivity extends AppActivity {
 
 
         }
+    }
+
+    private boolean hengAnimFinish = true;
+    private boolean ShuAnimFinish = true;
+
+    /**
+     * 横屏
+     * 术野View，在最左边，最大（占比百分之70，设备的View占比百分之30）
+     * 黄色的上（大）redHengYellow2Top
+     */
+    private void elseView2BigLayout() {
+        LogUtils.e(TAG + "redHengYellow2Top=m7Width=");
+        LogUtils.e(TAG + "mScreenWidth==" + mScreenWidth);
+        LogUtils.e(TAG + "mScreenHeight==" + mScreenHeight);
+        LogUtils.e(TAG + "=mHeng7Width=" + mHeng7Width);
+        LogUtils.e(TAG + "=mHeng3Width=" + mHeng3Width);
+        RelativeLayout.LayoutParams mRelativeParams1 = new RelativeLayout.LayoutParams(
+                ViewGroup.LayoutParams.WRAP_CONTENT,
+                ViewGroup.LayoutParams.MATCH_PARENT);
+        mRelativeParams1.width = mHeng7Width;
+        mRelativeParams1.height = mHeng7Height;
+        RelativeLayout.LayoutParams mRelativeParams2 = new RelativeLayout.LayoutParams(
+                ViewGroup.LayoutParams.WRAP_CONTENT,
+                ViewGroup.LayoutParams.MATCH_PARENT);
+        mRelativeParams2.width = mHeng3Width;
+        mRelativeParams2.height = mHeng3Height;
+        mDeviceView.setLayoutParams(mRelativeParams1);
+        mElseView.setLayoutParams(mRelativeParams2);
+//        mRedPlayederView1.setX(mHeng7Width);
+//        mRedPlayederView1.setY(0);
+//        mYellowPlayerView2.setX(0);
+//        mYellowPlayerView2.setY(0);
+        mElseView.setTranslationX(mHeng7Width);
+        mElseView.setTranslationY(mHalfHengYIndex);
+        mDeviceView.setTranslationX(0);
+        mDeviceView.setTranslationY(mHalfHengYIndex);
+
+        //大块的做缩放和移动的动画
+
+
     }
 
     /**
@@ -321,6 +325,7 @@ public final class TestActivity extends AppActivity {
         mElseView.setX(0);
         mElseView.setY(0);
     }
+
 
 
 }
