@@ -47,7 +47,7 @@ public final class TestActivity extends AppActivity {
 
     @Override
     protected int getLayoutId() {
-        return R.layout.copy_activity;
+        return R.layout.activity_01_test;
     }
 
     @Override
