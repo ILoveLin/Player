@@ -29,7 +29,7 @@ import com.company.shenzhou.mineui.activity.PlayerRC200Activity;
 import com.company.shenzhou.mineui.activity.SearchDeviceActivity;
 import com.company.shenzhou.mineui.adapter.DeviceAdapter;
 import com.company.shenzhou.mineui.dialog.AddDeviceDialog;
-import com.company.shenzhou.mineui.dialog.Input2SteamDialog;
+import com.company.shenzhou.mineui.dialog.Input2SpareSteamDialog;
 import com.company.shenzhou.mineui.dialog.UpdateDeviceDialog;
 import com.company.shenzhou.mineui.popup.ListIconPopup;
 import com.company.shenzhou.playerdb.manager.DeviceDBUtils;
@@ -135,7 +135,7 @@ public final class DeviceFragment extends TitleBarFragment<MainActivity> impleme
     //设置某个设备详细信息对话框的数据--->说明是第一次创建某个设备详细信息对话框,此处设置默认数据
     private static final int Set_DeviceDialogInfo = 0x12;
     //备用方案
-    private Input2SteamDialog.Builder mSpaceBuilder;
+    private Input2SpareSteamDialog.Builder mSpareBuilder;
 
     //添加，设备信息对话框:addDeviceDialogBuilder
     private AddDeviceDialog.Builder addBuilder;
@@ -1244,14 +1244,13 @@ public final class DeviceFragment extends TitleBarFragment<MainActivity> impleme
         LogUtils.e(TAG + "修改=========bean.getSparePlan()====" + bean.getSparePlan());
         //备用方案：默认未开启==false
         if (bean.getSparePlan()) {
-            mSpaceBuilder = new Input2SteamDialog.Builder(getActivity());
-            mSpaceBuilder
-                    .setTitle(getString(R.string.rc200_setting))
+            mSpareBuilder = new Input2SpareSteamDialog.Builder(getActivity());
+            mSpareBuilder.setTitle(getString(R.string.rc200_setting))
                     .setDataBean(bean)
                     .setConfirm(getString(R.string.device_item_play_mode_close))
                     .setCancel(getString(R.string.common_cancel))
                     .setCanceledOnTouchOutside(false)
-                    .setListener(new Input2SteamDialog.OnListener() {
+                    .setListener(new Input2SpareSteamDialog.OnListener() {
                         @Override
                         public void onScan(BaseDialog dialog, String content, String newContent) {
                             getPermission2StartHWScanKit();
@@ -1264,16 +1263,16 @@ public final class DeviceFragment extends TitleBarFragment<MainActivity> impleme
                             bean.setSpareLiveSteam("");
                             bean.setSpareMicPushSteam("");
                             DeviceDBUtils.insertOrReplaceInTx(getActivity(), bean);
+                            mSpareBuilder.dismiss();
                         }
                     }).show();
         } else {
-            mSpaceBuilder = new Input2SteamDialog.Builder(getActivity());
-            mSpaceBuilder
-                    .setTitle(getString(R.string.rc200_setting))
+            mSpareBuilder = new Input2SpareSteamDialog.Builder(getActivity());
+            mSpareBuilder.setTitle(getString(R.string.rc200_setting))
                     .setConfirm(getString(R.string.device_item_play_mode_start))
                     .setCancel(getString(R.string.common_cancel))
                     .setCanceledOnTouchOutside(false)
-                    .setListener(new Input2SteamDialog.OnListener() {
+                    .setListener(new Input2SpareSteamDialog.OnListener() {
                         @Override
                         public void onScan(BaseDialog dialog, String content, String newContent) {
                             getPermission2StartHWScanKit();
@@ -1290,6 +1289,7 @@ public final class DeviceFragment extends TitleBarFragment<MainActivity> impleme
                             bean.setSpareLiveSteam(liveSteam);
                             bean.setSpareMicPushSteam(micSteam);
                             DeviceDBUtils.insertOrReplaceInTx(getActivity(), bean);
+                            mSpareBuilder.dismiss();
                         }
                     }).show();
 
@@ -2047,9 +2047,9 @@ public final class DeviceFragment extends TitleBarFragment<MainActivity> impleme
                                 String pushUrl = object.getString("pushUrl"); //推流地址
                                 String pullUrl = object.getString("pullUrl"); //拉流地址
                                 if (!pushUrl.isEmpty() && !pullUrl.isEmpty()) {
-                                    if (null != mSpaceBuilder) {
-                                        mSpaceBuilder.setContent(pushUrl);
-                                        mSpaceBuilder.setNewContent(pullUrl);
+                                    if (null != mSpareBuilder) {
+                                        mSpareBuilder.setContent(pushUrl);
+                                        mSpareBuilder.setNewContent(pullUrl);
                                         toast(getResources().getString(R.string.device_add_success));
                                     }
                                 }else {

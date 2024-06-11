@@ -9,7 +9,6 @@ import androidx.annotation.StringRes;
 
 import com.company.shenzhou.R;
 import com.company.shenzhou.bean.dbbean.DeviceDBBean;
-import com.company.shenzhou.ui.dialog.CommonDialog;
 import com.hjq.base.BaseDialog;
 
 
@@ -19,7 +18,7 @@ import com.hjq.base.BaseDialog;
  *    time   : 2019/02/27
  *    desc   : 输入对话框
  */
-public final class Input2SteamDialog {
+public final class Input2SpareSteamDialog {
 
     public static final class Builder
             extends CommonSpareDialog.Builder<Builder>
@@ -98,7 +97,6 @@ public final class Input2SteamDialog {
                     }
                     break;
                 case R.id.tv_ui_confirm:
-                    autoDismiss();
                     if (mListener != null) {
                         mListener.onConfirm(getDialog(), mLiveSteam.getText().toString(), mMicSteam.getText().toString());
                     }
