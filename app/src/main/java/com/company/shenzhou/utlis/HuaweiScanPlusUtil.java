@@ -26,7 +26,7 @@ import java.util.List;
  * time：2024/5/29 15:45
  * desc：华为扫码之后 处理属于的工具类
  */
-public class HuaweiScanPlus {
+public class HuaweiScanPlusUtil {
     private static final String TAG = "HuaweiScanPlus，==";
 
     public static void getJsonData(Context mContext, String currentUsername, String result) {

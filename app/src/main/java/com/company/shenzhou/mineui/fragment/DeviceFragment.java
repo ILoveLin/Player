@@ -7,11 +7,9 @@ import android.os.Handler;
 import android.os.Message;
 import android.view.View;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.RequiresApi;
-import androidx.core.content.ContextCompat;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.company.shenzhou.R;
@@ -38,7 +36,7 @@ import com.company.shenzhou.playerdb.manager.DeviceDBUtils;
 import com.company.shenzhou.ui.dialog.MessageDialog;
 import com.company.shenzhou.ui.dialog.SelectDialog;
 import com.company.shenzhou.utlis.CommonUtil;
-import com.company.shenzhou.utlis.HuaweiScanPlus;
+import com.company.shenzhou.utlis.HuaweiScanPlusUtil;
 import com.company.shenzhou.utlis.JsonUtil;
 import com.company.shenzhou.utlis.LogUtils;
 import com.company.shenzhou.utlis.SharePreferenceUtil;
@@ -63,6 +61,7 @@ import org.greenrobot.eventbus.EventBus;
 import org.greenrobot.eventbus.Subscribe;
 import org.greenrobot.eventbus.ThreadMode;
 import org.greenrobot.greendao.annotation.NotNull;
+import org.json.JSONObject;
 
 import java.io.IOException;
 import java.util.ArrayList;
@@ -135,6 +134,9 @@ public final class DeviceFragment extends TitleBarFragment<MainActivity> impleme
     private static final int Refresh_DeviceDialogInfo = 0x11;
     //设置某个设备详细信息对话框的数据--->说明是第一次创建某个设备详细信息对话框,此处设置默认数据
     private static final int Set_DeviceDialogInfo = 0x12;
+    //备用方案
+    private Input2SteamDialog.Builder mSpaceBuilder;
+
     //添加，设备信息对话框:addDeviceDialogBuilder
     private AddDeviceDialog.Builder addBuilder;
     //修改，设备信息对话框：updateDeviceDialogBuilder
@@ -1242,36 +1244,53 @@ public final class DeviceFragment extends TitleBarFragment<MainActivity> impleme
         LogUtils.e(TAG + "修改=========bean.getSparePlan()====" + bean.getSparePlan());
         //备用方案：默认未开启==false
         if (bean.getSparePlan()) {
-            new Input2SteamDialog.Builder(getActivity())
+            mSpaceBuilder = new Input2SteamDialog.Builder(getActivity());
+            mSpaceBuilder
                     .setTitle(getString(R.string.rc200_setting))
                     .setDataBean(bean)
                     .setConfirm(getString(R.string.device_item_play_mode_close))
                     .setCancel(getString(R.string.common_cancel))
                     .setCanceledOnTouchOutside(false)
-                    .setListener((dialog, liveSteam, micSteam) -> {
-                        bean.setSparePlan(false);
-                        toast(getResources().getString(R.string.device_close_success));
-                        bean.setSpareLiveSteam("");
-                        bean.setSpareMicPushSteam("");
-                        DeviceDBUtils.insertOrReplaceInTx(getActivity(), bean);
+                    .setListener(new Input2SteamDialog.OnListener() {
+                        @Override
+                        public void onScan(BaseDialog dialog, String content, String newContent) {
+                            getPermission2StartHWScanKit();
+                        }
+
+                        @Override
+                        public void onConfirm(BaseDialog dialog, String content, String newContent) {
+                            bean.setSparePlan(false);
+                            toast(getResources().getString(R.string.device_close_success));
+                            bean.setSpareLiveSteam("");
+                            bean.setSpareMicPushSteam("");
+                            DeviceDBUtils.insertOrReplaceInTx(getActivity(), bean);
+                        }
                     }).show();
         } else {
-            // 输入对话框
-            new Input2SteamDialog.Builder(getActivity())
+            mSpaceBuilder = new Input2SteamDialog.Builder(getActivity());
+            mSpaceBuilder
                     .setTitle(getString(R.string.rc200_setting))
                     .setConfirm(getString(R.string.device_item_play_mode_start))
                     .setCancel(getString(R.string.common_cancel))
                     .setCanceledOnTouchOutside(false)
-                    .setListener((dialog, liveSteam, micSteam) -> {
-                        if ("".equals(liveSteam) || "".equals(micSteam)) {
-                            toast(getResources().getString(R.string.device_steam_address_not_null));
-                            return;
+                    .setListener(new Input2SteamDialog.OnListener() {
+                        @Override
+                        public void onScan(BaseDialog dialog, String content, String newContent) {
+                            getPermission2StartHWScanKit();
                         }
-                        toast(getResources().getString(R.string.device_open_success));
-                        bean.setSparePlan(true);
-                        bean.setSpareLiveSteam(liveSteam);
-                        bean.setSpareMicPushSteam(micSteam);
-                        DeviceDBUtils.insertOrReplaceInTx(getActivity(), bean);
+
+                        @Override
+                        public void onConfirm(BaseDialog dialog, String liveSteam, String micSteam) {
+                            if ("".equals(liveSteam) || "".equals(micSteam)) {
+                                toast(getResources().getString(R.string.device_steam_address_not_null));
+                                return;
+                            }
+                            toast(getResources().getString(R.string.device_open_success));
+                            bean.setSparePlan(true);
+                            bean.setSpareLiveSteam(liveSteam);
+                            bean.setSpareMicPushSteam(micSteam);
+                            DeviceDBUtils.insertOrReplaceInTx(getActivity(), bean);
+                        }
                     }).show();
 
         }
@@ -2013,23 +2032,37 @@ public final class DeviceFragment extends TitleBarFragment<MainActivity> impleme
                     String result = hmsScan.getOriginalValue();
                     LogUtils.e(TAG + "扫码结果:" + result);
                     if (!"".equals(result)) {
-                        if (JsonUtil.isGoodJson(result)) {  //是json数据 HD3  或者一体机的格式
-                            new Thread() {
-                                @Override
-                                public void run() {
-                                    super.run();
-                                    HuaweiScanPlus.getJsonData(getAttachActivity(), mLoginUsername, result);
+
+                            if (JsonUtil.isGoodJson(result)) {  //是json数据 HD3  或者一体机的格式
+                                new Thread() {
+                                    @Override
+                                    public void run() {
+                                        super.run();
+                                        HuaweiScanPlusUtil.getJsonData(getAttachActivity(), mLoginUsername, result);
+                                    }
+                                }.start();
+                            } else {//暂时认定为自定义url链接
+                                //因为备用方案添加了扫码功能，这里需要判断是解析的数据类型：是添加自定义URL类型的设备，还是备用方案的数据
+                                JSONObject object = new JSONObject(result);
+                                String pushUrl = object.getString("pushUrl"); //推流地址
+                                String pullUrl = object.getString("pullUrl"); //拉流地址
+                                if (!pushUrl.isEmpty() && !pullUrl.isEmpty()) {
+                                    if (null != mSpaceBuilder) {
+                                        mSpaceBuilder.setContent(pushUrl);
+                                        mSpaceBuilder.setNewContent(pullUrl);
+                                        toast(getResources().getString(R.string.device_add_success));
+                                    }
+                                }else {
+                                    new Thread() {
+                                        @Override
+                                        public void run() {
+                                            super.run();
+                                            HuaweiScanPlusUtil.getCustomUrl(getAttachActivity(), mLoginUsername, result);
+                                        }
+                                    }.start();
                                 }
-                            }.start();
-                        } else {//暂时认定为自定义url链接
-                            new Thread() {
-                                @Override
-                                public void run() {
-                                    super.run();
-                                    HuaweiScanPlus.getCustomUrl(getAttachActivity(), mLoginUsername, result);
-                                }
-                            }.start();
-                        }
+
+                            }
                     }
                 } catch (Exception e) {
                     toast(getResources().getString(R.string.device_the_scan_code_is_abnormal));

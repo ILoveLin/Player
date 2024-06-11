@@ -22,7 +22,7 @@ import com.hjq.base.BaseDialog;
 public final class Input2SteamDialog {
 
     public static final class Builder
-            extends CommonMyDialog.Builder<Builder>
+            extends CommonSpareDialog.Builder<Builder>
             implements BaseDialog.OnShowListener {
 
         private OnListener mListener;
@@ -90,6 +90,13 @@ public final class Input2SteamDialog {
         @Override
         public void onClick(View v) {
             switch (v.getId()) {
+                case R.id.relative_scan:
+                case R.id.iv_scan_noe:
+                case R.id.tv_scan_tow:
+                    if (mListener != null) {
+                        mListener.onScan(getDialog(), mLiveSteam.getText().toString(), mMicSteam.getText().toString());
+                    }
+                    break;
                 case R.id.tv_ui_confirm:
                     autoDismiss();
                     if (mListener != null) {
@@ -109,6 +116,10 @@ public final class Input2SteamDialog {
     }
 
     public interface OnListener {
+        /**
+         * 点击扫码功能
+         */
+        void onScan(BaseDialog dialog, String content,String newContent);
 
         /**
          * 点击确定时回调
