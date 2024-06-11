@@ -300,7 +300,9 @@
 
 
     <!-- 状态布局 -->
-    <string name="status_layout_no_data">Empty</string>
+    <string name="status_layout_no_data">empty</string>
+    <string name="status_layout_no_user_data"> No other users yet</string>
+    <string name="status_layout_no_device_data"> No device</string>
     <string name="status_layout_no_report">No report is available for preview</string>
     <string name="status_layout_error_request">Request error, please try again</string>
     <string name="status_layout_error_network">Network error, please try again</string>
