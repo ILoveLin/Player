@@ -15,7 +15,7 @@ public final class How2UseActivity extends AppActivity {
 
     @Override
     protected int getLayoutId() {
-        return R.layout.howuse_activity;
+        return R.layout.activity_how_2_use;
     }
 
     @Override

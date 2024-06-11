@@ -14,7 +14,7 @@ public final class PlayerLine2Activity extends AppActivity {
 
     @Override
     protected int getLayoutId() {
-        return R.layout.player_line2_activity;
+        return R.layout.activity_player_line2;
     }
 
     @Override

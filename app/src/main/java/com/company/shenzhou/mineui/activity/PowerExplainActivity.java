@@ -13,7 +13,7 @@ public final class PowerExplainActivity extends AppActivity {
 
     @Override
     protected int getLayoutId() {
-        return R.layout.power_explain_activity;
+        return R.layout.activity_power_explain;
     }
 
     @Override

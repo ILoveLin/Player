@@ -56,7 +56,7 @@ public final class BrowserActivity extends AppActivity
 
     @Override
     protected int getLayoutId() {
-        return R.layout.browser_activity;
+        return R.layout.activity_browser;
     }
 
     @Override

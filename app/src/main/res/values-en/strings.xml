@@ -471,7 +471,7 @@
     <string name="mine_about">about</string>
     <string name="mine_permissions_instructions">permissions instructions</string>
     <string name="mine_available_space">available space</string>
-    <string name="mine_operation_manual">operation manual</string>
+    <string name="mine_operation_manual">Operation manual</string>
     <string name="mine_user_agreement">user agreement</string>
     <string name="mine_privacy_policy">privacy policy</string>
     <string name="mine_mic_name">voice nickname</string>
@@ -502,7 +502,7 @@
     <string name="mine_toast03">Modify the success</string>
     <string name="mine_toast04">The old password is incorrect</string>
 
-    <string name="permission_to_illustrate">permission illustrate</string>
+    <string name="permission_to_illustrate">Permission illustrate</string>
     <string name="permission_level01">the average user:</string>
     <string name="permission_common01">live：anything</string>
     <string name="permission_common02"> device manager：check, add, delete, modify</string>

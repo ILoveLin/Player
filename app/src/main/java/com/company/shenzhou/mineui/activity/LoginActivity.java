@@ -93,7 +93,7 @@ public final class LoginActivity extends AppActivity implements KeyboardWatcher.
 
     @Override
     protected int getLayoutId() {
-        return R.layout.login_activity;
+        return R.layout.activity_login;
     }
 
     @Override
