@@ -16,7 +16,7 @@ import com.hjq.base.BaseDialog;
  * time   : 2024/5/27 11:50
  * desc   : 消息对话框
  */
-public final class MessageAboutDialog {
+public final class AboutDialog {
 
     public static final class Builder
             extends CommonAboutDialog.Builder<Builder> {

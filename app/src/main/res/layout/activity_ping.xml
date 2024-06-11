@@ -98,7 +98,7 @@
                         android:layout_width="0dp"
                         android:layout_height="wrap_content"
                         android:layout_weight="1"
-                        android:text="ip地址："
+                        android:text="@string/ping_ip_address"
                         android:textColor="#333333"
                         android:textSize="@dimen/sp_13" />
 
@@ -107,7 +107,7 @@
                         android:layout_width="0dp"
                         android:layout_height="wrap_content"
                         android:layout_weight="1"
-                        android:text="次数："
+                        android:text="@string/ping_no_pings"
                         android:textColor="#333333"
                         android:textSize="@dimen/sp_13" />
 
@@ -126,7 +126,7 @@
                         android:layout_width="0dp"
                         android:layout_height="wrap_content"
                         android:layout_weight="1"
-                        android:text="包裹丢失："
+                        android:text="@string/ping_packet_lost"
                         android:textColor="#333333"
                         android:textSize="@dimen/sp_13" />
 
@@ -135,7 +135,7 @@
                         android:layout_width="0dp"
                         android:layout_height="wrap_content"
                         android:layout_weight="1"
-                        android:text="平均时间："
+                        android:text="@string/ping_average_time_taken"
                         android:textColor="#333333"
                         android:textSize="@dimen/sp_13" />
 
@@ -155,7 +155,7 @@
                         android:layout_width="0dp"
                         android:layout_height="wrap_content"
                         android:layout_weight="1"
-                        android:text="最小时间："
+                        android:text="@string/ping_min_time_taken"
                         android:textColor="#333333"
                         android:textSize="@dimen/sp_13" />
 
@@ -164,7 +164,7 @@
                         android:layout_width="0dp"
                         android:layout_height="wrap_content"
                         android:layout_weight="1"
-                        android:text="最大时间："
+                        android:text="@string/ping_max_time_taken"
                         android:textColor="#333333"
                         android:textSize="@dimen/sp_13" />
 
@@ -179,7 +179,7 @@
                 android:background="@drawable/selector_item_ffffff_test"
                 android:paddingLeft="@dimen/dp_10"
                 android:paddingRight="@dimen/dp_10"
-                android:text="查看详细信息"
+                android:text="@string/ping_look_details"
                 android:textColor="@color/white" />
 
             <androidx.core.widget.NestedScrollView

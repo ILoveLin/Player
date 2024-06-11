@@ -18,7 +18,7 @@ import com.company.shenzhou.mineui.activity.LoginActivity;
 import com.company.shenzhou.mineui.activity.PowerExplainActivity;
 import com.company.shenzhou.mineui.activity.TestActivity;
 import com.company.shenzhou.mineui.dialog.Input2PasswordDialog;
-import com.company.shenzhou.mineui.dialog.MessageAboutDialog;
+import com.company.shenzhou.mineui.dialog.AboutDialog;
 import com.company.shenzhou.playerdb.manager.UserDBBeanUtils;
 import com.company.shenzhou.ui.dialog.InputDialog;
 import com.company.shenzhou.ui.dialog.MessageDialog;
@@ -110,7 +110,7 @@ public final class MineFragment extends TitleBarFragment<MainActivity> {
         //关于
         if (viewId == R.id.bar_mine_about) {
             showAboutDialog();
-            startActivity(new Intent(getActivity(), TestActivity.class));
+            //startActivity(new Intent(getActivity(), TestActivity.class));
             //权限说明
         } else if (viewId == R.id.bar_mine_power_explain) {
             startActivity(PowerExplainActivity.class);
@@ -250,10 +250,10 @@ public final class MineFragment extends TitleBarFragment<MainActivity> {
         String version = getResources().getString(R.string.mine_version);
         String copyright = getResources().getString(R.string.mine_property_in_copyright);
         String update = getResources().getString(R.string.mine_updated_date);
-        new MessageAboutDialog.Builder(getActivity())
+        new AboutDialog.Builder(getActivity())
                 .setVersion(version + versionName)
                 .setCopyright(copyright + showCopyrightYear)
-                .setUpdateDate(update + " 2024 " + getResources().getString(R.string.mine_updated_year) + "8" + getResources().getString(R.string.mine_updated_month))
+                .setUpdateDate(update + " 2024 " + getResources().getString(R.string.mine_updated_year) + " 8 " + getResources().getString(R.string.mine_updated_month))
                 .setConfirm(getResources().getString(R.string.common_confirm))
                 .show();
     }

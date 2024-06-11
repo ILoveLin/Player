@@ -13,8 +13,20 @@ android {
         // 无痛修改包名：https://www.jianshu.com/p/17327e191d2e
         applicationId 'com.company.shenzhou'
 
-        // 仅保留中文语种的资源
-        resConfigs 'zh'
+        // 仅保留中文,英文,繁体字语种的资源
+        //resConfigs 'zh','en','zh-rTW'
+        //中文（中国）：values-zh-rCN
+        //中文（台湾）：values-zh-rTW
+        //中文（香港）：values-zh-rHK
+        //英语（美国）：values-en-rUS
+        //英语（英国）：values-en-rGB
+        //英文（澳大利亚）：values-en-rAU
+        //英文（加拿大）：values-en-rCA
+        //英文（爱尔兰）：values-en-rIE
+        //英文（印度）：values-en-rIN
+        //英文（新西兰）：values-en-rNZ
+        //英文（新加坡）：values-en-rSG
+        //英文（南非）：values-en-rZA
 
         // 仅保留 xxhdpi 图片资源（目前主流分辨率 1920 * 1080）
         resConfigs 'xxhdpi'
