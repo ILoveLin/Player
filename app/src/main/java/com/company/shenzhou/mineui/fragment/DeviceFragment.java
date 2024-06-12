@@ -2032,7 +2032,6 @@ public final class DeviceFragment extends TitleBarFragment<MainActivity> impleme
                     String result = hmsScan.getOriginalValue();
                     LogUtils.e(TAG + "扫码结果:" + result);
                     if (!"".equals(result)) {
-
                             if (JsonUtil.isGoodJson(result)) {  //是json数据 HD3  或者一体机的格式
                                 new Thread() {
                                     @Override

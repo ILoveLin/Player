@@ -59,7 +59,7 @@ public interface StatusAction {
         showLayout(R.drawable.status_empty_ic, R.string.status_layout_no_data, null);
     }
     default void showUserEmpty() {
-        showLayout(R.drawable.status_empty_ic, R.string.status_layout_no_user_data, null);
+        showLayout(R.drawable.status_have_no_user, R.string.status_layout_no_user_data, null);
     }
     default void showDeviceEmpty() {
         showLayout(R.drawable.status_empty_ic, R.string.status_layout_no_device_data, null);

@@ -136,7 +136,14 @@ public class NotificationService extends Service {
         return intent;
     }
 
-
+    /**
+     * 关闭通知栏
+     */
+    public static void StopNotification() {
+        if (null != mNotificationManager) {
+            mNotificationManager.cancel(notificationId);
+        }
+    }
     @Override
     public void onDestroy() {
         super.onDestroy();

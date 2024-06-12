@@ -1,7 +1,7 @@
 include ':app'
+include ':library:libvlc'
 include ':library:base'
 include ':library:widget'
 include ':library:umeng'
-include ':library:libvlc'
 rootProject.name = "Player"
 

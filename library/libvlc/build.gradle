@@ -12,11 +12,14 @@ android {
 //        targetSdkVersion Integer.valueOf(project.properties.get("targetSdkVersion"))
 //        versionCode Integer.valueOf(project.properties.get("versionCode"))
 //        versionName project.properties.get("versionJcenter")
+
         externalNativeBuild {
             cmake {
                 cppFlags "-std=c++11 -fexceptions"//-std=c++11 -frtti
             }
         }
+
+
         ndk {
 //            abiFilters "armeabi-v7a"
             abiFilters "armeabi-v7a" ,"arm64-v8a","x86","x86_64"

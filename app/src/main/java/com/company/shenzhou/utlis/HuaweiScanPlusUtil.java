@@ -429,7 +429,7 @@ public class HuaweiScanPlusUtil {
 
                 } else {
                     DeviceDBUtils.insertOrReplaceData(mContext, insertBean);
-                    EventBus.getDefault().post(new RefreshEvent("refresh", mContext.getResources().getString(R.string.device_update_success)));
+                    EventBus.getDefault().post(new RefreshEvent("refresh", mContext.getResources().getString(R.string.device_add_success)));
 
                 }
 
@@ -438,7 +438,7 @@ public class HuaweiScanPlusUtil {
 
 
         } catch (Exception e) {
-            Log.e("扫码结果", "=====e===" + e);
+            LogUtils.e("扫码结果====e===" + e);
             EventBus.getDefault().post(new RefreshEvent("error", mContext.getResources().getString(R.string.device_the_scan_code_is_abnormal)));
         }
     }

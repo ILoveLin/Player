@@ -16,9 +16,9 @@
 
     <com.scwang.smart.refresh.layout.SmartRefreshLayout
         android:id="@+id/rl_status_refresh"
-        android:layout_below="@+id/title_bar"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
+        android:layout_below="@+id/title_bar"
         app:srlAccentColor="@color/gray"
         app:srlEnablePureScrollMode="true">
 
@@ -30,12 +30,11 @@
 
             <TextView
                 android:layout_width="match_parent"
-                android:layout_height="@dimen/dp_50"
+                android:layout_height="@dimen/dp_40"
                 android:background="@color/color_f7f7f7"
-                android:gravity="bottom"
+                android:gravity="center_vertical"
                 android:paddingLeft="@dimen/dp_13"
                 android:paddingTop="@dimen/dp_4"
-                android:paddingBottom="@dimen/dp_4"
                 android:text="@string/current_user"
                 android:textColor="@color/color_999999"
                 android:textSize="@dimen/sp_13" />
@@ -86,12 +85,11 @@
 
             <TextView
                 android:layout_width="match_parent"
-                android:layout_height="@dimen/dp_50"
+                android:layout_height="@dimen/dp_40"
                 android:background="@color/color_f7f7f7"
-                android:gravity="bottom"
+                android:gravity="center_vertical"
                 android:paddingLeft="@dimen/dp_13"
                 android:paddingTop="@dimen/dp_4"
-                android:paddingBottom="@dimen/dp_4"
                 android:text="@string/else_user"
                 android:textColor="@color/color_999999"
                 android:textSize="@dimen/sp_13" />
@@ -101,6 +99,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 app:srlAccentColor="@color/gray">
+
                 <com.hjq.widget.layout.WrapRecyclerView
                     android:id="@+id/rv_status_list"
                     android:layout_width="match_parent"
