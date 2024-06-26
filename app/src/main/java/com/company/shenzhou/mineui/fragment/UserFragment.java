@@ -178,11 +178,8 @@ public final class UserFragment extends TitleBarFragment<MainActivity> implement
                     }
                     UserDBBeanUtils.updateData(bean);
                     mDataList = (ArrayList) UserDBBeanUtils.queryAll(UserDBBean.class);
-                    for (int i = 0; i < mDataList.size(); i++) {
-                        UserDBBean a = mDataList.get(i);
-                        LogUtils.e(TAG + "==bean.toString====" + a.toString());
-                        mAdapter.setItem(position, a);
-                    }
+                    LogUtils.e(TAG + "==bean.toString====" + bean.toString());
+
                 }
             });
             //修改密码
@@ -259,7 +256,9 @@ public final class UserFragment extends TitleBarFragment<MainActivity> implement
                     //对DB做修改或者增加的操作
                     bean.setPassword(newPassword);
                     UserDBBeanUtils.updateData(bean);
-                    mAdapter.setItem(position, bean);
+
+                    mRecyclerView.postDelayed(() ->   mAdapter.setItem(position, bean),
+                            500);
                     //超级用户只能被修改一次密码的机会   的标识
                     if (type.equals(Constants.AdminUser + "")) {
                         SharePreferenceUtil.put(getActivity(), SharePreferenceUtil.Current_Admin_ChangePassword, true);
@@ -281,7 +280,9 @@ public final class UserFragment extends TitleBarFragment<MainActivity> implement
                 .setCanceledOnTouchOutside(false)
                 .setListener(dialog -> {
                     UserDBBeanUtils.deleteData(bean);
-                    mAdapter.setItem(position, bean);
+
+                    mRecyclerView.postDelayed(() ->   mAdapter.setItem(position, bean),
+                            500);
                     SharePreferenceUtil.put(getActivity(), Constants.Is_LoginEd, false);
                     startActivity(new Intent(getActivity(), LoginActivity.class));
                     String name = (String) SharePreferenceUtil.get(getActivity(), SharePreferenceUtil.Current_Username, "");
