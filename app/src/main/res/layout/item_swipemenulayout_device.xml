@@ -130,7 +130,7 @@
 
     <Button
         android:id="@+id/play_mode"
-        android:layout_width="@dimen/dp_60"
+        android:layout_width="@dimen/dp_63"
         android:layout_height="@dimen/dp_100"
         android:background="@color/colorAccent"
         android:text="@string/device_item_play_mode"
@@ -139,7 +139,7 @@
 
     <Button
         android:id="@+id/update_device"
-        android:layout_width="@dimen/dp_60"
+        android:layout_width="@dimen/dp_63"
         android:layout_height="@dimen/dp_100"
         android:background="@color/common_button_disable_color"
         android:text="@string/device_item_change"
@@ -148,7 +148,7 @@
 
     <Button
         android:id="@+id/delete_device"
-        android:layout_width="@dimen/dp_60"
+        android:layout_width="@dimen/dp_63"
         android:layout_height="match_parent"
         android:background="@color/red"
         android:text="@string/device_item_deleted"

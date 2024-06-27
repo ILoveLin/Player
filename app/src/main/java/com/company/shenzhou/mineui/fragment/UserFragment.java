@@ -178,6 +178,7 @@ public final class UserFragment extends TitleBarFragment<MainActivity> implement
                     }
                     UserDBBeanUtils.updateData(bean);
                     mDataList = (ArrayList) UserDBBeanUtils.queryAll(UserDBBean.class);
+                    mHandler.post(() ->  mAdapter.setItem(position, bean));
                     LogUtils.e(TAG + "==bean.toString====" + bean.toString());
 
                 }
@@ -256,9 +257,7 @@ public final class UserFragment extends TitleBarFragment<MainActivity> implement
                     //对DB做修改或者增加的操作
                     bean.setPassword(newPassword);
                     UserDBBeanUtils.updateData(bean);
-
-                    mRecyclerView.postDelayed(() ->   mAdapter.setItem(position, bean),
-                            500);
+                    mHandler.post(() ->  mAdapter.setItem(position, bean));
                     //超级用户只能被修改一次密码的机会   的标识
                     if (type.equals(Constants.AdminUser + "")) {
                         SharePreferenceUtil.put(getActivity(), SharePreferenceUtil.Current_Admin_ChangePassword, true);
@@ -281,8 +280,8 @@ public final class UserFragment extends TitleBarFragment<MainActivity> implement
                 .setListener(dialog -> {
                     UserDBBeanUtils.deleteData(bean);
 
-                    mRecyclerView.postDelayed(() ->   mAdapter.setItem(position, bean),
-                            500);
+
+                    mHandler.post(() ->  mAdapter.setItem(position, bean));
                     SharePreferenceUtil.put(getActivity(), Constants.Is_LoginEd, false);
                     startActivity(new Intent(getActivity(), LoginActivity.class));
                     String name = (String) SharePreferenceUtil.get(getActivity(), SharePreferenceUtil.Current_Username, "");
