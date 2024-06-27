@@ -15,6 +15,7 @@ import com.company.shenzhou.mineui.activity.BackstageManagerActivity;
 import com.company.shenzhou.mineui.activity.BrowserActivity;
 import com.company.shenzhou.mineui.activity.How2UseActivity;
 import com.company.shenzhou.mineui.activity.LoginActivity;
+import com.company.shenzhou.mineui.activity.PlayerLine2Activity;
 import com.company.shenzhou.mineui.activity.PowerExplainActivity;
 import com.company.shenzhou.mineui.activity.TestActivity;
 import com.company.shenzhou.mineui.dialog.Input2PasswordDialog;
@@ -111,6 +112,7 @@ public final class MineFragment extends TitleBarFragment<MainActivity> {
         if (viewId == R.id.bar_mine_about) {
             showAboutDialog();
             //startActivity(new Intent(getActivity(), TestActivity.class));
+            startActivity(new Intent(getActivity(), PlayerLine2Activity.class));
             //权限说明
         } else if (viewId == R.id.bar_mine_power_explain) {
             startActivity(PowerExplainActivity.class);
