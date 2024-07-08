@@ -31,17 +31,6 @@ android {
     //添加已下配置 不然vlc的model 和 'com.arthenica:ffmpeg-kit-full:5.1'依赖冲突
     packagingOptions {
         //pickFirst，只匹配第一个的意思
-        pickFirst 'lib/x86/libc++_shared.so'
-        pickFirst 'lib/x86_64/libc++_shared.so'
-        pickFirst 'lib/armeabi-v7a/libc++_shared.so'
-        pickFirst 'lib/arm64-v8a/libc++_shared.so'
-
-
-//        pickFirst 'lib/arm64-v8a/libc++_shared.so'
-//        pickFirst 'lib/arm64-v8a/libffmpeg.so'
-
-
-
 //      // 配置 App 打包参数（腾讯云播放器）
         pickFirst '**/libc++_shared.so'
         doNotStrip "*/armeabi/libYTCommon.so"
@@ -192,7 +181,7 @@ dependencies {
     // 基类封装
     implementation project(':library:base')
     // vlc录像
-//    implementation project(':library:libvlc')
+    implementation project(':library:libvlc')
     // 控件封装
     implementation project(':library:widget')
     // 友盟封装

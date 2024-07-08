@@ -7,10 +7,10 @@
     android:orientation="vertical"
     tools:context="com.company.shenzhou.ui.activity.CopyActivity">
 
-<!--    <com.company.shenzhou.widget.vlc.MyControlVlcVideoView-->
-<!--        android:id="@+id/player_control"-->
-<!--        android:layout_width="match_parent"-->
-<!--        android:layout_height="match_parent"-->
-<!--        android:clickable="true" />-->
+    <com.company.shenzhou.widget.vlc.MyControlVlcVideoView
+        android:id="@+id/player_control"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:clickable="true" />
 
 </RelativeLayout>
