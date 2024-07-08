@@ -192,7 +192,7 @@ dependencies {
     // 基类封装
     implementation project(':library:base')
     // vlc录像
-    implementation project(':library:libvlc')
+//    implementation project(':library:libvlc')
     // 控件封装
     implementation project(':library:widget')
     // 友盟封装

@@ -329,21 +329,30 @@
         <activity
             android:name=".mineui.activity.PlayerLine1Activity"
             android:launchMode="singleTop"
+            android:configChanges="orientation|keyboardHidden|screenSize"
+            android:hardwareAccelerated="true"
             android:theme="@style/FullScreenTheme" />
         <!-- 线路2 播放界面 -->
         <activity
             android:name=".mineui.activity.PlayerLine2Activity"
             android:launchMode="singleTop"
+            android:configChanges="orientation|keyboardHidden|screenSize"
+            android:hardwareAccelerated="true"
             android:theme="@style/FullScreenTheme" />
         <!-- 线路3 播放界面 -->
         <activity
             android:name=".mineui.activity.PlayerLine3Activity"
             android:launchMode="singleTop"
+            android:configChanges="orientation|keyboardHidden|screenSize"
+            android:hardwareAccelerated="true"
+            android:windowSoftInputMode="adjustResize"
             android:theme="@style/FullScreenTheme" />
         <!-- RC200 播放界面 -->
         <activity
             android:name=".mineui.activity.PlayerRC200Activity"
             android:launchMode="singleTop"
+            android:configChanges="orientation|keyboardHidden|screenSize"
+            android:hardwareAccelerated="true"
             android:theme="@style/FullScreenTheme" />
         <!-- 后台管理界面 -->
         <activity
